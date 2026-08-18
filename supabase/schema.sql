@@ -1,6 +1,16 @@
--- DMflow Supabase Schema Setup
+-- =============================================================================
+-- DMflow Consolidated Supabase Schema
+-- Includes Multi-Account Support & Hardened Row Level Security (RLS)
+-- =============================================================================
 
--- Users table
+-- 1. Owners table (Multi-Account Root)
+CREATE TABLE IF NOT EXISTS public.owners (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  display_name TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. Users table (Connected Instagram Accounts)
 CREATE TABLE IF NOT EXISTS public.users (
   id TEXT PRIMARY KEY,
   username TEXT NOT NULL,
@@ -10,11 +20,12 @@ CREATE TABLE IF NOT EXISTS public.users (
   profile_pic TEXT,
   groq_api_key TEXT,
   ai_context TEXT,
+  owner_id UUID REFERENCES public.owners(id),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Webhook Events table
+-- 3. Webhook Events table
 CREATE TABLE IF NOT EXISTS public.webhook_events (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   event_type TEXT NOT NULL,
@@ -23,7 +34,7 @@ CREATE TABLE IF NOT EXISTS public.webhook_events (
   received_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Automations table (extended for AI, Builder, and Rewind)
+-- 4. Automations table
 CREATE TABLE IF NOT EXISTS public.automations (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id TEXT NOT NULL,
@@ -49,7 +60,7 @@ CREATE TABLE IF NOT EXISTS public.automations (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Conversations table
+-- 5. Conversations table
 CREATE TABLE IF NOT EXISTS public.conversations (
   id TEXT PRIMARY KEY, -- e.g. user_id:follower_id
   user_id TEXT NOT NULL,
@@ -61,7 +72,7 @@ CREATE TABLE IF NOT EXISTS public.conversations (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Messages table
+-- 6. Messages table
 CREATE TABLE IF NOT EXISTS public.messages (
   id TEXT PRIMARY KEY,
   conversation_id TEXT NOT NULL,
@@ -70,10 +81,11 @@ CREATE TABLE IF NOT EXISTS public.messages (
   recipient_id TEXT NOT NULL,
   message_text TEXT NOT NULL,
   direction TEXT NOT NULL, -- 'incoming' | 'outgoing'
+  send_status TEXT DEFAULT 'sent',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Ice Breakers table
+-- 7. Ice Breakers table
 CREATE TABLE IF NOT EXISTS public.ice_breakers (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id TEXT NOT NULL,
@@ -84,7 +96,7 @@ CREATE TABLE IF NOT EXISTS public.ice_breakers (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Rewind Jobs table
+-- 8. Rewind Jobs table
 CREATE TABLE IF NOT EXISTS public.rewind_jobs (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id TEXT NOT NULL,
@@ -96,7 +108,12 @@ CREATE TABLE IF NOT EXISTS public.rewind_jobs (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Row Level Security (RLS)
+-- =============================================================================
+-- Row Level Security (RLS) - Hardened Service-Role Only Policies
+-- (Default-deny for anon & authenticated roles. No public SELECT allowed)
+-- =============================================================================
+
+ALTER TABLE public.owners ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.webhook_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.automations ENABLE ROW LEVEL SECURITY;
@@ -105,14 +122,7 @@ ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.ice_breakers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.rewind_jobs ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Allow public read access users" ON public.users FOR SELECT USING (true);
-CREATE POLICY "Allow public read access webhook_events" ON public.webhook_events FOR SELECT USING (true);
-CREATE POLICY "Allow public read access automations" ON public.automations FOR SELECT USING (true);
-CREATE POLICY "Allow public read access conversations" ON public.conversations FOR SELECT USING (true);
-CREATE POLICY "Allow public read access messages" ON public.messages FOR SELECT USING (true);
-CREATE POLICY "Allow public read access ice_breakers" ON public.ice_breakers FOR SELECT USING (true);
-CREATE POLICY "Allow public read access rewind_jobs" ON public.rewind_jobs FOR SELECT USING (true);
-
+CREATE POLICY "Allow service role full access owners" ON public.owners FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Allow service role full access users" ON public.users FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Allow service role full access webhook_events" ON public.webhook_events FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Allow service role full access automations" ON public.automations FOR ALL USING (auth.role() = 'service_role');
