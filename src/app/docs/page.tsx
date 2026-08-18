@@ -13,7 +13,7 @@ export default function DocsPage() {
         <div style={{ marginBottom: "40px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
             <BookOpen size={26} color="var(--text-main)" />
-            <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>DMflow Integration Documentation</h1>
+            <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>Dakota Integration Documentation</h1>
           </div>
           <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
             Complete step-by-step setup guide for Meta Developer App, Instagram Business Login, Webhooks, and Groq AI.
@@ -26,7 +26,7 @@ export default function DocsPage() {
             <Shield size={20} color="var(--text-main)" /> 1. Meta Developer App & Instagram Business Login
           </h2>
           <p style={{ color: "var(--text-body)", fontSize: "0.92rem", lineHeight: 1.6, marginBottom: "16px" }}>
-            DMflow uses official <strong>Instagram API with Instagram Login (Business Login)</strong> flow — NOT Facebook Login, NOT Instagram Basic Display.
+            Dakota uses official <strong>Instagram API with Instagram Login (Business Login)</strong> flow — NOT Facebook Login, NOT Instagram Basic Display.
           </p>
           <ol style={{ paddingLeft: "20px", color: "var(--text-body)", fontSize: "0.9rem", lineHeight: 1.8 }}>
             <li>Go to <a href="https://developers.facebook.com" target="_blank" rel="noreferrer" style={{ color: "var(--text-main)", textDecoration: "underline" }}>developers.facebook.com</a> and click <strong>Create App</strong>.</li>
@@ -73,9 +73,9 @@ export default function DocsPage() {
           </h2>
           <pre
             style={{
-              background: "#0c0a09",
+              background: "var(--text-main)",
               padding: "16px",
-              borderRadius: "12px",
+              borderRadius: "var(--radius-button)",
               fontFamily: "var(--font-mono)",
               fontSize: "0.85rem",
               color: "#34d399",

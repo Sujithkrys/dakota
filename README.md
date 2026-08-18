@@ -1,9 +1,9 @@
-# DMflow 🚀
+# Dakota 🚀
 > Next-Generation Instagram Professional Automation & AI Auto-Reply Platform (100% Free & Unlimited)
 
-DMflow is a full-featured Instagram Direct Message, comment-to-DM, story mention, and AI-powered auto-reply SaaS built with **Next.js 15**, **TypeScript**, **Supabase**, and **Groq Llama 3.1 AI**.
+Dakota is a full-featured Instagram Direct Message, comment-to-DM, story mention, and AI-powered auto-reply SaaS built with **Next.js 15**, **TypeScript**, **Supabase**, and **Groq Llama 3.1 AI**.
 
-Inspired by ElevenLabs' quietly editorial print magazine design system (off-white canvas, warm near-black ink, soft atmospheric pastel gradient orbs), DMflow combines visual elegance with high-performance automation.
+Inspired by ElevenLabs' quietly editorial print magazine design system (off-white canvas, warm near-black ink, soft atmospheric pastel gradient orbs), Dakota combines visual elegance with high-performance automation.
 
 ---
 

@@ -14,7 +14,7 @@ export default function HelpPage() {
           <h1 style={{ fontSize: "1.8rem", fontWeight: "900" }}>Help Center & Support</h1>
         </div>
         <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "24px" }}>
-          Need assistance setting up DMflow Instagram automations? Contact our 24/7 priority support team or read our detailed setup guide.
+          Need assistance setting up Dakota Instagram automations? Contact our 24/7 priority support team or read our detailed setup guide.
         </p>
         <div style={{ display: "flex", gap: "16px" }}>
           <Link href="/docs" className="btn-ig-connect" style={{ borderRadius: "10px", padding: "10px 20px", fontSize: "0.9rem" }}>

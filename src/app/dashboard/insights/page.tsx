@@ -65,7 +65,7 @@ export default function AudienceInsightsPage() {
                 padding: "10px",
                 borderRadius: "9999px",
                 background: "#ffffff",
-                border: "1px solid var(--border-card)",
+                border: "var(--border-hairline)",
                 color: "var(--text-main)",
                 fontSize: "0.85rem",
                 fontWeight: "500",
@@ -84,9 +84,9 @@ export default function AudienceInsightsPage() {
                 onClick={() => setSelectedGroup("all")}
                 style={{
                   padding: "10px 14px",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-button)",
                   background: selectedGroup === "all" ? "var(--bg-soft)" : "transparent",
-                  border: selectedGroup === "all" ? "1px solid var(--border-card)" : "1px solid transparent",
+                  border: selectedGroup === "all" ? "var(--border-hairline)" : "1px solid transparent",
                   color: "var(--text-main)",
                   fontWeight: selectedGroup === "all" ? "600" : "400",
                   fontSize: "0.88rem",
@@ -103,9 +103,9 @@ export default function AudienceInsightsPage() {
                 onClick={() => setSelectedGroup("reels")}
                 style={{
                   padding: "10px 14px",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-button)",
                   background: selectedGroup === "reels" ? "var(--bg-soft)" : "transparent",
-                  border: selectedGroup === "reels" ? "1px solid var(--border-card)" : "1px solid transparent",
+                  border: selectedGroup === "reels" ? "var(--border-hairline)" : "1px solid transparent",
                   color: "var(--text-main)",
                   fontWeight: selectedGroup === "reels" ? "600" : "400",
                   fontSize: "0.88rem",
@@ -145,7 +145,7 @@ export default function AudienceInsightsPage() {
 
               <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.88rem" }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid var(--border-card)", color: "var(--text-muted)", fontSize: "0.75rem", fontWeight: "600" }}>
+                  <tr style={{ borderBottom: "var(--border-hairline)", color: "var(--text-muted)", fontSize: "0.75rem", fontWeight: "600" }}>
                     <th style={{ padding: "12px 16px" }}>RANK</th>
                     <th style={{ padding: "12px 16px" }}>FOLLOWER</th>
                     <th style={{ padding: "12px 16px" }}>COMMENTS</th>
@@ -160,11 +160,11 @@ export default function AudienceInsightsPage() {
                     <tr><td colSpan={5} style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>No audience comment data yet — top commenters will appear here as automations trigger.</td></tr>
                   ) : (
                     leaderboard.map((item) => (
-                      <tr key={item.rank} style={{ borderBottom: "1px solid var(--border-card)" }}>
+                      <tr key={item.rank} style={{ borderBottom: "var(--border-hairline)" }}>
                         <td style={{ padding: "14px 16px", fontWeight: "600", color: "var(--text-main)" }}>#{item.rank}</td>
                         <td style={{ padding: "14px 16px" }}>
                           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "0.75rem" }}>
+                            <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "0.75rem" }}>
                               {item.username.charAt(0).toUpperCase()}
                             </div>
                             <span style={{ fontWeight: "600" }}>@{item.username}</span>
@@ -176,7 +176,7 @@ export default function AudienceInsightsPage() {
                             {item.automationsTriggered} rules
                           </span>
                         </td>
-                        <td style={{ padding: "14px 16px", color: "#16a34a", fontWeight: "600" }}>{item.lastActive}</td>
+                        <td style={{ padding: "14px 16px", color: "var(--accent-verdant)", fontWeight: "600" }}>{item.lastActive}</td>
                       </tr>
                     ))
                   )}

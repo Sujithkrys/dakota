@@ -142,7 +142,7 @@ export function DashboardLayout({
           style={{
             width: "260px",
             minWidth: "260px",
-            borderRight: "1px solid var(--border-card)",
+            borderRight: "var(--border-hairline)",
             background: "var(--bg-soft)",
             display: "flex",
             flexDirection: "column",
@@ -161,7 +161,7 @@ export function DashboardLayout({
                   width: "32px",
                   height: "32px",
                   borderRadius: "50%",
-                  background: "#0c0a09",
+                  background: "var(--text-main)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -170,7 +170,7 @@ export function DashboardLayout({
                 <Bot size={18} color="#ffffff" />
               </div>
               <span style={{ fontSize: "1.3rem", fontFamily: "var(--font-serif)", fontWeight: "400", letterSpacing: "-0.5px" }}>
-                DMflow
+                Dakota
               </span>
             </Link>
           </div>
@@ -184,9 +184,9 @@ export function DashboardLayout({
                 alignItems: "center",
                 gap: "10px",
                 padding: "8px 12px",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-button)",
                 background: "#ffffff",
-                border: "1px solid var(--border-card)",
+                border: "var(--border-hairline)",
                 width: "100%",
                 cursor: "pointer",
                 textAlign: "left",
@@ -197,7 +197,7 @@ export function DashboardLayout({
                   width: "24px",
                   height: "24px",
                   borderRadius: "50%",
-                  background: "#0c0a09",
+                  background: "var(--text-main)",
                   color: "#fff",
                   display: "flex",
                   alignItems: "center",
@@ -210,7 +210,7 @@ export function DashboardLayout({
               </div>
               <div style={{ flex: 1, overflow: "hidden" }}>
                 <div style={{ fontSize: "0.82rem", fontWeight: "600", color: "var(--text-main)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>@{activeAccountUsername}</div>
-                <div style={{ fontSize: "0.7rem", color: "#16a34a", fontWeight: "600" }}>● Active Account</div>
+                <div style={{ fontSize: "0.7rem", color: "var(--accent-verdant)", fontWeight: "600" }}>● Active Account</div>
               </div>
               {accountDropdownOpen ? <ChevronUp size={14} color="var(--text-muted)" /> : <ChevronDown size={14} color="var(--text-muted)" />}
             </button>
@@ -223,8 +223,8 @@ export function DashboardLayout({
                   left: "16px",
                   right: "16px",
                   background: "#ffffff",
-                  border: "1px solid var(--border-card)",
-                  borderRadius: "10px",
+                  border: "var(--border-hairline)",
+                  borderRadius: "var(--radius-card)",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
                   zIndex: 100,
                   maxHeight: "240px",
@@ -246,7 +246,7 @@ export function DashboardLayout({
                         background: "transparent",
                         cursor: "pointer",
                         textAlign: "left",
-                        borderBottom: "1px solid var(--border-card)",
+                        borderBottom: "var(--border-hairline)",
                       }}
                     >
                       {acct.profile_pic ? (
@@ -320,12 +320,12 @@ export function DashboardLayout({
                 gap: "8px",
                 width: "100%",
                 padding: "10px",
-                borderRadius: "9999px",
-                background: "#0c0a09",
+                borderRadius: "var(--radius-button)",
+                background: "var(--accent-verdant)",
                 color: "#ffffff",
                 fontWeight: "500",
                 fontSize: "0.88rem",
-                boxShadow: "0 2px 10px rgba(12, 10, 9, 0.12)",
+                boxShadow: "0 2px 10px rgba(14, 159, 110, 0.2)",
                 transition: "all 0.2s ease",
               }}
             >
@@ -344,12 +344,12 @@ export function DashboardLayout({
                 alignItems: "center",
                 gap: "10px",
                 padding: "9px 12px",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-button)",
                 fontSize: "0.85rem",
                 fontWeight: pathname === "/dashboard" ? "600" : "400",
-                color: pathname === "/dashboard" ? "var(--text-main)" : "var(--text-body)",
+                color: pathname === "/dashboard" ? "var(--accent-verdant)" : "var(--text-body)",
                 background: pathname === "/dashboard" ? "#ffffff" : "transparent",
-                border: pathname === "/dashboard" ? "1px solid var(--border-card)" : "1px solid transparent",
+                border: pathname === "/dashboard" ? "var(--border-hairline)" : "1px solid transparent",
               }}
             >
               <Home size={17} color="currentColor" />
@@ -363,12 +363,12 @@ export function DashboardLayout({
                 alignItems: "center",
                 gap: "10px",
                 padding: "9px 12px",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-button)",
                 fontSize: "0.85rem",
                 fontWeight: pathname.startsWith("/dashboard/automations") ? "600" : "400",
-                color: pathname.startsWith("/dashboard/automations") ? "var(--text-main)" : "var(--text-body)",
+                color: pathname.startsWith("/dashboard/automations") ? "var(--accent-verdant)" : "var(--text-body)",
                 background: pathname.startsWith("/dashboard/automations") ? "#ffffff" : "transparent",
-                border: pathname.startsWith("/dashboard/automations") ? "1px solid var(--border-card)" : "1px solid transparent",
+                border: pathname.startsWith("/dashboard/automations") ? "var(--border-hairline)" : "1px solid transparent",
               }}
             >
               <Zap size={17} color="currentColor" />
@@ -382,12 +382,12 @@ export function DashboardLayout({
                 alignItems: "center",
                 gap: "10px",
                 padding: "9px 12px",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-button)",
                 fontSize: "0.85rem",
                 fontWeight: pathname === "/dashboard/templates" ? "600" : "400",
-                color: pathname === "/dashboard/templates" ? "var(--text-main)" : "var(--text-body)",
+                color: pathname === "/dashboard/templates" ? "var(--accent-verdant)" : "var(--text-body)",
                 background: pathname === "/dashboard/templates" ? "#ffffff" : "transparent",
-                border: pathname === "/dashboard/templates" ? "1px solid var(--border-card)" : "1px solid transparent",
+                border: pathname === "/dashboard/templates" ? "var(--border-hairline)" : "1px solid transparent",
               }}
             >
               <LayoutTemplate size={17} color="currentColor" />
@@ -403,7 +403,7 @@ export function DashboardLayout({
                   justifyContent: "space-between",
                   width: "100%",
                   padding: "9px 12px",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-button)",
                   fontSize: "0.85rem",
                   fontWeight: "400",
                   color: "var(--text-body)",
@@ -438,12 +438,12 @@ export function DashboardLayout({
                 alignItems: "center",
                 gap: "10px",
                 padding: "9px 12px",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-button)",
                 fontSize: "0.85rem",
                 fontWeight: pathname === "/dashboard/contacts" ? "600" : "400",
-                color: pathname === "/dashboard/contacts" ? "var(--text-main)" : "var(--text-body)",
+                color: pathname === "/dashboard/contacts" ? "var(--accent-verdant)" : "var(--text-body)",
                 background: pathname === "/dashboard/contacts" ? "#ffffff" : "transparent",
-                border: pathname === "/dashboard/contacts" ? "1px solid var(--border-card)" : "1px solid transparent",
+                border: pathname === "/dashboard/contacts" ? "var(--border-hairline)" : "1px solid transparent",
               }}
             >
               <Users size={17} color="currentColor" />
@@ -457,12 +457,12 @@ export function DashboardLayout({
                 alignItems: "center",
                 gap: "10px",
                 padding: "9px 12px",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-button)",
                 fontSize: "0.85rem",
                 fontWeight: pathname === "/dashboard/rewind" ? "600" : "400",
-                color: pathname === "/dashboard/rewind" ? "var(--text-main)" : "var(--text-body)",
+                color: pathname === "/dashboard/rewind" ? "var(--accent-verdant)" : "var(--text-body)",
                 background: pathname === "/dashboard/rewind" ? "#ffffff" : "transparent",
-                border: pathname === "/dashboard/rewind" ? "1px solid var(--border-card)" : "1px solid transparent",
+                border: pathname === "/dashboard/rewind" ? "var(--border-hairline)" : "1px solid transparent",
               }}
             >
               <RotateCcw size={17} color="currentColor" />
@@ -478,7 +478,7 @@ export function DashboardLayout({
                   justifyContent: "space-between",
                   width: "100%",
                   padding: "9px 12px",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-button)",
                   fontSize: "0.85rem",
                   fontWeight: pathname.includes("analytics") || pathname.includes("insights") ? "600" : "400",
                   color: "var(--text-body)",
@@ -506,7 +506,7 @@ export function DashboardLayout({
               )}
             </div>
 
-            <Link href="/docs" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "9px 12px", borderRadius: "10px", fontSize: "0.85rem", color: "var(--text-body)" }}>
+            <Link href="/docs" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "9px 12px", borderRadius: "var(--radius-button)", fontSize: "0.85rem", color: "var(--text-body)" }}>
               <HelpCircle size={17} />
               Support & Docs
             </Link>
@@ -517,16 +517,16 @@ export function DashboardLayout({
             style={{
               padding: "14px",
               margin: "10px 10px 14px",
-              borderRadius: "12px",
+              borderRadius: "var(--radius-card)",
               background: "#ffffff",
-              border: "1px solid var(--border-card)",
+              border: "var(--border-hairline)",
               display: "flex",
               flexDirection: "column",
               gap: "6px",
               flexShrink: 0,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: "600", color: "#16a34a" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: "600", color: "var(--accent-verdant)" }}>
               <CheckCircle2 size={15} /> 100% Free Unlimited Plan
             </div>
 

@@ -215,7 +215,7 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
 
   if (matchedRule) {
     console.log(`🤖 [KEYWORD MATCHED] Rule: "${matchedRule.name}" for text: "${messageText}"`);
-    finalResponseText = matchedRule.response_content?.text || "Hello from DMflow!";
+    finalResponseText = matchedRule.response_content?.text || "Hello from Dakota!";
   } else if (aiRule) {
     console.log(`🤖 [AI CATCH-ALL TRIGGERED] Rule: "${aiRule.name}" for unhandled text: "${messageText}"`);
     isAiReply = true;

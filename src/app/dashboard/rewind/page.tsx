@@ -10,6 +10,7 @@ import {
   Play,
   RefreshCw,
 } from "lucide-react";
+import { getStatusColor } from "@/lib/status-colors";
 
 interface RewindItem {
   id: string;
@@ -121,8 +122,8 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 1 ? "#0c0a09" : "#ffffff",
-                border: "1px solid var(--border-card)",
+                background: activeStep >= 1 ? "var(--text-main)" : "#ffffff",
+                border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -135,7 +136,7 @@ export default function RewindPage() {
             </span>
           </div>
 
-          <div style={{ width: "60px", height: "1px", background: activeStep >= 2 ? "#0c0a09" : "var(--border-card)" }} />
+          <div style={{ width: "60px", height: "1px", background: activeStep >= 2 ? "var(--text-main)" : "var(--border-card)" }} />
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
             <div
@@ -143,8 +144,8 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 2 ? "#0c0a09" : "#ffffff",
-                border: "1px solid var(--border-card)",
+                background: activeStep >= 2 ? "var(--text-main)" : "#ffffff",
+                border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -157,7 +158,7 @@ export default function RewindPage() {
             </span>
           </div>
 
-          <div style={{ width: "60px", height: "1px", background: activeStep >= 3 ? "#0c0a09" : "var(--border-card)" }} />
+          <div style={{ width: "60px", height: "1px", background: activeStep >= 3 ? "var(--text-main)" : "var(--border-card)" }} />
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
             <div
@@ -165,8 +166,8 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 3 ? "#0c0a09" : "#ffffff",
-                border: "1px solid var(--border-card)",
+                background: activeStep >= 3 ? "var(--text-main)" : "#ffffff",
+                border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -179,7 +180,7 @@ export default function RewindPage() {
             </span>
           </div>
 
-          <div style={{ width: "60px", height: "1px", background: activeStep >= 4 ? "#0c0a09" : "var(--border-card)" }} />
+          <div style={{ width: "60px", height: "1px", background: activeStep >= 4 ? "var(--text-main)" : "var(--border-card)" }} />
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
             <div
@@ -187,8 +188,8 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 4 ? "#0c0a09" : "#ffffff",
-                border: "1px solid var(--border-card)",
+                background: activeStep >= 4 ? "var(--text-main)" : "#ffffff",
+                border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -207,10 +208,10 @@ export default function RewindPage() {
           <div
             style={{
               padding: "14px 20px",
-              borderRadius: "12px",
+              borderRadius: "var(--radius-button)",
               background: "rgba(22, 163, 74, 0.1)",
               border: "1px solid rgba(22, 163, 74, 0.2)",
-              color: "#16a34a",
+              color: "var(--accent-verdant)",
               fontWeight: "600",
               marginBottom: "32px",
               textAlign: "center",
@@ -258,7 +259,7 @@ export default function RewindPage() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    border: isSelected ? "2px solid #0c0a09" : "1px solid var(--border-card)",
+                    border: isSelected ? "2px solid var(--text-main)" : "var(--border-hairline)",
                     background: isSelected ? "var(--bg-soft)" : "#ffffff",
                     cursor: "pointer",
                   }}
@@ -274,8 +275,9 @@ export default function RewindPage() {
                       borderRadius: "9999px",
                       fontSize: "0.75rem",
                       fontWeight: "600",
-                      background: item.status === "Active" ? "rgba(22, 163, 74, 0.1)" : "rgba(245, 158, 11, 0.1)",
-                      color: item.status === "Active" ? "#16a34a" : "#d97706",
+                      background: "var(--bg-soft)",
+                      border: "var(--border-hairline)",
+                      color: getStatusColor(item.status),
                     }}
                   >
                     {item.status}
@@ -323,7 +325,7 @@ export default function RewindPage() {
                       Scanned {job.comments_scanned} comments · Dispatched {job.dms_sent} DMs
                     </div>
                   </div>
-                  <span style={{ fontSize: "0.75rem", fontWeight: "600", color: "#16a34a", background: "rgba(22, 163, 74, 0.1)", padding: "4px 10px", borderRadius: "9999px" }}>
+                  <span style={{ fontSize: "0.75rem", fontWeight: "600", color: getStatusColor(job.status), background: "var(--bg-soft)", border: "var(--border-hairline)", padding: "4px 10px", borderRadius: "9999px" }}>
                     {job.status.toUpperCase()}
                   </span>
                 </div>

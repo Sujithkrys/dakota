@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DMflow — Instagram Business Automation Dashboard",
+  title: "Dakota — Instagram Business Automation Dashboard",
   description: "Automate DMs, comments, and lead qualification for Instagram Professional & Business accounts.",
 };
 

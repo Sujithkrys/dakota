@@ -1,23 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
   /* ElevenLabs Quietly Editorial Print Magazine Design System */
   
   /* Canvas & Surface */
-  --bg-dark: #f5f5f5; /* Canvas: Off-white page floor */
+  --bg-dark: #F7F8F6; /* Canvas: Off-white page floor */
   --bg-card: #ffffff; /* Surface Card: Pure white card */
   --bg-soft: #fafafa; /* Canvas Soft: Lighter band for sidebars & subtle cards */
-  --bg-deep: #0c0a09; /* Canvas Deep: Warm near-black */
-  --surface-strong: #f0efed; /* Badges & icon plates */
+  --bg-deep: var(--text-main); /* Canvas Deep: Warm near-black */
+  --surface-strong: var(--bg-soft); /* Badges & icon plates */
 
   /* Hairlines & Dividers */
   --border-card: #e7e5e4; /* Hairline default 1px */
-  --border-soft: #f0efed; /* Hairline soft */
+  --border-soft: var(--bg-soft); /* Hairline soft */
   --border-strong: #d6d3d1; /* Hairline strong */
+  --border-hairline: 0.5px solid rgba(0,0,0,0.08);
 
   /* Ink & Typography Colors */
-  --text-main: #0c0a09; /* Ink: Display, primary header text */
-  --text-muted: #777169; /* Muted: Sub-titles */
+  --text-main: #16181C; /* Ink: Display, primary header text */
+  --text-muted: #6B6F76; /* Muted: Sub-titles */
   --text-body: #4e4e4e; /* Body: Default running text */
   --text-body-strong: #292524; /* Body strong */
   --text-on-dark: #ffffff; /* Text on dark ink background */
@@ -26,7 +27,11 @@
   --accent-coral: #292524; /* Ink Primary: Warm near-black CTA pill */
   --accent-amber: #f4c5a8; /* Peach token */
   --accent-cyan: #2563eb; /* Link accent */
-  --coral-gradient: linear-gradient(135deg, #292524 0%, #0c0a09 100%);
+  --accent-verdant: #0E9F6E;
+  --accent-gold: #E8A93B;
+  --accent-danger: var(--accent-danger);
+  --accent-warning: #D97706;
+  --coral-gradient: linear-gradient(135deg, #292524 0%, var(--text-main) 100%);
   --coral-gradient-subtle: rgba(41, 37, 36, 0.05);
 
   /* Atmospheric Gradient Orbs (signature decorative tokens) */
@@ -38,8 +43,11 @@
 
   /* Font Families */
   --font-serif: 'EB Garamond', Georgia, serif; /* Display serif weight 300 */
+  --font-display: 'Poppins', sans-serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'SFMono-Regular', Consolas, monospace;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+  --radius-button: 11px;
+  --radius-card: 19px;
 }
 
 /* Strict Window Scroll Lock for Split Layouts */
@@ -66,10 +74,10 @@ a {
   text-decoration: none;
 }
 
-/* Editorial Display Headings: Waldenburg Light / EB Garamond 300 */
+/* Editorial Display Headings: Poppins 600 */
 h1, h2, h3, h4, h5, h6, .editorial-heading {
-  font-family: var(--font-serif);
-  font-weight: 300;
+  font-family: var(--font-display);
+  font-weight: 600;
   color: var(--text-main);
   margin: 0;
   letter-spacing: -0.02em;
@@ -78,8 +86,8 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 /* Clean Editorial Card Component */
 .glass-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-card);
-  border-radius: 16px; /* {rounded.xl} */
+  border: var(--border-hairline);
+  border-radius: var(--radius-card); /* {rounded.xl} */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
   transition: all 0.25s ease;
   position: relative;
@@ -109,12 +117,12 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 }
 
 .btn-ig-connect:hover {
-  background: #0c0a09;
+  background: var(--text-main);
   transform: translateY(-1px);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #0c0a09 0%, #4e4e4e 100%);
+  background: linear-gradient(135deg, var(--text-main) 0%, #4e4e4e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -156,7 +164,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
   height: 56px;
   min-height: 56px;
   padding: 0 20px;
-  border-bottom: 1px solid var(--border-card);
+  border-bottom: var(--border-hairline);
   background: #ffffff;
   display: flex;
   align-items: center;
@@ -215,7 +223,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
   width: 420px;
   min-width: 420px;
   max-width: 420px;
-  border-left: 1px solid var(--border-card);
+  border-left: var(--border-hairline);
   background: #ffffff;
   padding: 20px 16px;
   overflow-y: auto;
@@ -231,7 +239,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
   max-width: 100%;
   height: 580px;
   border-radius: 40px;
-  border: 7px solid #0c0a09;
+  border: 7px solid var(--text-main);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
   background: #ffffff;
   display: flex;
@@ -244,7 +252,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 .builder-phone-notch {
   width: 100px;
   height: 20px;
-  background: #0c0a09;
+  background: var(--text-main);
   border-radius: 0 0 12px 12px;
   margin: 0 auto;
   z-index: 20;
@@ -254,8 +262,8 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 /* Step cards */
 .builder-step-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-card);
-  border-radius: 14px;
+  border: var(--border-hairline);
+  border-radius: var(--radius-card);
   padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
@@ -264,7 +272,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 .builder-post-thumb {
   height: 90px;
   border-radius: 8px;
-  background: #0c0a09;
+  background: var(--text-main);
   position: relative;
   cursor: pointer;
   overflow: hidden;
@@ -278,7 +286,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 }
 
 .builder-post-thumb.selected {
-  border: 2.5px solid #16a34a;
+  border: 2.5px solid var(--accent-verdant);
   transform: scale(1.02);
   box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
 }
@@ -288,7 +296,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
   padding: 7px 16px;
   border-radius: 9999px;
   background: #ffffff;
-  border: 1px solid var(--border-card);
+  border: var(--border-hairline);
   color: var(--text-main);
   font-weight: 500;
   font-size: 0.82rem;
@@ -302,7 +310,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 .builder-btn-primary {
   padding: 8px 18px;
   border-radius: 9999px;
-  background: #0c0a09;
+  background: var(--text-main);
   border: none;
   color: #ffffff;
   font-weight: 500;
@@ -322,14 +330,14 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 /* Toggle option cards */
 .builder-option-card {
   padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border-card);
+  border-radius: var(--radius-button);
+  border: var(--border-hairline);
   background: var(--bg-soft);
   transition: border-color 0.15s ease;
 }
 
 .builder-option-card.active {
-  border-color: #0c0a09;
+  border-color: var(--text-main);
 }
 
 /* Overlay Modal */
@@ -346,8 +354,8 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 
 .builder-modal-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-card);
-  border-radius: 16px;
+  border: var(--border-hairline);
+  border-radius: var(--radius-card);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
   max-width: 440px;
   width: 100%;
@@ -362,7 +370,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
   background: #ffffff;
   border-radius: 9999px;
   padding: 3px;
-  border: 1px solid var(--border-card);
+  border: var(--border-hairline);
 }
 
 .builder-tab {
@@ -378,7 +386,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 }
 
 .builder-tab.active {
-  background: #0c0a09;
+  background: var(--text-main);
   color: #ffffff;
 }
 
@@ -470,7 +478,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
     width: 36px;
     height: 36px;
     border-radius: 8px;
-    border: 1px solid var(--border-card);
+    border: var(--border-hairline);
     background: #ffffff;
     cursor: pointer;
     flex-shrink: 0;
@@ -494,7 +502,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
     min-width: 100%;
     max-width: 100%;
     border-left: none;
-    border-top: 1px solid var(--border-card);
+    border-top: var(--border-hairline);
     overflow-y: visible;
     flex-shrink: 0;
   }
@@ -561,7 +569,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 
   .builder-modal-card {
     padding: 20px 16px;
-    border-radius: 14px;
+    border-radius: var(--radius-card);
   }
 
   /* Show preview toggle on mobile */
@@ -574,7 +582,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
     margin: 0 12px;
     border-radius: 9999px;
     background: var(--bg-soft);
-    border: 1px solid var(--border-card);
+    border: var(--border-hairline);
     color: var(--text-main);
     font-size: 0.78rem;
     font-weight: 500;

@@ -113,7 +113,7 @@ export default function IceBreakersPage() {
           <button
             onClick={() => setIsCreating(!isCreating)}
             className="btn-ig-connect"
-            style={{ borderRadius: "10px", padding: "10px 20px", fontSize: "0.9rem" }}
+            style={{ borderRadius: "var(--radius-button)", padding: "10px 20px", fontSize: "0.9rem" }}
           >
             <Plus size={18} />
             {isCreating ? "Cancel" : "Add Ice Breaker"}
@@ -151,9 +151,9 @@ export default function IceBreakersPage() {
                     style={{
                       width: "100%",
                       padding: "12px 16px",
-                      borderRadius: "10px",
+                      borderRadius: "var(--radius-button)",
                       background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid var(--border-card)",
+                      border: "var(--border-hairline)",
                       color: "#fff",
                       fontSize: "0.95rem",
                       outline: "none",
@@ -173,9 +173,9 @@ export default function IceBreakersPage() {
                     style={{
                       width: "100%",
                       padding: "12px 16px",
-                      borderRadius: "10px",
+                      borderRadius: "var(--radius-button)",
                       background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid var(--border-card)",
+                      border: "var(--border-hairline)",
                       color: "#fff",
                       fontFamily: "var(--font-mono)",
                       fontSize: "0.95rem",
@@ -198,9 +198,9 @@ export default function IceBreakersPage() {
                   style={{
                     width: "100%",
                     padding: "12px 16px",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-button)",
                     background: "rgba(255, 255, 255, 0.04)",
-                    border: "1px solid var(--border-card)",
+                    border: "var(--border-hairline)",
                     color: "#fff",
                     fontSize: "0.95rem",
                     outline: "none",
@@ -215,9 +215,9 @@ export default function IceBreakersPage() {
                   onClick={() => setIsCreating(false)}
                   style={{
                     padding: "10px 20px",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-button)",
                     background: "transparent",
-                    border: "1px solid var(--border-card)",
+                    border: "var(--border-hairline)",
                     color: "var(--text-muted)",
                     cursor: "pointer",
                   }}
@@ -229,7 +229,7 @@ export default function IceBreakersPage() {
                   disabled={submitting}
                   style={{
                     padding: "10px 24px",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-button)",
                     background: "var(--coral-gradient)",
                     border: "none",
                     color: "#fff",
@@ -300,9 +300,9 @@ export default function IceBreakersPage() {
                   <div
                     style={{
                       padding: "12px 16px",
-                      borderRadius: "10px",
+                      borderRadius: "var(--radius-button)",
                       background: "rgba(255, 255, 255, 0.02)",
-                      border: "1px solid var(--border-card)",
+                      border: "var(--border-hairline)",
                       fontSize: "0.9rem",
                       color: "#e5e7eb",
                       display: "flex",

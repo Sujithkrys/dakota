@@ -14,6 +14,7 @@ import {
   Mail,
   Zap,
 } from "lucide-react";
+import { getStatusColor } from "@/lib/status-colors";
 
 interface ActionCardItem {
   id: string;
@@ -203,7 +204,7 @@ export default function DashboardHomePage() {
                     style={{
                       width: "100%",
                       height: "140px",
-                      borderRadius: "14px",
+                      borderRadius: "var(--radius-card)",
                       background: "linear-gradient(135deg, #e7e5e4 0%, #d6d3d1 100%)",
                       display: "flex",
                       alignItems: "center",
@@ -216,7 +217,7 @@ export default function DashboardHomePage() {
                     {card.thumbnail_url ? (
                       <img src={card.thumbnail_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
-                      <Instagram size={36} color="#777169" />
+                      <Instagram size={36} color="var(--text-muted)" />
                     )}
                   </div>
 
@@ -233,7 +234,7 @@ export default function DashboardHomePage() {
                           width: "100%",
                           padding: "8px 12px",
                           borderRadius: "9999px",
-                          background: "#0c0a09",
+                          background: "var(--text-main)",
                           color: "#ffffff",
                           fontSize: "0.78rem",
                           fontWeight: "500",
@@ -253,7 +254,7 @@ export default function DashboardHomePage() {
                           padding: "8px 12px",
                           borderRadius: "9999px",
                           background: "rgba(12, 10, 9, 0.05)",
-                          border: "1px solid var(--border-card)",
+                          border: "var(--border-hairline)",
                           color: "var(--text-main)",
                           fontSize: "0.78rem",
                           fontWeight: "500",
@@ -346,7 +347,7 @@ export default function DashboardHomePage() {
           <div className="glass-card" style={{ overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.88rem" }}>
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--border-card)", color: "var(--text-muted)", fontSize: "0.75rem", fontWeight: "600" }}>
+                <tr style={{ borderBottom: "var(--border-hairline)", color: "var(--text-muted)", fontSize: "0.75rem", fontWeight: "600" }}>
                   <th style={{ padding: "16px 24px" }}>AUTOMATION NAME</th>
                   <th style={{ padding: "16px 24px" }}>KEYWORD</th>
                   <th style={{ padding: "16px 24px" }}>DMS SENT</th>
@@ -362,7 +363,7 @@ export default function DashboardHomePage() {
                   <tr><td colSpan={6} style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>No active automations yet — create your first automation to get started!</td></tr>
                 ) : (
                   automations.slice(0, 5).map((rule) => (
-                    <tr key={rule.id} style={{ borderBottom: "1px solid var(--border-card)" }}>
+                    <tr key={rule.id} style={{ borderBottom: "var(--border-hairline)" }}>
                       <td style={{ padding: "16px 24px" }}>
                         <div style={{ fontWeight: "600", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "8px" }}>
                           {rule.name}
@@ -380,9 +381,9 @@ export default function DashboardHomePage() {
                       </td>
                       <td style={{ padding: "16px 24px", fontWeight: "600" }}>{rule.dms_sent}</td>
                       <td style={{ padding: "16px 24px", fontWeight: "600" }}>{rule.clicks}</td>
-                      <td style={{ padding: "16px 24px", fontWeight: "600", color: "#16a34a" }}>{rule.ctr}</td>
+                      <td style={{ padding: "16px 24px", fontWeight: "600", color: "var(--accent-verdant)" }}>{rule.ctr}</td>
                       <td style={{ padding: "16px 24px" }}>
-                        <span style={{ padding: "4px 10px", borderRadius: "9999px", fontSize: "0.75rem", fontWeight: "600", background: rule.is_active ? "rgba(22, 163, 74, 0.1)" : "rgba(245, 158, 11, 0.1)", color: rule.is_active ? "#16a34a" : "#d97706" }}>
+                        <span style={{ padding: "4px 10px", borderRadius: "9999px", fontSize: "0.75rem", fontWeight: "600", border: "var(--border-hairline)", background: "var(--bg-soft)", color: getStatusColor(rule.is_active ? 'active' : 'inactive') }}>
                           {rule.is_active ? "Live" : "Paused"}
                         </span>
                       </td>

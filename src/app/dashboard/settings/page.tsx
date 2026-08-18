@@ -87,7 +87,7 @@ export default function SettingsPage() {
           <div
             style={{
               padding: "14px 20px",
-              borderRadius: "12px",
+              borderRadius: "var(--radius-button)",
               background: "rgba(16, 185, 129, 0.15)",
               border: "1px solid rgba(16, 185, 129, 0.3)",
               color: "#34d399",
@@ -134,7 +134,7 @@ export default function SettingsPage() {
               </div>
 
               <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "16px", lineHeight: 1.5 }}>
-                DMflow uses Groq&apos;s lightning-fast <code>llama-3.1-8b-instant</code> model for instant DM replies under 500ms.
+                Dakota uses Groq&apos;s lightning-fast <code>llama-3.1-8b-instant</code> model for instant DM replies under 500ms.
               </p>
 
               <div style={{ position: "relative" }}>
@@ -146,9 +146,9 @@ export default function SettingsPage() {
                   style={{
                     width: "100%",
                     padding: "12px 48px 12px 16px",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-button)",
                     background: "rgba(255, 255, 255, 0.04)",
-                    border: "1px solid var(--border-card)",
+                    border: "var(--border-hairline)",
                     color: "#fff",
                     fontFamily: "var(--font-mono)",
                     fontSize: "0.95rem",
@@ -187,15 +187,15 @@ export default function SettingsPage() {
 
               <textarea
                 rows={5}
-                placeholder="e.g. We are DMflow — a premium Instagram automation platform. Be friendly, energetic, and helpful. Mention our free 14-day trial link (https://dmflow.app/trial) and answer pricing questions ($29/mo)."
+                placeholder="e.g. We are Dakota — a premium Instagram automation platform. Be friendly, energetic, and helpful. Mention our free 14-day trial link (https://dakota.app/trial) and answer pricing questions ($29/mo)."
                 value={aiContext}
                 onChange={(e) => setAiContext(e.target.value)}
                 style={{
                   width: "100%",
                   padding: "14px 16px",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-button)",
                   background: "rgba(255, 255, 255, 0.04)",
-                  border: "1px solid var(--border-card)",
+                  border: "var(--border-hairline)",
                   color: "#fff",
                   fontSize: "0.95rem",
                   lineHeight: 1.6,
@@ -211,7 +211,7 @@ export default function SettingsPage() {
                 type="submit"
                 disabled={saving}
                 className="btn-ig-connect"
-                style={{ borderRadius: "10px", padding: "12px 28px", fontSize: "0.95rem" }}
+                style={{ borderRadius: "var(--radius-button)", padding: "12px 28px", fontSize: "0.95rem" }}
               >
                 <Save size={18} />
                 {saving ? "Saving Settings..." : "Save Settings"}

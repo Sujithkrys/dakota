@@ -141,7 +141,7 @@ export default function ContactsPage() {
               padding: "12px 16px 12px 42px",
               borderRadius: "9999px",
               background: "#ffffff",
-              border: "1px solid var(--border-card)",
+              border: "var(--border-hairline)",
               color: "var(--text-main)",
               fontSize: "0.88rem",
               outline: "none",
@@ -153,7 +153,7 @@ export default function ContactsPage() {
         <div className="glass-card" style={{ overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.88rem" }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid var(--border-card)", color: "var(--text-muted)", fontSize: "0.75rem", fontWeight: "600" }}>
+              <tr style={{ borderBottom: "var(--border-hairline)", color: "var(--text-muted)", fontSize: "0.75rem", fontWeight: "600" }}>
                 <th style={{ padding: "16px 24px" }}>FOLLOWER</th>
                 <th style={{ padding: "16px 24px" }}>EMAIL</th>
                 <th style={{ padding: "16px 24px" }}>DMS EXCHANGED</th>
@@ -168,10 +168,10 @@ export default function ContactsPage() {
                 <tr><td colSpan={5} style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>No contacts found.</td></tr>
               ) : (
                 filteredContacts.map((c) => (
-                  <tr key={c.id} style={{ borderBottom: "1px solid var(--border-card)" }}>
+                  <tr key={c.id} style={{ borderBottom: "var(--border-hairline)" }}>
                     <td style={{ padding: "16px 24px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "0.8rem" }}>
+                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "0.8rem" }}>
                           {c.username.charAt(0).toUpperCase()}
                         </div>
                         <span style={{ fontWeight: "600", color: "var(--text-main)" }}>@{c.username}</span>
@@ -184,7 +184,7 @@ export default function ContactsPage() {
                       </div>
                     </td>
                     <td style={{ padding: "16px 24px", color: "var(--text-muted)" }}>{c.firstContact}</td>
-                    <td style={{ padding: "16px 24px", color: "#16a34a", fontWeight: "600" }}>{c.lastActive}</td>
+                    <td style={{ padding: "16px 24px", color: "var(--accent-verdant)", fontWeight: "600" }}>{c.lastActive}</td>
                   </tr>
                 ))
               )}

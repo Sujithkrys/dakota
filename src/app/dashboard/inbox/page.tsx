@@ -145,14 +145,14 @@ export default function InboxPage() {
         <div
           style={{
             width: "360px",
-            borderRight: "1px solid var(--border-card)",
+            borderRight: "var(--border-hairline)",
             background: "rgba(14, 16, 25, 0.7)",
             display: "flex",
             flexDirection: "column",
           }}
         >
           {/* Header & Search */}
-          <div style={{ padding: "20px", borderBottom: "1px solid var(--border-card)" }}>
+          <div style={{ padding: "20px", borderBottom: "var(--border-hairline)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", marginBottom: "16px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <div
@@ -182,9 +182,9 @@ export default function InboxPage() {
                 style={{
                   width: "100%",
                   padding: "10px 14px 10px 38px",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-button)",
                   background: "rgba(255, 255, 255, 0.04)",
-                  border: "1px solid var(--border-card)",
+                  border: "var(--border-hairline)",
                   color: "#fff",
                   fontSize: "0.88rem",
                   outline: "none",
@@ -212,7 +212,7 @@ export default function InboxPage() {
                     onClick={() => setActiveConv(conv)}
                     style={{
                       padding: "16px 20px",
-                      borderBottom: "1px solid var(--border-card)",
+                      borderBottom: "var(--border-hairline)",
                       cursor: "pointer",
                       background: isActive ? "var(--coral-gradient-subtle)" : "transparent",
                       borderLeft: isActive ? "3px solid var(--accent-coral)" : "3px solid transparent",
@@ -254,7 +254,7 @@ export default function InboxPage() {
               <div
                 style={{
                   padding: "16px 24px",
-                  borderBottom: "1px solid var(--border-card)",
+                  borderBottom: "var(--border-hairline)",
                   background: "rgba(18, 20, 29, 0.8)",
                   display: "flex",
                   alignItems: "center",
@@ -309,7 +309,7 @@ export default function InboxPage() {
                             padding: "12px 18px",
                             borderRadius: isOutgoing ? "16px 16px 2px 16px" : "16px 16px 16px 2px",
                             background: isOutgoing ? "var(--coral-gradient)" : "rgba(255, 255, 255, 0.06)",
-                            border: isOutgoing ? "none" : "1px solid var(--border-card)",
+                            border: isOutgoing ? "none" : "var(--border-hairline)",
                             color: "#ffffff",
                             fontSize: "0.95rem",
                             lineHeight: 1.5,
@@ -333,7 +333,7 @@ export default function InboxPage() {
                 onSubmit={handleSendMessage}
                 style={{
                   padding: "20px 24px",
-                  borderTop: "1px solid var(--border-card)",
+                  borderTop: "var(--border-hairline)",
                   background: "rgba(18, 20, 29, 0.8)",
                   display: "flex",
                   gap: "12px",
@@ -347,9 +347,9 @@ export default function InboxPage() {
                   style={{
                     flex: 1,
                     padding: "14px 20px",
-                    borderRadius: "12px",
+                    borderRadius: "var(--radius-button)",
                     background: "rgba(255, 255, 255, 0.05)",
-                    border: "1px solid var(--border-card)",
+                    border: "var(--border-hairline)",
                     color: "#fff",
                     fontSize: "0.95rem",
                     outline: "none",
@@ -360,7 +360,7 @@ export default function InboxPage() {
                   disabled={sending || !replyText.trim()}
                   className="btn-ig-connect"
                   style={{
-                    borderRadius: "12px",
+                    borderRadius: "var(--radius-button)",
                     padding: "14px 24px",
                     fontSize: "0.95rem",
                     opacity: sending || !replyText.trim() ? 0.6 : 1,

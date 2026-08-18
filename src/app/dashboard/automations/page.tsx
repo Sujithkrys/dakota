@@ -18,6 +18,7 @@ import {
   Copy,
   MoreVertical,
 } from "lucide-react";
+import { getStatusColor } from "@/lib/status-colors";
 
 interface AutomationRule {
   id: string;
@@ -213,8 +214,9 @@ export default function AutomationsPage() {
                           fontWeight: "600",
                           padding: "2px 10px",
                           borderRadius: "9999px",
-                          background: rule.is_active ? "rgba(22, 163, 74, 0.1)" : "rgba(245, 158, 11, 0.1)",
-                          color: rule.is_active ? "#16a34a" : "#d97706",
+                          border: "var(--border-hairline)",
+                          background: "var(--bg-soft)",
+                          color: getStatusColor(rule.is_active ? 'active' : 'inactive'),
                           display: "inline-flex",
                           alignItems: "center",
                           gap: "4px",
@@ -251,9 +253,9 @@ export default function AutomationsPage() {
                     <div
                       style={{
                         padding: "10px 14px",
-                        borderRadius: "10px",
+                        borderRadius: "var(--radius-button)",
                         background: "var(--bg-soft)",
-                        border: "1px solid var(--border-card)",
+                        border: "var(--border-hairline)",
                         fontSize: "0.88rem",
                         color: "var(--text-body)",
                       }}
@@ -269,7 +271,7 @@ export default function AutomationsPage() {
                       style={{
                         padding: "8px 16px",
                         borderRadius: "9999px",
-                        border: "1px solid var(--border-card)",
+                        border: "var(--border-hairline)",
                         background: "#ffffff",
                         color: "var(--text-main)",
                         fontSize: "0.82rem",
@@ -325,7 +327,7 @@ export default function AutomationsPage() {
                           </button>
                           <button
                             onClick={() => handleDeleteAutomation(rule.id)}
-                            style={{ padding: "8px 12px", borderRadius: "6px", background: "rgba(220, 38, 38, 0.1)", border: "none", color: "#dc2626", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+                            style={{ padding: "8px 12px", borderRadius: "6px", background: "rgba(220, 38, 38, 0.1)", border: "none", color: "var(--accent-danger)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
                           >
                             <Trash2 size={14} /> Delete
                           </button>

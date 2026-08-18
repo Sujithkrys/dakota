@@ -115,8 +115,8 @@ export default function TemplatesPage() {
                 style={{
                   padding: "8px 18px",
                   borderRadius: "9999px",
-                  border: isActive ? "none" : "1px solid var(--border-card)",
-                  background: isActive ? "#0c0a09" : "#ffffff",
+                  border: isActive ? "none" : "var(--border-hairline)",
+                  background: isActive ? "var(--text-main)" : "#ffffff",
                   color: isActive ? "#ffffff" : "var(--text-body)",
                   fontSize: "0.85rem",
                   fontWeight: "500",
@@ -170,22 +170,22 @@ export default function TemplatesPage() {
                 <div
                   style={{
                     padding: "14px",
-                    borderRadius: "14px",
+                    borderRadius: "var(--radius-card)",
                     background: "#ffffff",
-                    border: "1px solid var(--border-card)",
+                    border: "var(--border-hairline)",
                     marginBottom: "20px",
                     display: "flex",
                     flexDirection: "column",
                     gap: "10px",
                   }}
                 >
-                  <div style={{ alignSelf: "flex-start", background: "#f0efed", padding: "8px 12px", borderRadius: "14px", fontSize: "0.78rem", color: "var(--text-main)" }}>
+                  <div style={{ alignSelf: "flex-start", background: "var(--bg-soft)", padding: "8px 12px", borderRadius: "var(--radius-card)", fontSize: "0.78rem", color: "var(--text-main)" }}>
                     &quot;{tpl.incomingText}&quot;
                   </div>
                   <div
                     style={{
                       alignSelf: "flex-end",
-                      background: "#0c0a09",
+                      background: "var(--text-main)",
                       padding: "10px 14px",
                       borderRadius: "14px 14px 2px 14px",
                       fontSize: "0.78rem",
@@ -207,7 +207,7 @@ export default function TemplatesPage() {
                   width: "100%",
                   padding: "10px",
                   borderRadius: "9999px",
-                  background: "#0c0a09",
+                  background: "var(--text-main)",
                   color: "#ffffff",
                   fontSize: "0.88rem",
                   fontWeight: "500",

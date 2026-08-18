@@ -54,7 +54,7 @@ export default function AnalyticsOverviewPage() {
                 padding: "8px 18px",
                 borderRadius: "9999px",
                 background: "#ffffff",
-                border: "1px solid var(--border-card)",
+                border: "var(--border-hairline)",
                 color: "var(--text-main)",
                 fontSize: "0.85rem",
                 fontWeight: "500",
@@ -114,7 +114,7 @@ export default function AnalyticsOverviewPage() {
         </div>
 
         {/* Tab Row */}
-        <div style={{ display: "flex", gap: "24px", borderBottom: "1px solid var(--border-card)", marginBottom: "36px" }}>
+        <div style={{ display: "flex", gap: "24px", borderBottom: "var(--border-hairline)", marginBottom: "36px" }}>
           {["Performance", "Activity Log", "Account Performance"].map((tab) => {
             const isActive = activeTab === tab;
             return (
@@ -125,7 +125,7 @@ export default function AnalyticsOverviewPage() {
                   padding: "12px 4px",
                   background: "transparent",
                   border: "none",
-                  borderBottom: isActive ? "2px solid #0c0a09" : "2px solid transparent",
+                  borderBottom: isActive ? "2px solid var(--text-main)" : "2px solid transparent",
                   color: isActive ? "var(--text-main)" : "var(--text-muted)",
                   fontWeight: isActive ? "600" : "400",
                   fontSize: "0.95rem",
@@ -190,14 +190,14 @@ export default function AnalyticsOverviewPage() {
                   key={row.id}
                   style={{
                     padding: "20px 24px",
-                    borderBottom: "1px solid var(--border-card)",
+                    borderBottom: "var(--border-hairline)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                    <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#f0efed" }} />
+                    <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "var(--bg-soft)" }} />
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <span style={{ fontWeight: "600", fontSize: "0.95rem" }}>{row.name}</span>
@@ -210,7 +210,7 @@ export default function AnalyticsOverviewPage() {
                   </div>
 
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: "1.2rem", fontWeight: "600", color: "#16a34a" }}>{row.ctr}</div>
+                    <div style={{ fontSize: "1.2rem", fontWeight: "600", color: "var(--accent-verdant)" }}>{row.ctr}</div>
                     <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: "600" }}>CTR</div>
                   </div>
                 </div>

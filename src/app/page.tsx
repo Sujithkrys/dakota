@@ -71,7 +71,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
             style={{
               width: "38px",
               height: "38px",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-button)",
               background: "var(--ig-gradient)",
               display: "flex",
               alignItems: "center",
@@ -82,7 +82,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
             <Bot size={22} color="#ffffff" />
           </div>
           <span style={{ fontSize: "1.4rem", fontWeight: "800", letterSpacing: "-0.5px" }}>
-            DM<span className="gradient-text">flow</span>
+            Dakota
           </span>
         </div>
 
@@ -94,7 +94,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               fontWeight: "600",
               padding: "8px 18px",
               borderRadius: "9999px",
-              border: "1px solid var(--border-card)",
+              border: "var(--border-hairline)",
               background: "rgba(255, 255, 255, 0.04)",
               backdropFilter: "blur(10px)",
               display: "flex",
@@ -119,7 +119,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               maxWidth: "700px",
               margin: "0 auto 32px",
               padding: "14px 20px",
-              borderRadius: "12px",
+              borderRadius: "var(--radius-button)",
               background: "rgba(239, 68, 68, 0.12)",
               border: "1px solid rgba(239, 68, 68, 0.3)",
               display: "flex",
@@ -179,7 +179,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               marginInline: "auto",
             }}
           >
-            DMflow connects directly to your Instagram Professional account using Meta&apos;s Business API.
+            Dakota connects directly to your Instagram Professional account using Meta&apos;s Business API.
             Instantly reply to comments, send automated DMs, and convert story replies effortlessly.
           </p>
 
@@ -221,7 +221,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               style={{
                 width: "48px",
                 height: "48px",
-                borderRadius: "12px",
+                borderRadius: "var(--radius-button)",
                 background: "rgba(131, 58, 180, 0.15)",
                 display: "flex",
                 alignItems: "center",
@@ -245,7 +245,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               style={{
                 width: "48px",
                 height: "48px",
-                borderRadius: "12px",
+                borderRadius: "var(--radius-button)",
                 background: "rgba(253, 29, 29, 0.15)",
                 display: "flex",
                 alignItems: "center",
@@ -269,7 +269,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               style={{
                 width: "48px",
                 height: "48px",
-                borderRadius: "12px",
+                borderRadius: "var(--radius-button)",
                 background: "rgba(252, 176, 69, 0.15)",
                 display: "flex",
                 alignItems: "center",
@@ -284,7 +284,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               Analytics & Conversion Tracking
             </h3>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", lineHeight: 1.6 }}>
-              Monitor DM open rates, link clicks, and campaign performance directly inside your DMflow dashboard.
+              Monitor DM open rates, link clicks, and campaign performance directly inside your Dakota dashboard.
             </p>
           </div>
 
@@ -300,17 +300,17 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
             Powered by Instagram API with Instagram Login
           </h2>
           <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", maxWidth: "650px", margin: "0 auto 24px", lineHeight: 1.6 }}>
-            DMflow uses Meta&apos;s native Business Login standard. Your credentials remain safe with Meta, and you can revoke permissions anytime in your Instagram account settings.
+            Dakota uses Meta&apos;s native Business Login standard. Your credentials remain safe with Meta, and you can revoke permissions anytime in your Instagram account settings.
           </p>
 
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" }}>
-            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "1px solid var(--border-card)" }}>
+            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
               instagram_business_basic
             </span>
-            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "1px solid var(--border-card)" }}>
+            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
               instagram_business_manage_messages
             </span>
-            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "1px solid var(--border-card)" }}>
+            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
               instagram_business_manage_comments
             </span>
           </div>
@@ -319,8 +319,8 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
       </main>
 
       {/* Footer */}
-      <footer style={{ borderTop: "1px solid var(--border-card)", padding: "32px 24px", textAlign: "center", color: "var(--text-subtle)", fontSize: "0.9rem" }}>
-        <p>© 2026 DMflow — Instagram Automation Platform. All rights reserved.</p>
+      <footer style={{ borderTop: "var(--border-hairline)", padding: "32px 24px", textAlign: "center", color: "var(--text-subtle)", fontSize: "0.9rem" }}>
+        <p>© 2026 Dakota — Instagram Automation Platform. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -56,7 +56,7 @@ function BuilderContent() {
   const [enableFollowGate, setEnableFollowGate] = useState<boolean>(false);
   const [enableEmailCapture, setEnableEmailCapture] = useState<boolean>(false);
   const [ruleName, setRuleName] = useState<string>("Comment → Instant Link DM");
-  const [messageText, setMessageText] = useState<string>("Hey there! 🚀 Here is the instant access link you requested: https://dmflow.app/access");
+  const [messageText, setMessageText] = useState<string>("Hey there! 🚀 Here is the instant access link you requested: https://dakota.app/access");
   const [links, setLinks] = useState<{ title: string; url: string }[]>([]);
   const [advancedOpen, setAdvancedOpen] = useState<boolean>(false);
   const [templateModalOpen, setTemplateModalOpen] = useState<boolean>(false);
@@ -92,12 +92,12 @@ function BuilderContent() {
         setRuleName("Reel Comment Checkout Link");
         setKeywordInput("link, shop");
         setMessageText("Hey! 🚀 Here is the instant access checkout link with 15% OFF applied:");
-        setLinks([{ title: "Get Access Now", url: "https://dmflow.app/checkout" }]);
+        setLinks([{ title: "Get Access Now", url: "https://dakota.app/checkout" }]);
       } else if (templateId === "tpl_2") {
         setRuleName("Lead Magnet PDF Delivery");
         setKeywordInput("guide, pdf");
         setMessageText("Thanks for checking out our guide! 🎁 Tap below to download your free PDF:");
-        setLinks([{ title: "Download Free Guide", url: "https://dmflow.app/pdf" }]);
+        setLinks([{ title: "Download Free Guide", url: "https://dakota.app/pdf" }]);
       }
     }
     if (editId) {
@@ -183,7 +183,7 @@ function BuilderContent() {
       </header>
 
       {deploySuccess && (
-        <div style={{ padding: "10px 20px", background: "#16a34a", color: "#fff", textAlign: "center", fontWeight: "600", fontSize: "0.85rem", flexShrink: 0 }}>
+        <div style={{ padding: "10px 20px", background: "var(--accent-verdant)", color: "#fff", textAlign: "center", fontWeight: "600", fontSize: "0.85rem", flexShrink: 0 }}>
           ✅ Automation deployed successfully! Redirecting...
         </div>
       )}
@@ -215,27 +215,27 @@ function BuilderContent() {
 
               {previewTab === "post" ? (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", color: "var(--text-main)", overflowY: "auto" }}>
-                  <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border-card)", flexShrink: 0 }}>
+                  <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "var(--border-hairline)", flexShrink: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <div style={{ width: "26px", height: "26px", borderRadius: "50%", background: "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
+                      <div style={{ width: "26px", height: "26px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
                         {username.charAt(0).toUpperCase()}
                       </div>
                       <span style={{ fontWeight: "600", fontSize: "0.8rem" }}>{username}</span>
                     </div>
                     <span style={{ color: "var(--text-muted)" }}>•••</span>
                   </div>
-                  <div style={{ width: "100%", height: "200px", background: "#f0efed", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, overflow: "hidden" }}>
+                  <div style={{ width: "100%", height: "200px", background: "var(--bg-soft)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, overflow: "hidden" }}>
                     {(selectedMediaObj?.thumbnail_url || selectedMediaObj?.media_url) ? (
                       <img src={selectedMediaObj.thumbnail_url || selectedMediaObj.media_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-                        <ImageIcon size={30} color="#777169" />
-                        <span style={{ fontSize: "0.65rem", color: "#777169" }}>{selectedMediaObj?.media_type === "VIDEO" ? "Reel" : "Post"}</span>
+                        <ImageIcon size={30} color="var(--text-muted)" />
+                        <span style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>{selectedMediaObj?.media_type === "VIDEO" ? "Reel" : "Post"}</span>
                       </div>
                     )}
                   </div>
                   <div style={{ padding: "8px 14px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-                    <div style={{ display: "flex", gap: "12px" }}><Heart size={18} color="#dc2626" fill="#dc2626" /><MessageCircle size={18} /><Send size={18} /></div>
+                    <div style={{ display: "flex", gap: "12px" }}><Heart size={18} color="var(--accent-danger)" fill="var(--accent-danger)" /><MessageCircle size={18} /><Send size={18} /></div>
                     <Bookmark size={18} />
                   </div>
                   <div style={{ padding: "0 14px", fontSize: "0.78rem", lineHeight: 1.4, flexShrink: 0 }}>
@@ -243,8 +243,8 @@ function BuilderContent() {
                     <p style={{ marginBottom: "6px" }}><strong>{username}</strong> {selectedMediaObj?.caption || "Comment below for instant access!"}</p>
                   </div>
                   <div style={{ padding: "0 14px 14px", flexShrink: 0 }}>
-                    <div style={{ padding: "8px 10px", borderRadius: "10px", background: "var(--bg-soft)", border: "1px solid var(--border-card)", display: "flex", gap: "8px" }}>
-                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#777169", flexShrink: 0 }} />
+                    <div style={{ padding: "8px 10px", borderRadius: "var(--radius-button)", background: "var(--bg-soft)", border: "var(--border-hairline)", display: "flex", gap: "8px" }}>
+                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "var(--text-muted)", flexShrink: 0 }} />
                       <div>
                         <div style={{ fontWeight: "600", fontSize: "0.72rem" }}>user_follower</div>
                         <div style={{ fontWeight: "600", fontSize: "0.78rem" }}>&quot;{keywordInput.split(",")[0]?.trim() || "link"}&quot;</div>
@@ -254,24 +254,24 @@ function BuilderContent() {
                 </div>
               ) : (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", color: "var(--text-main)", padding: "14px", overflowY: "auto" }}>
-                  <div style={{ textAlign: "center", marginBottom: "16px", borderBottom: "1px solid var(--border-card)", paddingBottom: "10px", flexShrink: 0 }}>
-                    <div style={{ width: "30px", height: "30px", borderRadius: "50%", background: "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 4px", fontWeight: "700", fontSize: "0.72rem" }}>
+                  <div style={{ textAlign: "center", marginBottom: "16px", borderBottom: "var(--border-hairline)", paddingBottom: "10px", flexShrink: 0 }}>
+                    <div style={{ width: "30px", height: "30px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 4px", fontWeight: "700", fontSize: "0.72rem" }}>
                       {username.charAt(0).toUpperCase()}
                     </div>
                     <div style={{ fontWeight: "600", fontSize: "0.82rem" }}>{username}</div>
                     <div style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>Active now</div>
                   </div>
                   <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "8px", justifyContent: "flex-end" }}>
-                    <div style={{ alignSelf: "flex-start", background: "#f0efed", padding: "8px 12px", borderRadius: "16px", maxWidth: "80%", fontSize: "0.8rem" }}>
+                    <div style={{ alignSelf: "flex-start", background: "var(--bg-soft)", padding: "8px 12px", borderRadius: "var(--radius-card)", maxWidth: "80%", fontSize: "0.8rem" }}>
                       {keywordInput.split(",")[0]?.trim() || "link"}
                     </div>
                     {enableOpeningDM && (
                       <div style={{ alignSelf: "flex-end", display: "flex", flexDirection: "column", gap: "4px", maxWidth: "85%" }}>
-                        <div style={{ background: "#0c0a09", color: "#fff", padding: "10px 14px", borderRadius: "16px 16px 4px 16px", fontSize: "0.8rem", lineHeight: 1.3 }}>{openingDMText}</div>
-                        {openingDMButtonText && <div style={{ alignSelf: "flex-end", padding: "6px 14px", borderRadius: "9999px", background: "#fff", border: "1px solid var(--border-card)", fontSize: "0.72rem", fontWeight: "500", textAlign: "center" }}>{openingDMButtonText}</div>}
+                        <div style={{ background: "var(--text-main)", color: "#fff", padding: "10px 14px", borderRadius: "16px 16px 4px 16px", fontSize: "0.8rem", lineHeight: 1.3 }}>{openingDMText}</div>
+                        {openingDMButtonText && <div style={{ alignSelf: "flex-end", padding: "6px 14px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", fontSize: "0.72rem", fontWeight: "500", textAlign: "center" }}>{openingDMButtonText}</div>}
                       </div>
                     )}
-                    <div style={{ alignSelf: "flex-end", background: "#0c0a09", color: "#fff", padding: "10px 14px", borderRadius: "16px 16px 4px 16px", maxWidth: "85%", fontSize: "0.8rem" }}>
+                    <div style={{ alignSelf: "flex-end", background: "var(--text-main)", color: "#fff", padding: "10px 14px", borderRadius: "16px 16px 4px 16px", maxWidth: "85%", fontSize: "0.8rem" }}>
                       <p style={{ marginBottom: links.length > 0 ? "6px" : "0", lineHeight: 1.3 }}>{messageText}</p>
                       {links.map((lnk, i) => (
                         <div key={i} style={{ padding: "6px 10px", borderRadius: "9999px", background: "#292524", textAlign: "center", fontWeight: "500", fontSize: "0.72rem", marginTop: "4px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
@@ -292,7 +292,7 @@ function BuilderContent() {
           {/* STEP 1: When a user comments on */}
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: selectedMediaId ? "#16a34a" : "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: selectedMediaId ? "var(--accent-verdant)" : "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
                 {selectedMediaId ? <Check size={12} /> : "1"}
               </div>
               <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>When a user comments on</h3>
@@ -301,7 +301,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${postOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: postOption === "specific" ? "10px" : "0" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>A specific post or reel</span>
-                <input type="checkbox" checked={postOption === "specific"} onChange={() => setPostOption(postOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={postOption === "specific"} onChange={() => setPostOption(postOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
               {postOption === "specific" && (
                 <div>
@@ -317,7 +317,7 @@ function BuilderContent() {
                       >
                         {(media.thumbnail_url || media.media_url) && <img src={media.thumbnail_url || media.media_url} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.7 }} />}
                         {media.id === selectedMediaId && (
-                          <div style={{ position: "absolute", top: "4px", right: "4px", width: "18px", height: "18px", borderRadius: "50%", background: "#16a34a", border: "2px solid #fff", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
+                          <div style={{ position: "absolute", top: "4px", right: "4px", width: "18px", height: "18px", borderRadius: "50%", background: "var(--accent-verdant)", border: "2px solid #fff", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
                             <Check size={10} color="#fff" strokeWidth={3} />
                           </div>
                         )}
@@ -345,7 +345,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${postOption === "next" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Next post or reel</span>
-                <input type="checkbox" checked={postOption === "next"} onChange={() => setPostOption(postOption === "next" ? "specific" : "next")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={postOption === "next"} onChange={() => setPostOption(postOption === "next" ? "specific" : "next")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
             </div>
 
@@ -354,7 +354,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${postOption === "any" ? "active" : ""}`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Any post or reel</span>
-                <input type="checkbox" checked={postOption === "any"} onChange={() => setPostOption(postOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={postOption === "any"} onChange={() => setPostOption(postOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
             </div>
           </div>
@@ -362,22 +362,22 @@ function BuilderContent() {
           {/* STEP 2: And his/her comment has */}
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>2</div>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>2</div>
               <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>And his/her comment has</h3>
             </div>
 
             <div className={`builder-option-card ${keywordOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: keywordOption === "specific" ? "8px" : "0" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>A specific keyword</span>
-                <input type="checkbox" checked={keywordOption === "specific"} onChange={() => setKeywordOption(keywordOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={keywordOption === "specific"} onChange={() => setKeywordOption(keywordOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
               {keywordOption === "specific" && (
                 <div>
-                  <input type="text" value={keywordInput} onChange={(e) => setKeywordInput(e.target.value)} placeholder="Enter keywords" style={{ width: "100%", padding: "7px 10px", borderRadius: "8px", background: "#fff", border: "1px solid var(--border-card)", color: "var(--text-main)", fontSize: "0.82rem", outline: "none", marginBottom: "6px" }} />
+                  <input type="text" value={keywordInput} onChange={(e) => setKeywordInput(e.target.value)} placeholder="Enter keywords" style={{ width: "100%", padding: "7px 10px", borderRadius: "8px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.82rem", outline: "none", marginBottom: "6px" }} />
                   <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginBottom: "5px" }}>Suggested:</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: "4px" }}>
                     {suggestedChips.map((chip) => (
-                      <button key={chip} type="button" onClick={() => handleAddChip(chip)} style={{ padding: "2px 8px", borderRadius: "9999px", background: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "#0c0a09" : "#fff", color: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "#fff" : "var(--text-main)", border: "1px solid var(--border-card)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", transition: "all 0.15s ease" }}>
+                      <button key={chip} type="button" onClick={() => handleAddChip(chip)} style={{ padding: "2px 8px", borderRadius: "9999px", background: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "var(--text-main)" : "#fff", color: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "#fff" : "var(--text-main)", border: "var(--border-hairline)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", transition: "all 0.15s ease" }}>
                         {chip}
                       </button>
                     ))}
@@ -392,11 +392,11 @@ function BuilderContent() {
             <div className={`builder-option-card ${keywordOption === "any" ? "active" : ""}`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Any word</span>
-                <input type="checkbox" checked={keywordOption === "any"} onChange={() => setKeywordOption(keywordOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={keywordOption === "any"} onChange={() => setKeywordOption(keywordOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "6px" }}>
                 <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Auto-reply publicly:</span>
-                <input type="checkbox" checked={enablePublicReply} onChange={(e) => setEnablePublicReply(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={enablePublicReply} onChange={(e) => setEnablePublicReply(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
             </div>
           </div>
@@ -404,25 +404,25 @@ function BuilderContent() {
           {/* STEP 3: They will optionally get */}
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>3</div>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>3</div>
               <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>They will optionally get</h3>
             </div>
 
             <div className={`builder-option-card ${enableOpeningDM ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: enableOpeningDM ? "10px" : "2px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>an opening DM</span>
-                <input type="checkbox" checked={enableOpeningDM} onChange={(e) => setEnableOpeningDM(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={enableOpeningDM} onChange={(e) => setEnableOpeningDM(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
               <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Send an initial message before the main content</p>
               {enableOpeningDM && (
                 <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
                   <div>
                     <label style={{ fontSize: "0.68rem", color: "var(--text-muted)", display: "block", marginBottom: "3px" }}>Opening Message</label>
-                    <textarea rows={2} value={openingDMText} onChange={(e) => setOpeningDMText(e.target.value)} placeholder="Hey! Thanks for your comment!" style={{ width: "100%", padding: "7px 9px", borderRadius: "8px", background: "#fff", border: "1px solid var(--border-card)", color: "var(--text-main)", fontSize: "0.78rem", lineHeight: 1.3, outline: "none", resize: "vertical" }} />
+                    <textarea rows={2} value={openingDMText} onChange={(e) => setOpeningDMText(e.target.value)} placeholder="Hey! Thanks for your comment!" style={{ width: "100%", padding: "7px 9px", borderRadius: "8px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.78rem", lineHeight: 1.3, outline: "none", resize: "vertical" }} />
                   </div>
                   <div>
                     <label style={{ fontSize: "0.68rem", color: "var(--text-muted)", display: "block", marginBottom: "3px" }}>Button text</label>
-                    <input type="text" value={openingDMButtonText} onChange={(e) => setOpeningDMButtonText(e.target.value)} placeholder="Send me the link" style={{ width: "100%", padding: "7px 9px", borderRadius: "8px", background: "#fff", border: "1px solid var(--border-card)", color: "var(--text-main)", fontSize: "0.78rem", outline: "none" }} />
+                    <input type="text" value={openingDMButtonText} onChange={(e) => setOpeningDMButtonText(e.target.value)} placeholder="Send me the link" style={{ width: "100%", padding: "7px 9px", borderRadius: "8px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.78rem", outline: "none" }} />
                   </div>
                 </div>
               )}
@@ -433,7 +433,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${enableFollowGate ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Follow-gate</span>
-                <input type="checkbox" checked={enableFollowGate} onChange={(e) => setEnableFollowGate(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={enableFollowGate} onChange={(e) => setEnableFollowGate(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
               <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Require follow before receiving the DM</p>
             </div>
@@ -443,7 +443,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${enableEmailCapture ? "active" : ""}`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Email Capture</span>
-                <input type="checkbox" checked={enableEmailCapture} onChange={(e) => setEnableEmailCapture(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#0c0a09" }} />
+                <input type="checkbox" checked={enableEmailCapture} onChange={(e) => setEnableEmailCapture(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
               </div>
               <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Collect email before sending the DM</p>
             </div>
@@ -453,16 +453,16 @@ function BuilderContent() {
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#0c0a09", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>4</div>
+                <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>4</div>
                 <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>And they will get a DM with</h3>
               </div>
-              <button type="button" onClick={() => setTemplateModalOpen(true)} style={{ padding: "3px 10px", borderRadius: "9999px", background: "#fff", border: "1px solid var(--border-card)", color: "var(--text-main)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", display: "flex", alignItems: "center", gap: "3px" }}>
+              <button type="button" onClick={() => setTemplateModalOpen(true)} style={{ padding: "3px 10px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", display: "flex", alignItems: "center", gap: "3px" }}>
                 <LayoutTemplate size={12} /> Template
               </button>
             </div>
 
             <div style={{ position: "relative", marginBottom: "8px" }}>
-              <textarea rows={3} value={messageText} onChange={(e) => setMessageText(e.target.value)} placeholder="Enter your message..." style={{ width: "100%", padding: "9px 10px", borderRadius: "10px", background: "var(--bg-soft)", border: "1px solid var(--border-card)", color: "var(--text-main)", fontSize: "0.82rem", lineHeight: 1.3, outline: "none", resize: "vertical" }} />
+              <textarea rows={3} value={messageText} onChange={(e) => setMessageText(e.target.value)} placeholder="Enter your message..." style={{ width: "100%", padding: "9px 10px", borderRadius: "var(--radius-button)", background: "var(--bg-soft)", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.82rem", lineHeight: 1.3, outline: "none", resize: "vertical" }} />
               <Smile size={16} color="var(--text-muted)" style={{ position: "absolute", right: "10px", bottom: "10px", cursor: "pointer" }} />
             </div>
             <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginBottom: "10px" }}>{messageText.length}/1000 characters</div>
@@ -470,7 +470,7 @@ function BuilderContent() {
             {links.length > 0 && (
               <div style={{ display: "flex", flexDirection: "column", gap: "5px", marginBottom: "10px" }}>
                 {links.map((lnk, i) => (
-                  <div key={i} style={{ padding: "7px 10px", borderRadius: "8px", background: "var(--bg-soft)", border: "1px solid var(--border-card)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div key={i} style={{ padding: "7px 10px", borderRadius: "8px", background: "var(--bg-soft)", border: "var(--border-hairline)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", overflow: "hidden" }}>
                       <Link2 size={12} color="var(--text-muted)" />
                       <div style={{ overflow: "hidden" }}>
@@ -488,7 +488,7 @@ function BuilderContent() {
               <Plus size={14} /> Add Link
             </button>
 
-            <div style={{ borderTop: "1px solid var(--border-card)", paddingTop: "10px" }}>
+            <div style={{ borderTop: "var(--border-hairline)", paddingTop: "10px" }}>
               <button type="button" onClick={() => setAdvancedOpen(!advancedOpen)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", background: "transparent", border: "none", color: "var(--text-main)", fontSize: "0.82rem", fontWeight: "600", cursor: "pointer" }}>
                 <span>Advanced Settings</span>
                 {advancedOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -496,7 +496,7 @@ function BuilderContent() {
               {advancedOpen && (
                 <div style={{ marginTop: "8px", fontSize: "0.75rem", color: "var(--text-muted)" }}>
                   <label style={{ display: "block", marginBottom: "3px" }}>Fallback response:</label>
-                  <input type="text" defaultValue="Thanks for reaching out! We'll reply shortly." style={{ width: "100%", padding: "7px", borderRadius: "8px", border: "1px solid var(--border-card)", background: "var(--bg-soft)", color: "var(--text-main)", fontSize: "0.78rem" }} />
+                  <input type="text" defaultValue="Thanks for reaching out! We'll reply shortly." style={{ width: "100%", padding: "7px", borderRadius: "8px", border: "var(--border-hairline)", background: "var(--bg-soft)", color: "var(--text-main)", fontSize: "0.78rem" }} />
                 </div>
               )}
             </div>
@@ -514,16 +514,16 @@ function BuilderContent() {
               <button onClick={() => setTemplateModalOpen(false)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--text-muted)" }}><X size={18} /></button>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
-              <button onClick={() => { setRuleName("Reel Comment Checkout Link"); setKeywordInput("link, shop"); setMessageText("Hey! 🚀 Here is the instant access checkout link with 15% OFF applied:"); setLinks([{ title: "Get Access Now", url: "https://dmflow.app/checkout" }]); setTemplateModalOpen(false); }} style={{ padding: "12px", borderRadius: "10px", background: "var(--bg-soft)", border: "1px solid var(--border-card)", color: "var(--text-main)", textAlign: "left", cursor: "pointer" }}>
+              <button onClick={() => { setRuleName("Reel Comment Checkout Link"); setKeywordInput("link, shop"); setMessageText("Hey! 🚀 Here is the instant access checkout link with 15% OFF applied:"); setLinks([{ title: "Get Access Now", url: "https://dakota.app/checkout" }]); setTemplateModalOpen(false); }} style={{ padding: "12px", borderRadius: "var(--radius-button)", background: "var(--bg-soft)", border: "var(--border-hairline)", color: "var(--text-main)", textAlign: "left", cursor: "pointer" }}>
                 <strong>Reel Comment → Checkout Link</strong>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>Pre-fills keyword &quot;link&quot; + discount link button</div>
               </button>
-              <button onClick={() => { setRuleName("Lead Magnet PDF Delivery"); setKeywordInput("guide, pdf, ebook"); setMessageText("Thanks for your interest! 🎁 Tap the link below to grab your free guide:"); setLinks([{ title: "Download Free Guide", url: "https://dmflow.app/pdf" }]); setTemplateModalOpen(false); }} style={{ padding: "12px", borderRadius: "10px", background: "var(--bg-soft)", border: "1px solid var(--border-card)", color: "var(--text-main)", textAlign: "left", cursor: "pointer" }}>
+              <button onClick={() => { setRuleName("Lead Magnet PDF Delivery"); setKeywordInput("guide, pdf, ebook"); setMessageText("Thanks for your interest! 🎁 Tap the link below to grab your free guide:"); setLinks([{ title: "Download Free Guide", url: "https://dakota.app/pdf" }]); setTemplateModalOpen(false); }} style={{ padding: "12px", borderRadius: "var(--radius-button)", background: "var(--bg-soft)", border: "var(--border-hairline)", color: "var(--text-main)", textAlign: "left", cursor: "pointer" }}>
                 <strong>Lead Magnet PDF Delivery</strong>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>Keywords &quot;guide&quot;, &quot;pdf&quot; + download button</div>
               </button>
             </div>
-            <button onClick={() => setTemplateModalOpen(false)} style={{ width: "100%", padding: "8px", borderRadius: "9999px", background: "transparent", border: "1px solid var(--border-card)", color: "var(--text-main)", cursor: "pointer", fontWeight: "500" }}>Cancel</button>
+            <button onClick={() => setTemplateModalOpen(false)} style={{ width: "100%", padding: "8px", borderRadius: "9999px", background: "transparent", border: "var(--border-hairline)", color: "var(--text-main)", cursor: "pointer", fontWeight: "500" }}>Cancel</button>
           </div>
         </div>
       )}
@@ -539,13 +539,13 @@ function BuilderContent() {
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
                   <label style={{ fontSize: "0.75rem", fontWeight: "600" }}>Link Title</label>
-                  <span style={{ fontSize: "0.65rem", color: linkTitle.length > 20 ? "#dc2626" : "var(--text-muted)" }}>{linkTitle.length}/20</span>
+                  <span style={{ fontSize: "0.65rem", color: linkTitle.length > 20 ? "var(--accent-danger)" : "var(--text-muted)" }}>{linkTitle.length}/20</span>
                 </div>
-                <input type="text" value={linkTitle} onChange={(e) => setLinkTitle(e.target.value.slice(0, 20))} placeholder="e.g. Get Access Now" style={{ width: "100%", padding: "9px 10px", borderRadius: "8px", background: "var(--bg-soft)", border: "1px solid var(--border-card)", fontSize: "0.85rem", outline: "none" }} />
+                <input type="text" value={linkTitle} onChange={(e) => setLinkTitle(e.target.value.slice(0, 20))} placeholder="e.g. Get Access Now" style={{ width: "100%", padding: "9px 10px", borderRadius: "8px", background: "var(--bg-soft)", border: "var(--border-hairline)", fontSize: "0.85rem", outline: "none" }} />
               </div>
               <div>
                 <label style={{ fontSize: "0.75rem", fontWeight: "600", display: "block", marginBottom: "3px" }}>URL</label>
-                <input type="url" value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://example.com/link" style={{ width: "100%", padding: "9px 10px", borderRadius: "8px", background: "var(--bg-soft)", border: "1px solid var(--border-card)", fontSize: "0.85rem", outline: "none" }} />
+                <input type="url" value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://example.com/link" style={{ width: "100%", padding: "9px 10px", borderRadius: "8px", background: "var(--bg-soft)", border: "var(--border-hairline)", fontSize: "0.85rem", outline: "none" }} />
               </div>
             </div>
             <div style={{ display: "flex", gap: "8px" }}>
