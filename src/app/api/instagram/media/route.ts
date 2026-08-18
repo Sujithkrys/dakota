@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseConfigured } from "@/lib/supabase/admin";
 import { fetchUserInstagramMedia } from "@/lib/instagram";
-import { getSessionUser } from "@/lib/session";
+import { resolveAuthedAccount } from "@/lib/session";
 
 export async function GET(request: NextRequest) {
-  const userId = getSessionUser(request);
-  if (!userId) {
+  const authed = await resolveAuthedAccount(request);
+  if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { accountId: userId } = authed;
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: "Database configuration missing" }, { status: 500 });

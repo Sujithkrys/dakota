@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -18,9 +18,18 @@ import {
   Plus,
   ChevronDown,
   ChevronRight,
+  ChevronUp,
   Bot,
   CheckCircle2,
+  Instagram,
 } from "lucide-react";
+
+interface LinkedAccount {
+  id: string;
+  username: string;
+  profile_pic: string | null;
+  ig_account_id: string;
+}
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -37,6 +46,10 @@ export function DashboardLayout({
   const router = useRouter();
   const [contentOpen, setContentOpen] = useState(true);
   const [analyticsOpen, setAnalyticsOpen] = useState(true);
+  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const [accounts, setAccounts] = useState<LinkedAccount[]>([]);
+  const [activeAccountUsername, setActiveAccountUsername] = useState(username);
+  const accountDropdownRef = useRef<HTMLDivElement>(null);
 
   const [stats, setStats] = useState({
     dms_sent: 0,
@@ -62,8 +75,51 @@ export function DashboardLayout({
     }
   };
 
+  const fetchAccounts = async () => {
+    try {
+      const res = await fetch("/api/account/list");
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.accounts && Array.isArray(data.accounts)) {
+          setAccounts(data.accounts);
+        }
+      }
+    } catch {
+      // Fallback
+    }
+  };
+
+  const handleSwitchAccount = async (accountId: string) => {
+    try {
+      const res = await fetch("/api/account/switch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountId }),
+      });
+      if (res.ok) {
+        setAccountDropdownOpen(false);
+        // Reload to reflect the new active account across all dashboard data
+        window.location.reload();
+      }
+    } catch {
+      // Fallback
+    }
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (accountDropdownRef.current && !accountDropdownRef.current.contains(e.target as Node)) {
+        setAccountDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   useEffect(() => {
     fetchStats();
+    fetchAccounts();
   }, []);
 
   return (
@@ -119,9 +175,10 @@ export function DashboardLayout({
             </Link>
           </div>
 
-          {/* Workspace Switcher */}
-          <div style={{ padding: "0 16px 14px" }}>
-            <div
+          {/* Account Switcher */}
+          <div style={{ padding: "0 16px 14px", position: "relative" }} ref={accountDropdownRef}>
+            <button
+              onClick={() => setAccountDropdownOpen(!accountDropdownOpen)}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -130,6 +187,9 @@ export function DashboardLayout({
                 borderRadius: "10px",
                 background: "#ffffff",
                 border: "1px solid var(--border-card)",
+                width: "100%",
+                cursor: "pointer",
+                textAlign: "left",
               }}
             >
               <div
@@ -146,13 +206,107 @@ export function DashboardLayout({
                   fontWeight: "700",
                 }}
               >
-                {username.charAt(0).toUpperCase()}
+                {activeAccountUsername.charAt(0).toUpperCase()}
               </div>
               <div style={{ flex: 1, overflow: "hidden" }}>
-                <div style={{ fontSize: "0.82rem", fontWeight: "600", color: "var(--text-main)" }}>My Workspace</div>
-                <div style={{ fontSize: "0.7rem", color: "#16a34a", fontWeight: "600" }}>● All Features Unlocked</div>
+                <div style={{ fontSize: "0.82rem", fontWeight: "600", color: "var(--text-main)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>@{activeAccountUsername}</div>
+                <div style={{ fontSize: "0.7rem", color: "#16a34a", fontWeight: "600" }}>● Active Account</div>
               </div>
-            </div>
+              {accountDropdownOpen ? <ChevronUp size={14} color="var(--text-muted)" /> : <ChevronDown size={14} color="var(--text-muted)" />}
+            </button>
+
+            {accountDropdownOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "calc(100% - 6px)",
+                  left: "16px",
+                  right: "16px",
+                  background: "#ffffff",
+                  border: "1px solid var(--border-card)",
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+                  zIndex: 100,
+                  maxHeight: "240px",
+                  overflowY: "auto",
+                }}
+              >
+                {accounts.length > 0 ? (
+                  accounts.map((acct) => (
+                    <button
+                      key={acct.id}
+                      onClick={() => handleSwitchAccount(acct.id)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        padding: "10px 12px",
+                        width: "100%",
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        borderBottom: "1px solid var(--border-card)",
+                      }}
+                    >
+                      {acct.profile_pic ? (
+                        <img
+                          src={acct.profile_pic}
+                          alt={acct.username}
+                          style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover" }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: "24px",
+                            height: "24px",
+                            borderRadius: "50%",
+                            background: "#e5e7eb",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "0.72rem",
+                            fontWeight: "700",
+                            color: "#374151",
+                          }}
+                        >
+                          {acct.username.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div style={{ flex: 1, overflow: "hidden" }}>
+                        <div style={{ fontSize: "0.8rem", fontWeight: "500", color: "var(--text-main)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>@{acct.username}</div>
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div style={{ padding: "12px", fontSize: "0.78rem", color: "var(--text-muted)", textAlign: "center" }}>
+                    No accounts linked yet
+                  </div>
+                )}
+
+                {/* Connect new account */}
+                <a
+                  href="/api/auth/instagram?force_oauth=true"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "10px 12px",
+                    width: "100%",
+                    border: "none",
+                    background: "transparent",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    fontSize: "0.8rem",
+                    fontWeight: "500",
+                    color: "#2563eb",
+                  }}
+                >
+                  <Instagram size={16} />
+                  + Connect Account
+                </a>
+              </div>
+            )}
           </div>
 
           {/* New Automation Pill Button */}

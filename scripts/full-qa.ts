@@ -9,8 +9,8 @@
 import { NextRequest } from "next/server";
 import crypto from "crypto";
 
-// Session helper
 import { getSessionUser } from "../src/lib/session";
+import { signSessionJWT } from "../src/lib/session-crypto";
 
 // Instagram functions
 import {
@@ -90,31 +90,33 @@ async function testSessionHelper() {
 
   // No cookie
   const r1 = new NextRequest("http://localhost:3000/test");
-  assert(getSessionUser(r1) === null, "No cookie → null");
+  assert((await getSessionUser(r1)) === null, "No cookie → null");
 
   // Empty cookie
   const r2 = new NextRequest("http://localhost:3000/test", {
     headers: { cookie: "dmflow_session=" },
   });
-  assert(getSessionUser(r2) === null, "Empty cookie → null");
+  assert((await getSessionUser(r2)) === null, "Empty cookie → null");
 
   // Garbage cookie
   const r3 = new NextRequest("http://localhost:3000/test", {
     headers: { cookie: "dmflow_session=not_json" },
   });
-  assert(getSessionUser(r3) === null, "Garbage cookie → null");
+  assert((await getSessionUser(r3)) === null, "Garbage cookie → null");
 
-  // Valid cookie
+  // Valid signed JWT cookie
+  process.env.SESSION_SECRET = process.env.SESSION_SECRET || "test-secret-key-32-characters-long!";
+  const validToken = await signSessionJWT({ id: "abc123", username: "test", profilePic: "" });
   const r4 = new NextRequest("http://localhost:3000/test", {
+    headers: { cookie: `dmflow_session=${validToken}` },
+  });
+  assert((await getSessionUser(r4)) === "abc123", "Valid signed JWT → correct user id");
+
+  // Cookie with unsigned forged json
+  const r5 = new NextRequest("http://localhost:3000/test", {
     headers: { cookie: `dmflow_session=${encodeURIComponent(JSON.stringify({ id: "abc123" }))}` },
   });
-  assert(getSessionUser(r4) === "abc123", "Valid cookie → correct user id");
-
-  // Cookie with empty id
-  const r5 = new NextRequest("http://localhost:3000/test", {
-    headers: { cookie: `dmflow_session=${encodeURIComponent(JSON.stringify({ id: "" }))}` },
-  });
-  assert(getSessionUser(r5) === null, "Cookie with empty id → null");
+  assert((await getSessionUser(r5)) === null, "Unsigned forged cookie → rejected (null)");
 }
 
 async function testAuthEnforcement() {

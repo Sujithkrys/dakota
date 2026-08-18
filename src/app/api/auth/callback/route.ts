@@ -5,6 +5,12 @@ import {
   getInstagramUserProfile,
 } from "@/lib/instagram";
 import { createAdminClient } from "@/lib/supabase/admin";
+import {
+  signSessionJWT,
+  signOwnerSessionJWT,
+  signActiveAccountJWT,
+} from "@/lib/session-crypto";
+import { verifyOwnerSessionJWT } from "@/lib/session-crypto";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -55,16 +61,33 @@ export async function GET(request: NextRequest) {
     // Table fields: id, username, access_token, token_expires_at, ig_account_id, profile_pic
     try {
       const supabaseAdmin = createAdminClient();
+
+      // Check if an owner is logged in — if so, attach owner_id to the account
+      let ownerId: string | null = null;
+      const ownerCookie = request.cookies.get("dmflow_owner")?.value;
+      if (ownerCookie) {
+        const ownerPayload = await verifyOwnerSessionJWT(ownerCookie);
+        if (ownerPayload) {
+          ownerId = ownerPayload.ownerId;
+        }
+      }
+
+      const upsertData: Record<string, unknown> = {
+        id: igAccountId,
+        username: username,
+        access_token: accessToken,
+        token_expires_at: expiresAt,
+        ig_account_id: igAccountId,
+        profile_pic: profilePic,
+        updated_at: new Date().toISOString(),
+      };
+
+      if (ownerId) {
+        upsertData.owner_id = ownerId;
+      }
+
       const { error: dbError } = await supabaseAdmin.from("users").upsert(
-        {
-          id: igAccountId,
-          username: username,
-          access_token: accessToken,
-          token_expires_at: expiresAt,
-          ig_account_id: igAccountId,
-          profile_pic: profilePic,
-          updated_at: new Date().toISOString(),
-        },
+        upsertData,
         { onConflict: "id" }
       );
 
@@ -82,18 +105,30 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 5. Set session cookie and redirect to /dashboard
+    // 5. Set signed session cookie and redirect to /dashboard
     const response = NextResponse.redirect(`${baseUrl}/dashboard`);
 
-    response.cookies.set("dmflow_session", JSON.stringify({
+    const sessionToken = await signSessionJWT({
       id: igAccountId,
       username,
       profilePic,
-    }), {
+    });
+
+    response.cookies.set("dmflow_session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 24 * 60 * 60, // 60 days
+      path: "/",
+    });
+
+    // Also set the active account cookie to the newly-connected account
+    const activeAccountToken = await signActiveAccountJWT({ accountId: igAccountId });
+    response.cookies.set("dmflow_active_account", activeAccountToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 24 * 60 * 60,
       path: "/",
     });
 
@@ -105,17 +140,21 @@ export async function GET(request: NextRequest) {
     const appId = process.env.INSTAGRAM_APP_ID || process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || "";
     if (!appId || appId === "1234567890" || appId.includes("placeholder")) {
       const response = NextResponse.redirect(`${baseUrl}/dashboard?demo_notice=true`);
-      response.cookies.set("dmflow_session", JSON.stringify({
+
+      const sessionToken = await signSessionJWT({
         id: "17841400000000000",
         username: "dmflow_official",
         profilePic: "",
-      }), {
+      });
+
+      response.cookies.set("dmflow_session", sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 60 * 24 * 60 * 60,
         path: "/",
       });
+
       return response;
     }
 

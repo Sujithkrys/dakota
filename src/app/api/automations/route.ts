@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseConfigured } from "@/lib/supabase/admin";
-import { getSessionUser } from "@/lib/session";
+import { resolveAuthedAccount } from "@/lib/session";
 
 export async function GET(request: NextRequest) {
-  const userId = getSessionUser(request);
-  if (!userId) {
+  const authed = await resolveAuthedAccount(request);
+  if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { accountId: userId } = authed;
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ automations: [] });
@@ -31,10 +32,11 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const userId = getSessionUser(request);
-  if (!userId) {
+  const authed = await resolveAuthedAccount(request);
+  if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { accountId: userId } = authed;
 
   try {
     const body = await request.json();
@@ -118,10 +120,11 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const userId = getSessionUser(request);
-  if (!userId) {
+  const authed = await resolveAuthedAccount(request);
+  if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { accountId: userId } = authed;
 
   const searchParams = request.nextUrl.searchParams;
   const id = searchParams.get("id");
