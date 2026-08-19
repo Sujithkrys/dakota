@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Home,
   Zap,
@@ -37,13 +37,19 @@ interface DashboardLayoutProps {
   userId?: string;
 }
 
-export function DashboardLayout({
-  children,
-  username = "your_account",
-  userId,
-}: DashboardLayoutProps) {
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardLayoutContent>{children}</DashboardLayoutContent>
+    </Suspense>
+  );
+}
+
+function DashboardLayoutContent({ children, username = "your_account", userId }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const filterType = searchParams.get("filter");
   const [contentOpen, setContentOpen] = useState(true);
   const [analyticsOpen, setAnalyticsOpen] = useState(true);
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
@@ -421,10 +427,36 @@ export function DashboardLayout({
 
               {contentOpen && (
                 <div style={{ paddingLeft: "28px", display: "flex", flexDirection: "column", gap: "2px", marginTop: "2px" }}>
-                  <Link href="/dashboard/automations?filter=posts" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: "var(--text-body)" }}>
+                  <Link
+                    href="/dashboard/automations?filter=posts"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "7px 10px",
+                      fontSize: "0.82rem",
+                      color: filterType === "posts" ? "var(--text-main)" : "var(--text-body)",
+                      fontWeight: filterType === "posts" ? "600" : "400",
+                      background: filterType === "posts" ? "rgba(12, 10, 9, 0.04)" : "transparent",
+                      borderRadius: "6px"
+                    }}
+                  >
                     <FileText size={14} /> Posts & Reels
                   </Link>
-                  <Link href="/dashboard/automations?filter=stories" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: "var(--text-body)" }}>
+                  <Link
+                    href="/dashboard/automations?filter=stories"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "7px 10px",
+                      fontSize: "0.82rem",
+                      color: filterType === "stories" ? "var(--text-main)" : "var(--text-body)",
+                      fontWeight: filterType === "stories" ? "600" : "400",
+                      background: filterType === "stories" ? "rgba(12, 10, 9, 0.04)" : "transparent",
+                      borderRadius: "6px"
+                    }}
+                  >
                     <Video size={14} /> Stories
                   </Link>
                 </div>

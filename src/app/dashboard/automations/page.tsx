@@ -46,6 +46,13 @@ function AutomationsContent() {
   const [loading, setLoading] = useState(true);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
 
+  const filteredAutomations = automations.filter((rule) => {
+    if (!filterType) return true;
+    if (filterType === "posts") return ["post", "reel", "post_comment"].includes(rule.trigger_source || "");
+    if (filterType === "stories") return ["story", "story_mention"].includes(rule.trigger_source || "");
+    return true;
+  });
+
   const fetchAutomations = async () => {
     try {
       const res = await fetch("/api/automations");
@@ -173,7 +180,7 @@ function AutomationsContent() {
         <section>
           {loading ? (
             <div style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}>Loading automations...</div>
-          ) : automations.length === 0 ? (
+          ) : filteredAutomations.length === 0 ? (
             <div
               className="glass-card gradient-orb-peach"
               style={{
@@ -186,24 +193,19 @@ function AutomationsContent() {
               }}
             >
               <Zap size={32} color="var(--text-main)" />
-              <h3 style={{ fontSize: "1.4rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>No Automation Rules Created Yet</h3>
+              <h3 style={{ fontSize: "1.4rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>
+                {filterType === "posts" ? "No Posts & Reels Automations" : filterType === "stories" ? "No Stories Automations" : "No Automation Rules Created Yet"}
+              </h3>
               <p style={{ color: "var(--text-body)", maxWidth: "450px", fontSize: "0.9rem" }}>
-                Create your first rule to start automatically responding to Instagram DMs, comments, and story mentions.
+                {filterType ? "You don't have any rules for this content type." : "Create your first rule to start automatically responding to Instagram DMs, comments, and story mentions."}
               </p>
               <Link href="/dashboard/automations/builder" className="btn-ig-connect">
-                <Plus size={18} /> Create First Automation
+                <Plus size={18} /> Create New Automation
               </Link>
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {automations
-                .filter((rule) => {
-                  if (!filterType) return true;
-                  if (filterType === "posts") return ["post", "reel", "post_comment"].includes(rule.trigger_source || "");
-                  if (filterType === "stories") return ["story", "story_mention"].includes(rule.trigger_source || "");
-                  return true;
-                })
-                .map((rule) => (
+              {filteredAutomations.map((rule) => (
                 <div
                   key={rule.id}
                   className="glass-card"
