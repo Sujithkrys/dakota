@@ -57,13 +57,14 @@ export async function GET(request: NextRequest) {
     const username = userProfile.username;
     const profilePic = userProfile.profile_picture_url || "";
 
+    let ownerId: string | null = null;
+
     // 4. Upsert `users` table in Supabase
     // Table fields: id, username, access_token, token_expires_at, ig_account_id, profile_pic
     try {
       const supabaseAdmin = createAdminClient();
 
       // Check if an owner is logged in — if so, attach owner_id to the account
-      let ownerId: string | null = null;
       const ownerCookie = request.cookies.get("dmflow_owner")?.value;
       if (ownerCookie) {
         const ownerPayload = await verifyOwnerSessionJWT(ownerCookie);
