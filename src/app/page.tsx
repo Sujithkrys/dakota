@@ -87,7 +87,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <Link
+          <a
             href="/api/auth/instagram"
             style={{
               fontSize: "0.9rem",
@@ -105,7 +105,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
           >
             <Instagram size={16} />
             Login with Instagram
-          </Link>
+          </a>
         </div>
       </header>
 
@@ -186,20 +186,20 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
           {/* Connect & Demo Buttons */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "14px" }}>
-              <Link id="connect-instagram-btn" href="/api/auth/instagram" className="btn-ig-connect">
+              <a id="connect-instagram-btn" href="/api/auth/instagram" className="btn-ig-connect">
                 <Instagram size={22} />
                 Connect Instagram Account
                 <ArrowRight size={18} />
-              </Link>
+              </a>
 
-              <Link
+              <a
                 href="/api/auth/instagram?demo=true"
                 className="builder-btn-outline"
                 style={{ padding: "12px 24px", fontSize: "0.95rem", borderRadius: "9999px" }}
               >
                 <Sparkles size={18} color="var(--accent-cyan)" />
                 Launch Demo Dashboard
-              </Link>
+              </a>
             </div>
             
             <div style={{ display: "flex", alignItems: "center", gap: "24px", color: "var(--text-subtle)", fontSize: "0.85rem", marginTop: "8px" }}>
