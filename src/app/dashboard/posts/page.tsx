@@ -37,7 +37,7 @@ export default function PostsPage() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px" }}>
           <div>
-            <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Posts & Reels</h1>
+            <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Posts & Reels</h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
               View and manage your connected Instagram content.
             </p>
@@ -66,7 +66,7 @@ export default function PostsPage() {
             }}
           >
             <Instagram size={32} color="var(--text-main)" />
-            <h3 style={{ fontSize: "1.4rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>No Posts Found</h3>
+            <h3 style={{ fontSize: "1.4rem" }}>No Posts Found</h3>
             <p style={{ color: "var(--text-body)", maxWidth: "450px", fontSize: "0.9rem" }}>
               We couldn't find any posts or reels on your connected Instagram account.
             </p>

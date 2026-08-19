@@ -121,7 +121,7 @@ export default function DashboardHomePage() {
             <div style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "1px", color: "var(--text-muted)", fontWeight: "600", marginBottom: "8px" }}>
               INSTAGRAM AUTOMATION DASHBOARD
             </div>
-            <h1 style={{ fontSize: "2.8rem", fontFamily: "var(--font-serif)", fontWeight: "300", letterSpacing: "-0.5px" }}>
+            <h1 style={{ fontSize: "2.8rem", letterSpacing: "-0.5px" }}>
               Welcome back, <span className="gradient-text">@{username}</span>
             </h1>
           </div>
@@ -134,7 +134,7 @@ export default function DashboardHomePage() {
         {/* Section 1: Today's Actions (Real Instagram Media Carousel or Clean Empty State) */}
         <section style={{ marginBottom: "56px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-            <h2 style={{ fontSize: "1.5rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>Posts & Reels</h2>
+            <h2 style={{ fontSize: "1.5rem" }}>Posts & Reels</h2>
             <Link href="/dashboard/automations" style={{ fontSize: "0.88rem", color: "var(--text-muted)", fontWeight: "500" }}>
               View all automations →
             </Link>
@@ -154,7 +154,7 @@ export default function DashboardHomePage() {
               }}
             >
               <Instagram size={36} color="var(--text-muted)" />
-              <h3 style={{ fontSize: "1.25rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>No Connected Instagram Posts Found</h3>
+              <h3 style={{ fontSize: "1.25rem" }}>No Connected Instagram Posts Found</h3>
               <p style={{ fontSize: "0.88rem", color: "var(--text-body)", maxWidth: "450px" }}>
                 Connect your Instagram Professional account via Meta Business Login to view your posts, Reels, and attach comment automations.
               </p>
@@ -277,7 +277,7 @@ export default function DashboardHomePage() {
         {/* Section 2: Performance Snapshot */}
         <section style={{ marginBottom: "56px" }}>
           <div style={{ marginBottom: "20px" }}>
-            <h2 style={{ fontSize: "1.5rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>Performance Snapshot</h2>
+            <h2 style={{ fontSize: "1.5rem" }}>Performance Snapshot</h2>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px" }}>
@@ -338,7 +338,7 @@ export default function DashboardHomePage() {
         {/* Section 3: Active Automations Table */}
         <section>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-            <h2 style={{ fontSize: "1.5rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>Active Automations ({automations.length})</h2>
+            <h2 style={{ fontSize: "1.5rem" }}>Active Automations ({automations.length})</h2>
             <Link href="/dashboard/automations" style={{ fontSize: "0.88rem", color: "var(--text-muted)", fontWeight: "500" }}>
               Manage all →
             </Link>

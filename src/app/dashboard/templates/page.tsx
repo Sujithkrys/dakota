@@ -98,7 +98,7 @@ export default function TemplatesPage() {
         
         {/* Header */}
         <div style={{ marginBottom: "36px" }}>
-          <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Automation Templates</h1>
+          <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Automation Templates</h1>
           <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
             Launch high-converting Instagram comment-to-DM workflows in one click.
           </p>
@@ -161,7 +161,7 @@ export default function TemplatesPage() {
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Trigger: {tpl.triggerKeyword}</span>
                 </div>
 
-                <h3 style={{ fontSize: "1.3rem", fontFamily: "var(--font-serif)", fontWeight: "400", marginBottom: "8px" }}>{tpl.title}</h3>
+                <h3 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>{tpl.title}</h3>
                 <p style={{ color: "var(--text-body)", fontSize: "0.88rem", lineHeight: 1.5, marginBottom: "20px" }}>
                   {tpl.description}
                 </p>

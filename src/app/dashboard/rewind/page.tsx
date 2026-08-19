@@ -107,7 +107,7 @@ export default function RewindPage() {
         
         {/* Header */}
         <div style={{ marginBottom: "40px" }}>
-          <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Rewind</h1>
+          <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Rewind</h1>
           <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
             Retroactively send DMs to missed comments on your Instagram posts.
           </p>
@@ -225,7 +225,7 @@ export default function RewindPage() {
         <section style={{ marginBottom: "48px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
             <div>
-              <h2 style={{ fontSize: "1.3rem", fontFamily: "var(--font-serif)", fontWeight: "400", marginBottom: "4px" }}>Choose an automation to rewind</h2>
+              <h2 style={{ fontSize: "1.3rem", marginBottom: "4px" }}>Choose an automation to rewind</h2>
               <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
                 Only comment-to-DM automations can be rewound.
               </p>
@@ -265,7 +265,7 @@ export default function RewindPage() {
                   }}
                 >
                   <div>
-                    <h3 style={{ fontSize: "1.1rem", fontFamily: "var(--font-serif)", fontWeight: "400", marginBottom: "4px" }}>{item.name}</h3>
+                    <h3 style={{ fontSize: "1.1rem", marginBottom: "4px" }}>{item.name}</h3>
                     <p style={{ fontSize: "0.82rem", color: "var(--text-body)" }}>{item.details}</p>
                   </div>
 
@@ -291,7 +291,7 @@ export default function RewindPage() {
         {/* Rewind History */}
         <section>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-            <h2 style={{ fontSize: "1.3rem", fontFamily: "var(--font-serif)", fontWeight: "400" }}>Rewind History</h2>
+            <h2 style={{ fontSize: "1.3rem" }}>Rewind History</h2>
             <button onClick={fetchAutomationsAndJobs} style={{ background: "transparent", border: "none", color: "var(--text-muted)", cursor: "pointer" }}>
               <RefreshCw size={16} />
             </button>
@@ -310,7 +310,7 @@ export default function RewindPage() {
               }}
             >
               <RotateCcw size={32} color="var(--text-muted)" />
-              <h3 style={{ fontSize: "1.2rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>No rewind jobs yet</h3>
+              <h3 style={{ fontSize: "1.2rem" }}>No rewind jobs yet</h3>
               <p style={{ fontSize: "0.88rem", color: "var(--text-body)", maxWidth: "400px" }}>
                 Your completed rewind jobs will appear here once executed.
               </p>

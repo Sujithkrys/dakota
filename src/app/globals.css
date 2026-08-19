@@ -29,7 +29,7 @@
   --accent-cyan: #2563eb; /* Link accent */
   --accent-verdant: #0E9F6E;
   --accent-gold: #E8A93B;
-  --accent-danger: var(--accent-danger);
+  --accent-danger: #DC2626;
   --accent-warning: #D97706;
   --coral-gradient: linear-gradient(135deg, #292524 0%, var(--text-main) 100%);
   --coral-gradient-subtle: rgba(41, 37, 36, 0.05);

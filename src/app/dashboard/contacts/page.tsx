@@ -84,7 +84,7 @@ export default function ContactsPage() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px" }}>
           <div>
-            <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Contacts</h1>
+            <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Contacts</h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
               All Instagram leads and followers who interacted with your DM automations.
             </p>

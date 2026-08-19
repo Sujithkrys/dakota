@@ -41,7 +41,7 @@ export default function AnalyticsOverviewPage() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "32px" }}>
           <div>
-            <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Analytics</h1>
+            <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Analytics</h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
               DMs sent, link clicks, top automations, and audience engagement trends.
             </p>
@@ -140,7 +140,7 @@ export default function AnalyticsOverviewPage() {
 
         {/* Key Metrics */}
         <section style={{ marginBottom: "44px" }}>
-          <h2 style={{ fontSize: "1.4rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "16px" }}>Key metrics</h2>
+          <h2 style={{ fontSize: "1.4rem", marginBottom: "16px" }}>Key metrics</h2>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
             <div className="glass-card" style={{ padding: "24px" }}>
@@ -172,7 +172,7 @@ export default function AnalyticsOverviewPage() {
         {/* Automation Performance Table */}
         <section>
           <div style={{ marginBottom: "16px" }}>
-            <h2 style={{ fontSize: "1.4rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>Automation Performance</h2>
+            <h2 style={{ fontSize: "1.4rem" }}>Automation Performance</h2>
           </div>
 
           <div className="glass-card" style={{ display: "flex", flexDirection: "column" }}>

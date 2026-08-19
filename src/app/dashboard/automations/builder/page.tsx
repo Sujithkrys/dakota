@@ -295,7 +295,7 @@ function BuilderContent() {
               <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: selectedMediaId ? "var(--accent-verdant)" : "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
                 {selectedMediaId ? <Check size={12} /> : "1"}
               </div>
-              <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>When a user comments on</h3>
+              <h3 style={{ fontSize: "0.95rem", margin: 0 }}>When a user comments on</h3>
             </div>
 
             <div className={`builder-option-card ${postOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
@@ -363,7 +363,7 @@ function BuilderContent() {
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
               <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>2</div>
-              <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>And his/her comment has</h3>
+              <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And his/her comment has</h3>
             </div>
 
             <div className={`builder-option-card ${keywordOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
@@ -405,7 +405,7 @@ function BuilderContent() {
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
               <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>3</div>
-              <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>They will optionally get</h3>
+              <h3 style={{ fontSize: "0.95rem", margin: 0 }}>They will optionally get</h3>
             </div>
 
             <div className={`builder-option-card ${enableOpeningDM ? "active" : ""}`} style={{ marginBottom: "8px" }}>
@@ -454,7 +454,7 @@ function BuilderContent() {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>4</div>
-                <h3 style={{ fontSize: "0.95rem", fontFamily: "var(--font-serif)", fontWeight: "600", margin: 0 }}>And they will get a DM with</h3>
+                <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And they will get a DM with</h3>
               </div>
               <button type="button" onClick={() => setTemplateModalOpen(true)} style={{ padding: "3px 10px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", display: "flex", alignItems: "center", gap: "3px" }}>
                 <LayoutTemplate size={12} /> Template
@@ -510,7 +510,7 @@ function BuilderContent() {
         <div className="builder-modal-overlay" onClick={() => setTemplateModalOpen(false)}>
           <div className="builder-modal-card" onClick={(e) => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-              <h3 style={{ fontSize: "1.2rem", fontFamily: "var(--font-serif)", fontWeight: "300", margin: 0 }}>Select Template</h3>
+              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Select Template</h3>
               <button onClick={() => setTemplateModalOpen(false)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--text-muted)" }}><X size={18} /></button>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
@@ -532,7 +532,7 @@ function BuilderContent() {
         <div className="builder-modal-overlay" onClick={() => { setLinkModalOpen(false); setLinkTitle(""); setLinkUrl(""); }}>
           <div className="builder-modal-card" onClick={(e) => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-              <h3 style={{ fontSize: "1.2rem", fontFamily: "var(--font-serif)", fontWeight: "300", margin: 0 }}>Add Link Button</h3>
+              <h3 style={{ fontSize: "1.2rem", margin: 0 }}>Add Link Button</h3>
               <button onClick={() => { setLinkModalOpen(false); setLinkTitle(""); setLinkUrl(""); }} style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--text-muted)" }}><X size={18} /></button>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>

@@ -143,7 +143,7 @@ function AutomationsContent() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px" }}>
           <div>
-            <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Automation Rules Engine</h1>
+            <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Automation Rules Engine</h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
               Manage active comment-to-DM, story mention, and Groq AI auto-reply rules.
             </p>
@@ -193,7 +193,7 @@ function AutomationsContent() {
               }}
             >
               <Zap size={32} color="var(--text-main)" />
-              <h3 style={{ fontSize: "1.4rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>
+              <h3 style={{ fontSize: "1.4rem" }}>
                 {filterType === "posts" ? "No Posts & Reels Automations" : filterType === "stories" ? "No Stories Automations" : "No Automation Rules Created Yet"}
               </h3>
               <p style={{ color: "var(--text-body)", maxWidth: "450px", fontSize: "0.9rem" }}>
@@ -221,7 +221,7 @@ function AutomationsContent() {
                 >
                   <div style={{ flex: "1 1 400px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px", flexWrap: "wrap" }}>
-                      <h3 style={{ fontSize: "1.25rem", fontFamily: "var(--font-serif)", fontWeight: "400" }}>{rule.name}</h3>
+                      <h3 style={{ fontSize: "1.25rem" }}>{rule.name}</h3>
 
                       {rule.is_ai_enabled && (
                         <span

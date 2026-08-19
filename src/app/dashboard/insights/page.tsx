@@ -45,7 +45,7 @@ export default function AudienceInsightsPage() {
         
         {/* Header */}
         <div style={{ marginBottom: "36px" }}>
-          <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Audience Insights & Top Commenters</h1>
+          <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Audience Insights & Top Commenters</h1>
           <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
             Identify your most engaged Instagram followers and top comment automation triggers.
           </p>
@@ -56,7 +56,7 @@ export default function AudienceInsightsPage() {
           
           {/* Left Panel */}
           <div className="glass-card" style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "16px", height: "fit-content" }}>
-            <h2 style={{ fontSize: "1.1rem", fontFamily: "var(--font-serif)", fontWeight: "400" }}>View Stats For</h2>
+            <h2 style={{ fontSize: "1.1rem" }}>View Stats For</h2>
 
             <button
               onClick={() => alert("Custom Rule Group created!")}
@@ -140,7 +140,7 @@ export default function AudienceInsightsPage() {
             <div className="glass-card" style={{ padding: "24px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
                 <Trophy size={18} color="var(--text-main)" />
-                <h2 style={{ fontSize: "1.3rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>Top Commenters Ranked Leaderboard</h2>
+                <h2 style={{ fontSize: "1.3rem" }}>Top Commenters Ranked Leaderboard</h2>
               </div>
 
               <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.88rem" }}>

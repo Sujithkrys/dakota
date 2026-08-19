@@ -12,7 +12,7 @@ export default function StoriesPage() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px" }}>
           <div>
-            <h1 style={{ fontSize: "2.5rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginBottom: "6px" }}>Stories</h1>
+            <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Stories</h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
               View and manage your active Instagram stories.
             </p>
@@ -51,7 +51,7 @@ export default function StoriesPage() {
             </div>
           </div>
           
-          <h3 style={{ fontSize: "1.6rem", fontFamily: "var(--font-serif)", fontWeight: "300" }}>Stories Integration Coming Soon</h3>
+          <h3 style={{ fontSize: "1.6rem" }}>Stories Integration Coming Soon</h3>
           <p style={{ color: "var(--text-body)", maxWidth: "450px", fontSize: "0.95rem", lineHeight: "1.5" }}>
             We're currently building out the media library for live Instagram Stories. 
             Soon, you'll be able to view all your active stories directly from this dashboard.
