@@ -105,8 +105,9 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 5. Set signed session cookie and redirect to /dashboard
-    const response = NextResponse.redirect(`${baseUrl}/dashboard`);
+    // 5. Set signed session cookie and redirect appropriately
+    const redirectPath = ownerId ? "/dashboard" : "/login";
+    const response = NextResponse.redirect(`${baseUrl}${redirectPath}`);
 
     const sessionToken = await signSessionJWT({
       id: igAccountId,

@@ -60,7 +60,7 @@ export function DashboardLayout({
     try {
       const res = await fetch("/api/stats");
       if (res.status === 401) {
-        router.push("/");
+        router.push("/login");
         return;
       }
       const data = await res.json();
