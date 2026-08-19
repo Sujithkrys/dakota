@@ -287,3 +287,41 @@ export async function sendInstagramMessage(
     return { success: false, error: errMsg };
   }
 }
+
+/**
+ * Send Automated Reply DM via Instagram Graph API in response to a comment (POST /me/messages).
+ * Uses the 7-day private reply window by specifying recipient: { comment_id: commentId }.
+ */
+export async function sendCommentPrivateReply(
+  commentId: string,
+  text: string,
+  accessToken: string
+): Promise<InstagramApiResult> {
+  const url = `https://graph.instagram.com/v24.0/me/messages?access_token=${encodeURIComponent(accessToken)}`;
+  const payload = {
+    recipient: { comment_id: commentId },
+    message: { text: text },
+  };
+
+  console.log(`[OUTBOUND PRIVATE REPLY] Sending private reply for comment ${commentId}: "${text}"`);
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (!response.ok || data.error) {
+      const errMsg = data.error?.message || `Instagram API error (${response.status})`;
+      console.warn("[Instagram API Private Reply Error]:", errMsg, data);
+      return { success: false, error: errMsg, data };
+    }
+    return { success: true, data };
+  } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    console.warn("[Instagram API Private Reply Exception]:", errMsg);
+    return { success: false, error: errMsg };
+  }
+}

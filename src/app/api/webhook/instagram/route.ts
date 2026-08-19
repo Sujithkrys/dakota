@@ -6,6 +6,7 @@ import {
   sendInstagramMessage,
   sendInstagramSenderAction,
   replyToInstagramComment,
+  sendCommentPrivateReply,
 } from "@/lib/instagram";
 import { generateAIReply } from "@/lib/ai-reply";
 
@@ -194,19 +195,19 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
 
   // Retrieve user access token & AI context settings
   let accessToken = "";
-  let groqApiKey = process.env.GROQ_API_KEY || "";
+  let aiApiKey = process.env.GEMINI_API_KEY || "";
   let aiContext = "We are a premium brand selling products and services. Be helpful and friendly.";
 
   try {
     const { data: userRec } = await supabaseAdmin
       .from("users")
-      .select("access_token, groq_api_key, ai_context")
+      .select("access_token, ai_api_key, ai_context")
       .eq("id", userId)
       .single();
 
     if (userRec) {
       if (userRec.access_token) accessToken = userRec.access_token;
-      if (userRec.groq_api_key) groqApiKey = userRec.groq_api_key;
+      if (userRec.ai_api_key) aiApiKey = userRec.ai_api_key;
       if (userRec.ai_context) aiContext = userRec.ai_context;
     }
   } catch {
@@ -241,8 +242,8 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
       incomingMessage: messageText,
       conversationHistory: history,
       aiContext: aiContext,
-      groqApiKey: groqApiKey,
-      aiModel: aiRule.ai_model || "llama-3.1-8b-instant",
+      aiApiKey: aiApiKey,
+      aiModel: aiRule.ai_model || "gemini-1.5-flash",
       maxResponseLength: aiRule.max_response_length || 250,
       fallbackResponse: aiRule.fallback_response_text || "Thanks for your message! Our team will get back to you shortly.",
     });
@@ -366,8 +367,8 @@ async function processCommentAutomation(userId: string, changeValue: any) {
 
   if ((replyMode === "dm_only" || replyMode === "both") && commenterId) {
     const dmText = matchedRule.response_content?.text || "Thanks for commenting!";
-    await sendInstagramSenderAction(commenterId, "mark_seen", accessToken);
-    const sendRes = await sendInstagramMessage(commenterId, dmText, accessToken);
+    // We don't send a sender action ("mark_seen") here because there's no ongoing DM conversation thread yet.
+    const sendRes = await sendCommentPrivateReply(commentId, dmText, accessToken);
     const sendStatus = sendRes.success ? "sent" : "failed";
 
     if (!sendRes.success) {
