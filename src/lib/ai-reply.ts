@@ -2,29 +2,29 @@ export interface AIReplyOptions {
   incomingMessage: string;
   conversationHistory?: Array<{ direction: string; message_text: string }>;
   aiContext?: string;
-  groqApiKey?: string;
+  aiApiKey?: string;
   aiModel?: string;
   maxResponseLength?: number;
   fallbackResponse?: string;
 }
 
 /**
- * AI Auto-Reply Engine using Groq API (llama-3.1-8b-instant)
+ * AI Auto-Reply Engine using Gemini API (gemini-1.5-flash)
  */
 export async function generateAIReply({
   incomingMessage,
   conversationHistory = [],
   aiContext,
-  groqApiKey,
-  aiModel = "llama-3.1-8b-instant",
+  aiApiKey,
+  aiModel = "gemini-1.5-flash",
   maxResponseLength = 250,
   fallbackResponse,
 }: AIReplyOptions): Promise<string> {
-  const apiKey = groqApiKey || process.env.GROQ_API_KEY;
+  const apiKey = aiApiKey || process.env.GEMINI_API_KEY;
   const defaultFallback = fallbackResponse || "Thanks for reaching out! We'll get back to you shortly.";
 
   if (!apiKey) {
-    console.log("ℹ️ No Groq API Key provided. Returning fallback message.");
+    console.log("ℹ️ No AI API Key provided. Returning fallback message.");
     return defaultFallback;
   }
 
@@ -43,14 +43,13 @@ Guardrails & Instructions:
 
   // Format past 5 messages for context
   const pastMessages = conversationHistory.slice(-5).map((msg) => ({
-    role: msg.direction === "outgoing" ? "assistant" : "user",
-    content: msg.message_text,
+    role: msg.direction === "outgoing" ? "model" : "user",
+    parts: [{ text: msg.message_text }],
   }));
 
   const messagesPayload = [
-    { role: "system", content: systemPrompt },
     ...pastMessages,
-    { role: "user", content: incomingMessage },
+    { role: "user", parts: [{ text: incomingMessage }] },
   ];
 
   // 5-second timeout guardrail
@@ -58,17 +57,18 @@ Guardrails & Instructions:
   const timeoutId = setTimeout(() => controller.abort(), 5000);
 
   try {
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: aiModel,
-        messages: messagesPayload,
-        max_tokens: Math.min(250, Math.ceil(maxResponseLength / 2)),
-        temperature: 0.7,
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        contents: messagesPayload,
+        generationConfig: {
+          maxOutputTokens: Math.min(250, Math.ceil(maxResponseLength / 2)),
+          temperature: 0.7,
+        }
       }),
       signal: controller.signal,
     });
@@ -77,15 +77,15 @@ Guardrails & Instructions:
 
     if (!response.ok) {
       const errText = await response.text();
-      console.warn("[Groq API Warning] API call failed:", errText);
+      console.warn("[Gemini API Warning] API call failed:", errText);
       return defaultFallback;
     }
 
     const data = await response.json();
-    const aiText = data.choices?.[0]?.message?.content?.trim();
+    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
     if (aiText) {
-      console.log(`✨ [GROQ AI REPLY GENERATED] (${aiText.length} chars): "${aiText}"`);
+      console.log(`✨ [AI REPLY GENERATED] (${aiText.length} chars): "${aiText}"`);
       // Enforce hard character length limit guardrail
       return aiText.length > maxResponseLength ? aiText.substring(0, maxResponseLength - 3) + "..." : aiText;
     }
@@ -94,9 +94,9 @@ Guardrails & Instructions:
   } catch (err: unknown) {
     clearTimeout(timeoutId);
     if (err instanceof Error && err.name === "AbortError") {
-      console.warn("⚠️ Groq API call timed out after 5000ms. Returning fallback response.");
+      console.warn("⚠️ AI API call timed out after 5000ms. Returning fallback response.");
     } else {
-      console.warn("Groq API Exception:", err);
+      console.warn("AI API Exception:", err);
     }
     return defaultFallback;
   }

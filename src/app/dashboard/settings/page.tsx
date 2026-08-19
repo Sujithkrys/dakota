@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 export default function SettingsPage() {
-  const [groqApiKey, setGroqApiKey] = useState("");
+  const [aiApiKey, setAiApiKey] = useState("");
   const [aiContext, setAiContext] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -28,7 +28,7 @@ export default function SettingsPage() {
       const res = await fetch("/api/user/settings");
       const data = await res.json();
       if (data) {
-        setGroqApiKey(data.groq_api_key || "");
+        setAiApiKey(data.ai_api_key || "");
         setAiContext(data.ai_context || "");
       }
     } catch (err) {
@@ -52,7 +52,7 @@ export default function SettingsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          groq_api_key: groqApiKey,
+          ai_api_key: aiApiKey,
           ai_context: aiContext,
         }),
       });
@@ -79,7 +79,7 @@ export default function SettingsPage() {
             <h1 style={{ fontSize: "1.75rem", fontWeight: "800" }}>Account & AI Settings</h1>
           </div>
           <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
-            Manage your Groq API credentials and customize your brand context for AI-powered auto-replies.
+            Manage your AI API credentials and customize your brand context for AI-powered auto-replies.
           </p>
         </div>
 
@@ -109,15 +109,15 @@ export default function SettingsPage() {
         ) : (
           <form onSubmit={handleSaveSettings} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
             
-            {/* Groq API Key Section */}
+            {/* AI API Key Section */}
             <div className="glass-card" style={{ padding: "28px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <Key size={20} color="var(--accent-coral)" />
-                  <h2 style={{ fontSize: "1.2rem", fontWeight: "700" }}>Groq API Key (Free Tier Supported)</h2>
+                  <h2 style={{ fontSize: "1.2rem", fontWeight: "700" }}>AI API Key (Gemini Supported)</h2>
                 </div>
                 <a
-                  href="https://console.groq.com/keys"
+                  href="https://aistudio.google.com/app/apikey"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -129,20 +129,20 @@ export default function SettingsPage() {
                     gap: "4px",
                   }}
                 >
-                  Get free Groq Key <ExternalLink size={14} />
+                  Get free Gemini Key <ExternalLink size={14} />
                 </a>
               </div>
 
               <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "16px", lineHeight: 1.5 }}>
-                Dakota uses Groq&apos;s lightning-fast <code>llama-3.1-8b-instant</code> model for instant DM replies under 500ms.
+                Dakota uses Gemini&apos;s lightning-fast <code>gemini-1.5-flash</code> model for instant DM replies.
               </p>
 
               <div style={{ position: "relative" }}>
                 <input
                   type={showKey ? "text" : "password"}
-                  placeholder="gsk_..."
-                  value={groqApiKey}
-                  onChange={(e) => setGroqApiKey(e.target.value)}
+                  placeholder="AI API Key..."
+                  value={aiApiKey}
+                  onChange={(e) => setAiApiKey(e.target.value)}
                   style={{
                     width: "100%",
                     padding: "12px 48px 12px 16px",

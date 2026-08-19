@@ -13,17 +13,17 @@ export async function GET(request: NextRequest) {
     const supabaseAdmin = createAdminClient();
     const { data } = await supabaseAdmin
       .from("users")
-      .select("groq_api_key, ai_context")
+      .select("ai_api_key, ai_context")
       .eq("id", userId)
       .single();
 
     return NextResponse.json({
-      groq_api_key: data?.groq_api_key || "",
+      ai_api_key: data?.ai_api_key || "",
       ai_context: data?.ai_context || "",
     });
   } catch {
     return NextResponse.json({
-      groq_api_key: "",
+      ai_api_key: "",
       ai_context: "",
     });
   }
@@ -38,13 +38,13 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { groq_api_key, ai_context } = body;
+    const { ai_api_key, ai_context } = body;
 
     const supabaseAdmin = createAdminClient();
     const { error } = await supabaseAdmin.from("users").upsert(
       {
         id: userId,
-        groq_api_key,
+        ai_api_key,
         ai_context,
         updated_at: new Date().toISOString(),
       },

@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS public.users (
   token_expires_at TIMESTAMPTZ,
   ig_account_id TEXT NOT NULL,
   profile_pic TEXT,
-  groq_api_key TEXT,
+  ai_api_key TEXT,
   ai_context TEXT,
   owner_id UUID REFERENCES public.owners(id),
   created_at TIMESTAMPTZ DEFAULT NOW(),
