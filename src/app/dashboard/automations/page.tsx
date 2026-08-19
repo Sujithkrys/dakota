@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import {
   Zap,
@@ -38,8 +38,10 @@ interface AutomationRule {
   created_at: string;
 }
 
-export default function AutomationsPage() {
+function AutomationsContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const filterType = searchParams.get("filter");
   const [automations, setAutomations] = useState<AutomationRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
@@ -145,6 +147,28 @@ export default function AutomationsPage() {
           </Link>
         </div>
 
+        {/* Filters/Tabs (Optional UI to show active filter) */}
+        {filterType && (
+          <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+            <Link
+              href="/dashboard/automations"
+              style={{
+                padding: "6px 12px",
+                borderRadius: "20px",
+                fontSize: "0.85rem",
+                background: "rgba(12, 10, 9, 0.05)",
+                color: "var(--text-main)",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              Clear Filter <XCircle size={14} />
+            </Link>
+          </div>
+        )}
+
         {/* Rules List */}
         <section>
           {loading ? (
@@ -172,7 +196,14 @@ export default function AutomationsPage() {
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {automations.map((rule) => (
+              {automations
+                .filter((rule) => {
+                  if (!filterType) return true;
+                  if (filterType === "posts") return ["post", "reel", "post_comment"].includes(rule.trigger_source || "");
+                  if (filterType === "stories") return ["story", "story_mention"].includes(rule.trigger_source || "");
+                  return true;
+                })
+                .map((rule) => (
                 <div
                   key={rule.id}
                   className="glass-card"
@@ -343,5 +374,13 @@ export default function AutomationsPage() {
 
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function AutomationsPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}>Loading automations...</div>}>
+      <AutomationsContent />
+    </Suspense>
   );
 }

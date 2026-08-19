@@ -421,10 +421,10 @@ export function DashboardLayout({
 
               {contentOpen && (
                 <div style={{ paddingLeft: "28px", display: "flex", flexDirection: "column", gap: "2px", marginTop: "2px" }}>
-                  <Link href="/dashboard/automations" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: "var(--text-body)" }}>
+                  <Link href="/dashboard/automations?filter=posts" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: "var(--text-body)" }}>
                     <FileText size={14} /> Posts & Reels
                   </Link>
-                  <Link href="/dashboard/automations" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: "var(--text-body)" }}>
+                  <Link href="/dashboard/automations?filter=stories" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: "var(--text-body)" }}>
                     <Video size={14} /> Stories
                   </Link>
                 </div>
