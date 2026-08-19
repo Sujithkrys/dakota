@@ -48,8 +48,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 function DashboardLayoutContent({ children, username = "your_account", userId }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const filterType = searchParams.get("filter");
   const [contentOpen, setContentOpen] = useState(true);
   const [analyticsOpen, setAnalyticsOpen] = useState(true);
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
@@ -428,32 +426,32 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
               {contentOpen && (
                 <div style={{ paddingLeft: "28px", display: "flex", flexDirection: "column", gap: "2px", marginTop: "2px" }}>
                   <Link
-                    href="/dashboard/automations?filter=posts"
+                    href="/dashboard/posts"
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
                       padding: "7px 10px",
                       fontSize: "0.82rem",
-                      color: filterType === "posts" ? "var(--text-main)" : "var(--text-body)",
-                      fontWeight: filterType === "posts" ? "600" : "400",
-                      background: filterType === "posts" ? "rgba(12, 10, 9, 0.04)" : "transparent",
+                      color: pathname.startsWith("/dashboard/posts") ? "var(--text-main)" : "var(--text-body)",
+                      fontWeight: pathname.startsWith("/dashboard/posts") ? "600" : "400",
+                      background: pathname.startsWith("/dashboard/posts") ? "rgba(12, 10, 9, 0.04)" : "transparent",
                       borderRadius: "6px"
                     }}
                   >
                     <FileText size={14} /> Posts & Reels
                   </Link>
                   <Link
-                    href="/dashboard/automations?filter=stories"
+                    href="/dashboard/stories"
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
                       padding: "7px 10px",
                       fontSize: "0.82rem",
-                      color: filterType === "stories" ? "var(--text-main)" : "var(--text-body)",
-                      fontWeight: filterType === "stories" ? "600" : "400",
-                      background: filterType === "stories" ? "rgba(12, 10, 9, 0.04)" : "transparent",
+                      color: pathname.startsWith("/dashboard/stories") ? "var(--text-main)" : "var(--text-body)",
+                      fontWeight: pathname.startsWith("/dashboard/stories") ? "600" : "400",
+                      background: pathname.startsWith("/dashboard/stories") ? "rgba(12, 10, 9, 0.04)" : "transparent",
                       borderRadius: "6px"
                     }}
                   >
