@@ -18,7 +18,7 @@ export async function GET(
     // Look up the code
     const { data } = await supabaseAdmin
       .from("link_clicks")
-      .select("id, destination_url, click_count")
+      .select("id, destination_url, click_count, user_id")
       .eq("tracking_code", code)
       .single();
 
@@ -28,6 +28,14 @@ export async function GET(
         .from("link_clicks")
         .update({ click_count: data.click_count + 1 })
         .eq("id", data.id);
+        
+      // Log event
+      await supabaseAdmin
+        .from("link_click_events")
+        .insert({
+          link_click_id: data.id,
+          user_id: data.user_id,
+        });
         
       return NextResponse.redirect(data.destination_url);
     }

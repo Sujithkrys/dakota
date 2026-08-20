@@ -271,7 +271,10 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
         if (convData && !convData.follower_email) {
           await supabaseAdmin
             .from("conversations")
-            .update({ follower_email: extractedEmail })
+            .update({ 
+              follower_email: extractedEmail,
+              email_captured_at: new Date().toISOString()
+            })
             .eq("id", conversationId);
           console.log(`[Email Capture] Captured email for conversation ${conversationId}: ${extractedEmail}`);
         }
@@ -304,6 +307,7 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
   // 7. Log outgoing response to `conversations` + `messages`
   try {
     const replyMid = `out_${isAiReply ? "ai_" : ""}${Date.now()}`;
+    const ruleToUpdate = matchedRule || aiRule;
     await supabaseAdmin.from("messages").insert({
       id: replyMid,
       conversation_id: conversationId,
@@ -313,6 +317,8 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
       message_text: finalResponseText,
       direction: "outgoing",
       send_status: sendStatus,
+      automation_id: ruleToUpdate?.id || null,
+      error_detail: sendRes.success ? null : sendRes.error,
       created_at: new Date().toISOString(),
     });
 
@@ -444,6 +450,8 @@ async function processCommentAutomation(userId: string, changeValue: any) {
         message_text: dmText,
         direction: "outgoing",
         send_status: sendStatus,
+        automation_id: matchedRule?.id || null,
+        error_detail: sendRes.success ? null : sendRes.error,
         created_at: new Date().toISOString(),
       });
     } catch (dbErr) {
@@ -524,6 +532,8 @@ async function processStoryMentionAutomation(userId: string, changeValue: any) {
       message_text: responseText,
       direction: "outgoing",
       send_status: sendStatus,
+      automation_id: matchedRule?.id || null,
+      error_detail: sendRes.success ? null : sendRes.error,
       created_at: new Date().toISOString(),
     });
   } catch (dbErr) {
