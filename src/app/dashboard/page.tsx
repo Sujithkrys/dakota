@@ -89,7 +89,7 @@ export default function DashboardHomePage() {
       const mediaData = await mediaRes.json();
       if (mediaData.media && Array.isArray(mediaData.media)) {
         const orbClasses = ["gradient-orb-mint", "gradient-orb-peach", "gradient-orb-lavender", "gradient-orb-sky"];
-        const cards: ActionCardItem[] = mediaData.slice(0, 6).map((item: any, idx: number) => ({
+        const cards: ActionCardItem[] = mediaData.media.slice(0, 6).map((item: any, idx: number) => ({
           id: item.id,
           media_type: item.media_type || "POST",
           likes: (item.like_count || 0).toLocaleString(),
@@ -103,8 +103,9 @@ export default function DashboardHomePage() {
       } else if (mediaData.error) {
         setMediaError(mediaData.error);
       }
-    } catch {
+    } catch (err) {
       // Clean fallback (empty arrays)
+      console.error("Dashboard data fetch error:", err);
     } finally {
       setLoading(false);
     }
