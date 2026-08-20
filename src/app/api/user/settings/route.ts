@@ -13,18 +13,22 @@ export async function GET(request: NextRequest) {
     const supabaseAdmin = createAdminClient();
     const { data } = await supabaseAdmin
       .from("users")
-      .select("ai_api_key, ai_context")
+      .select("ai_api_key, ai_context, username, profile_pic")
       .eq("id", userId)
       .single();
 
     return NextResponse.json({
       ai_api_key: data?.ai_api_key || "",
       ai_context: data?.ai_context || "",
+      username: data?.username || "",
+      profile_pic: data?.profile_pic || "",
     });
   } catch {
     return NextResponse.json({
       ai_api_key: "",
       ai_context: "",
+      username: "",
+      profile_pic: "",
     });
   }
 }

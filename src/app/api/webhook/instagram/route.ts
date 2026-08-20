@@ -261,6 +261,15 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
 
   if (!sendRes.success) {
     console.error(`❌ [Webhook DM Send Failed] User: ${userId}, Recipient: ${senderId}, Error: ${sendRes.error}`);
+  } else {
+    const ruleToUpdate = matchedRule || aiRule;
+    if (ruleToUpdate?.id) {
+      try {
+        await supabaseAdmin.from("automations").update({ dms_sent: (ruleToUpdate.dms_sent || 0) + 1 }).eq("id", ruleToUpdate.id);
+      } catch (err) {
+        console.warn("Failed to increment dms_sent:", err);
+      }
+    }
   }
 
   // 7. Log outgoing response to `conversations` + `messages`
@@ -373,6 +382,12 @@ async function processCommentAutomation(userId: string, changeValue: any) {
 
     if (!sendRes.success) {
       console.error(`❌ [Webhook Comment DM Send Failed] Recipient: ${commenterId}, Error: ${sendRes.error}`);
+    } else if (matchedRule?.id) {
+      try {
+        await supabaseAdmin.from("automations").update({ dms_sent: (matchedRule.dms_sent || 0) + 1 }).eq("id", matchedRule.id);
+      } catch (err) {
+        console.warn("Failed to increment dms_sent:", err);
+      }
     }
 
     try {

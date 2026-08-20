@@ -45,6 +45,7 @@ export default function DashboardHomePage() {
   const [actionCards, setActionCards] = useState<ActionCardItem[]>([]);
   const [stats, setStats] = useState({ dms_sent: 0, link_clicks: 0, leads: 0 });
   const [loading, setLoading] = useState(true);
+  const [mediaError, setMediaError] = useState<string | null>(null);
 
   const fetchHomeData = async () => {
     try {
@@ -99,6 +100,8 @@ export default function DashboardHomePage() {
           thumbnail_url: item.thumbnail_url || item.permalink,
         }));
         setActionCards(cards);
+      } else if (mediaData.error) {
+        setMediaError(mediaData.error);
       }
     } catch {
       // Clean fallback (empty arrays)
@@ -154,9 +157,11 @@ export default function DashboardHomePage() {
               }}
             >
               <Instagram size={36} color="var(--text-muted)" />
-              <h3 style={{ fontSize: "1.25rem" }}>No Connected Instagram Posts Found</h3>
+              <h3 style={{ fontSize: "1.25rem" }}>
+                {mediaError ? "Instagram Media Error" : "No Connected Instagram Posts Found"}
+              </h3>
               <p style={{ fontSize: "0.88rem", color: "var(--text-body)", maxWidth: "450px" }}>
-                Connect your Instagram Professional account via Meta Business Login to view your posts, Reels, and attach comment automations.
+                {mediaError || "Connect your Instagram Professional account via Meta Business Login to view your posts, Reels, and attach comment automations."}
               </p>
               <Link href="/dashboard/automations/builder" className="btn-ig-connect">
                 <Plus size={18} /> Create Custom Automation
