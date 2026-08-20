@@ -205,6 +205,55 @@ export default function SettingsPage() {
               />
             </div>
 
+            {/* Support & Docs Section */}
+            <div className="glass-card" style={{ padding: "28px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
+                <h2 style={{ fontSize: "1.2rem", fontWeight: "700" }}>Support & Integration Docs</h2>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                <div>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: "600", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <ShieldCheck size={18} color="var(--text-main)" /> 1. Meta Developer App & Instagram Business Login
+                  </h3>
+                  <p style={{ color: "var(--text-body)", fontSize: "0.92rem", lineHeight: 1.6, marginBottom: "12px" }}>
+                    Dakota uses official <strong>Instagram API with Instagram Login (Business Login)</strong> flow — NOT Facebook Login, NOT Instagram Basic Display.
+                  </p>
+                  <ol style={{ paddingLeft: "20px", color: "var(--text-body)", fontSize: "0.9rem", lineHeight: 1.8 }}>
+                    <li>Go to <a href="https://developers.facebook.com" target="_blank" rel="noreferrer" style={{ color: "var(--text-main)", textDecoration: "underline" }}>developers.facebook.com</a> and click <strong>Create App</strong>.</li>
+                    <li>Select app type: <strong>Business / Other</strong>.</li>
+                    <li>Add product: <strong>Instagram API with Instagram Login</strong>.</li>
+                    <li>Configure OAuth Redirect URI: <code>http://localhost:3000/api/auth/callback</code>.</li>
+                  </ol>
+                </div>
+
+                <div>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: "600", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <Key size={18} color="var(--text-main)" /> 2. Required OAuth Scopes
+                  </h3>
+                  <ul style={{ paddingLeft: "20px", color: "var(--text-body)", fontSize: "0.9rem", lineHeight: 1.8 }}>
+                    <li><code>instagram_business_basic</code>: Access account profile and media posts.</li>
+                    <li><code>instagram_business_manage_messages</code>: Receive incoming DMs and send automated replies.</li>
+                    <li><code>instagram_business_manage_comments</code>: Read comments and publish public replies.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: "600", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <Sparkles size={18} color="var(--text-main)" /> 3. Webhook Setup & Handshake
+                  </h3>
+                  <p style={{ color: "var(--text-body)", fontSize: "0.92rem", lineHeight: 1.6, marginBottom: "8px" }}>
+                    In Meta App Dashboard under Webhooks → Instagram:
+                  </p>
+                  <ul style={{ paddingLeft: "20px", color: "var(--text-body)", fontSize: "0.9rem", lineHeight: 1.8 }}>
+                    <li>Callback URL: <code>http://localhost:3000/api/webhook/instagram</code></li>
+                    <li>Verify Token: <code>dmflow_secret_token_123</code></li>
+                    <li>Subscribe to fields: <code>messages</code>, <code>comments</code>, <code>mentions</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
             {/* Submit Button */}
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <button
