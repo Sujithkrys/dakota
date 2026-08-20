@@ -256,6 +256,31 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
   const activeRule = matchedRule || aiRule;
   finalResponseText = await appendTrackingLink(finalResponseText, activeRule, userId, supabaseAdmin);
 
+  // Email capture (side-effect)
+  if (activeRule?.enable_email_capture) {
+    const emailMatch = messageText.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i);
+    if (emailMatch) {
+      const extractedEmail = emailMatch[1];
+      try {
+        const { data: convData } = await supabaseAdmin
+          .from("conversations")
+          .select("follower_email")
+          .eq("id", conversationId)
+          .single();
+
+        if (convData && !convData.follower_email) {
+          await supabaseAdmin
+            .from("conversations")
+            .update({ follower_email: extractedEmail })
+            .eq("id", conversationId);
+          console.log(`[Email Capture] Captured email for conversation ${conversationId}: ${extractedEmail}`);
+        }
+      } catch (err) {
+        console.warn("Failed to capture email:", err);
+      }
+    }
+  }
+
   // 5. Send 'mark_seen' sender action
   await sendInstagramSenderAction(senderId, "mark_seen", accessToken);
 
