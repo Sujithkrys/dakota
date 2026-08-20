@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   Zap,
+  LayoutTemplate,
   FolderKanban,
   FileText,
   Video,
@@ -282,6 +283,26 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
             >
               <Zap size={17} color="currentColor" />
               {!isCollapsed && "Automations"}
+            </Link>
+            <Link
+              href="/dashboard/templates"
+              title="Templates"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "9px 12px",
+                borderRadius: "var(--radius-button)",
+                fontSize: "0.85rem",
+                fontWeight: pathname === "/dashboard/templates" ? "600" : "400",
+                color: pathname === "/dashboard/templates" ? "var(--accent-verdant)" : "var(--text-body)",
+                background: pathname === "/dashboard/templates" ? "#ffffff" : "transparent",
+                border: pathname === "/dashboard/templates" ? "var(--border-hairline)" : "1px solid transparent",
+                justifyContent: isCollapsed ? "center" : "flex-start",
+              }}
+            >
+              <LayoutTemplate size={17} color="currentColor" />
+              {!isCollapsed && "Templates"}
             </Link>
 
             <Link
