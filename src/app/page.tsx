@@ -24,34 +24,6 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
 
   return (
     <div style={{ position: "relative", minHeight: "100vh", overflowX: "hidden", overflowY: "auto" }}>
-      {/* Background Glow Accents */}
-      <div
-        style={{
-          position: "absolute",
-          top: "-150px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "800px",
-          height: "400px",
-          background: "radial-gradient(circle, rgba(225, 48, 108, 0.2) 0%, rgba(131, 58, 180, 0.1) 40%, transparent 70%)",
-          filter: "blur(60px)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "400px",
-          right: "-100px",
-          width: "500px",
-          height: "500px",
-          background: "radial-gradient(circle, rgba(252, 176, 69, 0.12) 0%, transparent 70%)",
-          filter: "blur(80px)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
 
       {/* Header Bar */}
       <header
@@ -72,11 +44,10 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               width: "38px",
               height: "38px",
               borderRadius: "var(--radius-button)",
-              background: "var(--ig-gradient)",
+              background: "var(--text-main)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 4px 15px rgba(225, 48, 108, 0.4)",
             }}
           >
             <Bot size={22} color="#ffffff" />
@@ -94,9 +65,8 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
               fontWeight: "600",
               padding: "8px 18px",
               borderRadius: "9999px",
-              border: "var(--border-hairline)",
-              background: "rgba(255, 255, 255, 0.04)",
-              backdropFilter: "blur(10px)",
+              border: "1px solid var(--border-strong)",
+              background: "var(--bg-card)",
               display: "flex",
               alignItems: "center",
               gap: "8px",
@@ -138,19 +108,19 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
         {/* Hero Section */}
         <section style={{ textAlign: "center", maxWidth: "850px", margin: "0 auto 80px" }}>
           <div
-            className="glow-pill"
+              className="glow-pill"
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
               padding: "6px 16px",
               borderRadius: "9999px",
-              background: "var(--ig-gradient-subtle)",
-              border: "1px solid rgba(225, 48, 108, 0.3)",
+              background: "var(--bg-soft)",
+              border: "1px solid var(--border-strong)",
               marginBottom: "28px",
               fontSize: "0.85rem",
               fontWeight: "600",
-              color: "#f472b6",
+              color: "var(--text-muted)",
             }}
           >
             <Sparkles size={14} />
@@ -197,17 +167,17 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
                 className="builder-btn-outline"
                 style={{ padding: "12px 24px", fontSize: "0.95rem", borderRadius: "9999px" }}
               >
-                <Sparkles size={18} color="var(--accent-cyan)" />
+                <Sparkles size={18} color="var(--text-muted)" />
                 Launch Demo Dashboard
               </a>
             </div>
             
             <div style={{ display: "flex", alignItems: "center", gap: "24px", color: "var(--text-subtle)", fontSize: "0.85rem", marginTop: "8px" }}>
               <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <ShieldCheck size={16} color="var(--accent-emerald)" /> Business Login Approved
+                <ShieldCheck size={16} color="var(--accent-verdant)" /> Business Login Approved
               </span>
               <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <CheckCircle2 size={16} color="var(--accent-cyan)" /> 60-Day Refreshable Token
+                <CheckCircle2 size={16} color="var(--accent-verdant)" /> 60-Day Refreshable Token
               </span>
             </div>
           </div>
@@ -222,15 +192,15 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
                 width: "48px",
                 height: "48px",
                 borderRadius: "var(--radius-button)",
-                background: "rgba(131, 58, 180, 0.15)",
+                background: "var(--bg-soft)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: "20px",
-                border: "1px solid rgba(131, 58, 180, 0.3)",
+                border: "1px solid var(--border-strong)",
               }}
             >
-              <MessageSquareText size={24} color="#c084fc" />
+              <MessageSquareText size={24} color="var(--text-main)" />
             </div>
             <h3 style={{ fontSize: "1.25rem", fontWeight: "700", marginBottom: "10px" }}>
               Comment-to-DM Trigger
@@ -246,15 +216,15 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
                 width: "48px",
                 height: "48px",
                 borderRadius: "var(--radius-button)",
-                background: "rgba(253, 29, 29, 0.15)",
+                background: "var(--bg-soft)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: "20px",
-                border: "1px solid rgba(253, 29, 29, 0.3)",
+                border: "1px solid var(--border-strong)",
               }}
             >
-              <Zap size={24} color="#f87171" />
+              <Zap size={24} color="var(--text-main)" />
             </div>
             <h3 style={{ fontSize: "1.25rem", fontWeight: "700", marginBottom: "10px" }}>
               Story Reply Auto-Responder
@@ -270,15 +240,15 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
                 width: "48px",
                 height: "48px",
                 borderRadius: "var(--radius-button)",
-                background: "rgba(252, 176, 69, 0.15)",
+                background: "var(--bg-soft)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: "20px",
-                border: "1px solid rgba(252, 176, 69, 0.3)",
+                border: "1px solid var(--border-strong)",
               }}
             >
-              <TrendingUp size={24} color="#fbbf24" />
+              <TrendingUp size={24} color="var(--text-main)" />
             </div>
             <h3 style={{ fontSize: "1.25rem", fontWeight: "700", marginBottom: "10px" }}>
               Analytics & Conversion Tracking
@@ -292,7 +262,7 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
 
         {/* API Scope & Security Notice Card */}
         <section className="glass-card" style={{ padding: "40px", maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--accent-cyan)", marginBottom: "12px", fontWeight: "600" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--text-main)", marginBottom: "12px", fontWeight: "600" }}>
             <ShieldCheck size={20} />
             <span>Secure Business OAuth Flow</span>
           </div>
@@ -304,13 +274,13 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
           </p>
 
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" }}>
-            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
+            <span style={{ background: "var(--bg-soft)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
               instagram_business_basic
             </span>
-            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
+            <span style={{ background: "var(--bg-soft)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
               instagram_business_manage_messages
             </span>
-            <span style={{ background: "rgba(255, 255, 255, 0.05)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
+            <span style={{ background: "var(--bg-soft)", padding: "6px 14px", borderRadius: "8px", fontSize: "0.85rem", fontFamily: "var(--font-mono)", border: "var(--border-hairline)" }}>
               instagram_business_manage_comments
             </span>
           </div>
