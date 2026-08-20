@@ -10,6 +10,41 @@ export async function GET(request: NextRequest) {
   }
   const { accountId: userId } = authed;
 
+  if (userId === "17841400000000000") {
+    // Return mock data for the demo account so the dashboard populates
+    return NextResponse.json({
+      media: [
+        {
+          id: "demo_media_1",
+          caption: "Exciting new product launch! 🚀 #dmflow",
+          media_type: "POST",
+          thumbnail_url: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600&auto=format&fit=crop",
+          permalink: "https://instagram.com",
+          like_count: 1205,
+          comments_count: 84,
+        },
+        {
+          id: "demo_media_2",
+          caption: "Behind the scenes 📸",
+          media_type: "REEL",
+          thumbnail_url: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?q=80&w=600&auto=format&fit=crop",
+          permalink: "https://instagram.com",
+          like_count: 3420,
+          comments_count: 215,
+        },
+        {
+          id: "demo_media_3",
+          caption: "Happy Friday! What are your weekend plans?",
+          media_type: "POST",
+          thumbnail_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop",
+          permalink: "https://instagram.com",
+          like_count: 890,
+          comments_count: 42,
+        },
+      ]
+    });
+  }
+
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: "Database configuration missing" }, { status: 500 });
   }

@@ -9,6 +9,13 @@ export async function GET(request: NextRequest) {
   }
   const { accountId: userId } = authed;
 
+  const sessionCookie = request.cookies.get("dmflow_session")?.value;
+  let sessionUser = null;
+  if (sessionCookie) {
+    const { verifySessionJWT } = await import("@/lib/session-crypto");
+    sessionUser = await verifySessionJWT(sessionCookie);
+  }
+
   try {
     const supabaseAdmin = createAdminClient();
     const { data } = await supabaseAdmin
@@ -20,14 +27,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       ai_api_key: data?.ai_api_key || "",
       ai_context: data?.ai_context || "",
-      username: data?.username || "",
+      username: data?.username || sessionUser?.username || "",
       profile_pic: data?.profile_pic || "",
     });
   } catch {
     return NextResponse.json({
       ai_api_key: "",
       ai_context: "",
-      username: "",
+      username: sessionUser?.username || "",
       profile_pic: "",
     });
   }
