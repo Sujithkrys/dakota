@@ -252,6 +252,10 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
     return;
   }
 
+  // Append tracking link if configured
+  const activeRule = matchedRule || aiRule;
+  finalResponseText = await appendTrackingLink(finalResponseText, activeRule, userId, supabaseAdmin);
+
   // 5. Send 'mark_seen' sender action
   await sendInstagramSenderAction(senderId, "mark_seen", accessToken);
 
@@ -375,7 +379,11 @@ async function processCommentAutomation(userId: string, changeValue: any) {
   }
 
   if ((replyMode === "dm_only" || replyMode === "both") && commenterId) {
-    const dmText = matchedRule.response_content?.text || "Thanks for commenting!";
+    let dmText = matchedRule.response_content?.text || "Thanks for commenting!";
+    
+    // Append tracking link if configured
+    dmText = await appendTrackingLink(dmText, matchedRule, userId, supabaseAdmin);
+
     // We don't send a sender action ("mark_seen") here because there's no ongoing DM conversation thread yet.
     const sendRes = await sendCommentPrivateReply(commentId, dmText, accessToken);
     const sendStatus = sendRes.success ? "sent" : "failed";
@@ -566,4 +574,44 @@ export async function POST(request: NextRequest) {
 
   // Meta expects 200 OK EVENT_RECEIVED response within 20 seconds
   return new NextResponse("EVENT_RECEIVED", { status: 200 });
+}
+
+async function appendTrackingLink(
+  text: string,
+  rule: any,
+  userId: string,
+  supabaseAdmin: any
+): Promise<string> {
+  if (!rule || !rule.button_url) return text;
+  
+  const buttonTitle = rule.button_text || "Click here";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  
+  try {
+    // Try to find existing link click row
+    const { data: existing } = await supabaseAdmin
+      .from("link_clicks")
+      .select("tracking_code")
+      .eq("automation_id", rule.id)
+      .eq("destination_url", rule.button_url)
+      .single();
+      
+    let trackingCode = existing?.tracking_code;
+    
+    if (!trackingCode) {
+      trackingCode = Math.random().toString(36).substring(2, 10);
+      await supabaseAdmin.from("link_clicks").insert({
+        automation_id: rule.id,
+        user_id: userId,
+        tracking_code: trackingCode,
+        destination_url: rule.button_url,
+        click_count: 0
+      });
+    }
+    
+    return `${text}\n\n${buttonTitle}: ${baseUrl}/l/${trackingCode}`;
+  } catch (err) {
+    console.warn("Failed to generate tracking link:", err);
+    return text; // Fallback to original text
+  }
 }

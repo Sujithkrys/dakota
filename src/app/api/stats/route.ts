@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const emptyStats = {
     dms_sent: 0,
     dms_limit: 500,
-    bonus_dms: 0,
+    link_clicks: 0,
     ig_accounts: 1,
     ig_accounts_limit: 1,
     active_automations: 0,
@@ -43,10 +43,18 @@ export async function GET(request: NextRequest) {
       .select("*", { count: "exact", head: true })
       .eq("user_id", userId);
 
+    // Sum link clicks
+    const { data: linkClicksData } = await supabaseAdmin
+      .from("link_clicks")
+      .select("click_count")
+      .eq("user_id", userId);
+      
+    const totalLinkClicks = linkClicksData?.reduce((acc: number, curr: any) => acc + (curr.click_count || 0), 0) || 0;
+
     return NextResponse.json({
       dms_sent: dmsCount || 0,
       dms_limit: 500,
-      bonus_dms: 0,
+      link_clicks: totalLinkClicks,
       ig_accounts: 1,
       ig_accounts_limit: 1,
       active_automations: automationsCount || 0,

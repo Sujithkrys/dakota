@@ -25,7 +25,25 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ automations: [] });
     }
 
-    return NextResponse.json({ automations: data });
+    const { data: linkClicksData } = await supabaseAdmin
+      .from("link_clicks")
+      .select("automation_id, click_count")
+      .eq("user_id", userId);
+
+    const clicksMap: Record<string, number> = {};
+    if (linkClicksData) {
+      linkClicksData.forEach((row: any) => {
+        clicksMap[row.automation_id] = (clicksMap[row.automation_id] || 0) + (row.click_count || 0);
+      });
+    }
+
+    const enrichedAutomations = data.map((rule: any) => ({
+      ...rule,
+      clicks: clicksMap[rule.id] || 0,
+      ctr: rule.dms_sent > 0 ? `${Math.round(((clicksMap[rule.id] || 0) / rule.dms_sent) * 100)}%` : "—",
+    }));
+
+    return NextResponse.json({ automations: enrichedAutomations });
   } catch {
     return NextResponse.json({ automations: [] });
   }

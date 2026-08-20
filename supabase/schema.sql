@@ -109,6 +109,17 @@ CREATE TABLE IF NOT EXISTS public.rewind_jobs (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- 9. Link Clicks table
+CREATE TABLE IF NOT EXISTS public.link_clicks (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  automation_id UUID REFERENCES public.automations(id),
+  user_id TEXT NOT NULL,
+  tracking_code TEXT NOT NULL UNIQUE,
+  destination_url TEXT NOT NULL,
+  click_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- =============================================================================
 -- Row Level Security (RLS) - Hardened Service-Role Only Policies
 -- (Default-deny for anon & authenticated roles. No public SELECT allowed)
@@ -122,6 +133,7 @@ ALTER TABLE public.conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.ice_breakers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.rewind_jobs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.link_clicks ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Allow service role full access owners" ON public.owners FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Allow service role full access users" ON public.users FOR ALL USING (auth.role() = 'service_role');
@@ -131,3 +143,4 @@ CREATE POLICY "Allow service role full access conversations" ON public.conversat
 CREATE POLICY "Allow service role full access messages" ON public.messages FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Allow service role full access ice_breakers" ON public.ice_breakers FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Allow service role full access rewind_jobs" ON public.rewind_jobs FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service role full access link_clicks" ON public.link_clicks FOR ALL USING (auth.role() = 'service_role');

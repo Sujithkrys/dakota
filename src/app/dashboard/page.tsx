@@ -62,7 +62,7 @@ export default function DashboardHomePage() {
       if (statsData) {
         setStats({
           dms_sent: statsData.dms_sent || 0,
-          link_clicks: statsData.bonus_dms || 0,
+          link_clicks: statsData.link_clicks || 0,
           leads: 0,
         });
       }

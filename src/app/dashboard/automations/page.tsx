@@ -36,6 +36,9 @@ interface AutomationRule {
   fallback_response_text?: string;
   is_active: boolean;
   created_at: string;
+  dms_sent?: number;
+  clicks?: number;
+  ctr?: string;
 }
 
 function AutomationsContent() {
@@ -291,9 +294,16 @@ function AutomationsContent() {
                         border: "var(--border-hairline)",
                         fontSize: "0.88rem",
                         color: "var(--text-body)",
+                        marginBottom: "12px"
                       }}
                     >
                       <strong>Response:</strong> {rule.response_content?.text}
+                    </div>
+
+                    <div style={{ display: "flex", gap: "16px", fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: "500" }}>
+                      <div><strong style={{ color: "var(--text-main)" }}>{rule.dms_sent || 0}</strong> DMs Sent</div>
+                      <div><strong style={{ color: "var(--text-main)" }}>{rule.clicks || 0}</strong> Clicks</div>
+                      <div>CTR: <strong style={{ color: "var(--accent-verdant)" }}>{rule.ctr || "—"}</strong></div>
                     </div>
                   </div>
 
