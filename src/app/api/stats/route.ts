@@ -28,9 +28,10 @@ export async function GET(request: NextRequest) {
 
     const { count: dmsCount } = await supabaseAdmin
       .from("messages")
-      .select("*", { count: "exact", head: true })
+      .select("id", { count: "exact", head: true })
       .eq("user_id", userId)
-      .eq("direction", "outgoing");
+      .eq("direction", "outgoing")
+      .eq("send_status", "sent");
 
     const { count: automationsCount } = await supabaseAdmin
       .from("automations")

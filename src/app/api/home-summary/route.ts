@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
     let recent_activity: any[] = [];
 
     // Outgoing messages
-    const { data: sentMsgs } = await supabaseAdmin
+    const { data: sentMsgs, error: sentError } = await supabaseAdmin
       .from("messages")
       .select("created_at, automations(name, trigger_source)")
       .eq("user_id", userId)
@@ -104,6 +104,7 @@ export async function GET(request: NextRequest) {
       .order("created_at", { ascending: false })
       .limit(6);
     
+    if (sentError) console.error("Error fetching sent messages for activity feed:", sentError);
     if (sentMsgs) {
       sentMsgs.forEach((msg: any) => {
         let label = "Direct Message Auto-Reply";
@@ -120,7 +121,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Failed messages
-    const { data: failedMsgs } = await supabaseAdmin
+    const { data: failedMsgs, error: failedError } = await supabaseAdmin
       .from("messages")
       .select("created_at, error_detail, automations(name)")
       .eq("user_id", userId)
@@ -128,6 +129,7 @@ export async function GET(request: NextRequest) {
       .order("created_at", { ascending: false })
       .limit(6);
     
+    if (failedError) console.error("Error fetching failed messages for activity feed:", failedError);
     if (failedMsgs) {
       failedMsgs.forEach((msg: any) => {
         recent_activity.push({
@@ -140,7 +142,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Leads captured
-    const { data: leads } = await supabaseAdmin
+    const { data: leads, error: leadsError } = await supabaseAdmin
       .from("conversations")
       .select("email_captured_at")
       .eq("user_id", userId)
@@ -148,6 +150,7 @@ export async function GET(request: NextRequest) {
       .order("email_captured_at", { ascending: false })
       .limit(6);
 
+    if (leadsError) console.error("Error fetching leads for activity feed:", leadsError);
     if (leads) {
       leads.forEach((lead: any) => {
         recent_activity.push({
