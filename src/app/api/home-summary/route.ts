@@ -166,6 +166,48 @@ export async function GET(request: NextRequest) {
     recent_activity.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     recent_activity = recent_activity.slice(0, 6);
 
+    // 5. Reply Rate Computation
+    let reply_rate: number | null = null;
+    const { data: sentConvos } = await supabaseAdmin
+      .from("messages")
+      .select("conversation_id, created_at")
+      .eq("user_id", userId)
+      .eq("direction", "outgoing")
+      .eq("send_status", "sent")
+      .not("automation_id", "is", null);
+
+    if (sentConvos && sentConvos.length > 0) {
+      const convosMap = new Map<string, Date>();
+      for (const msg of sentConvos) {
+        const dt = new Date(msg.created_at);
+        if (!convosMap.has(msg.conversation_id) || dt > convosMap.get(msg.conversation_id)!) {
+          convosMap.set(msg.conversation_id, dt);
+        }
+      }
+
+      const conversationIds = Array.from(convosMap.keys());
+      const { data: incomingMsgs } = await supabaseAdmin
+        .from("messages")
+        .select("conversation_id, created_at")
+        .eq("user_id", userId)
+        .eq("direction", "incoming")
+        .in("conversation_id", conversationIds);
+
+      let qualifyingReplies = 0;
+      if (incomingMsgs) {
+        const repliedSet = new Set<string>();
+        for (const msg of incomingMsgs) {
+          if (repliedSet.has(msg.conversation_id)) continue;
+          const sentDt = convosMap.get(msg.conversation_id);
+          if (sentDt && new Date(msg.created_at) > sentDt) {
+            qualifyingReplies++;
+            repliedSet.add(msg.conversation_id);
+          }
+        }
+      }
+      reply_rate = Math.round((qualifyingReplies / conversationIds.length) * 100);
+    }
+
     return NextResponse.json({
       stats: {
         dms_sent_total,
@@ -177,7 +219,8 @@ export async function GET(request: NextRequest) {
       },
       active_automations_count: activeCount || 0,
       failures_last_24h: failuresCount || 0,
-      recent_activity
+      recent_activity,
+      reply_rate
     });
   } catch (error) {
     console.error("Home summary error:", error);

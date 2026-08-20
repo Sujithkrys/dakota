@@ -44,7 +44,7 @@ interface HomeSummaryData {
     leads_total: number;
     leads_today: number;
   };
-  active_automations_count: number;
+    active_automations_count: number;
   failures_last_24h: number;
   recent_activity: Array<{
     type: "sent" | "failed" | "lead";
@@ -52,6 +52,7 @@ interface HomeSummaryData {
     automation_name: string | null;
     created_at: string;
   }>;
+  reply_rate: number | null;
 }
 
 export default function DashboardHomePage() {
@@ -81,16 +82,21 @@ export default function DashboardHomePage() {
       const res = await fetch("/api/automations");
       const data = await res.json();
       if (data.automations) {
-        const mapped = data.automations.map((rule: any) => ({
-          id: rule.id,
-          name: rule.name,
-          trigger_value: rule.trigger_value || "*",
-          dms_sent: rule.dms_sent || 0,
-          clicks: rule.clicks || 0,
-          ctr: rule.ctr || "0%",
-          is_active: rule.is_active,
-          is_ai_enabled: rule.is_ai_enabled,
-        }));
+        const mapped = data.automations.map((rule: any) => {
+          const sent = rule.dms_sent || 0;
+          const clicks = rule.clicks || 0;
+          const ctr = sent > 0 ? Math.round((clicks / sent) * 100) + "%" : "0%";
+          return {
+            id: rule.id,
+            name: rule.name,
+            trigger_value: rule.trigger_value || "*",
+            dms_sent: sent,
+            clicks: clicks,
+            ctr: ctr,
+            is_active: rule.is_active,
+            is_ai_enabled: rule.is_ai_enabled,
+          };
+        });
         setAutomations(mapped);
       }
 
@@ -141,30 +147,25 @@ export default function DashboardHomePage() {
       <div style={{ padding: "48px 40px 96px", maxWidth: "1280px", margin: "0 auto", width: "100%" }}>
         
         {/* Header Section */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "40px" }}>
-          <div>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: "600", color: "var(--text-main)", marginBottom: "8px" }}>
-              Welcome back, <span style={{ fontFamily: "var(--font-mono)", color: "var(--text-muted)", fontWeight: "500" }}>@{username}</span>
-            </h1>
-            <div style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}>
-              {homeSummary ? (
-                <>
-                  <span style={{ fontWeight: "500", color: "var(--text-main)" }}>{homeSummary.active_automations_count} automations live</span>
-                  {homeSummary.failures_last_24h > 0 && (
-                    <>
-                      {" · "}
-                      <span style={{ color: "var(--accent-danger)", fontWeight: "500" }}>{homeSummary.failures_last_24h} failed in the last 24h</span>
-                    </>
-                  )}
-                </>
-              ) : (
-                "Loading status..."
-              )}
-            </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "40px" }}>
+          <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--text-main)", margin: 0 }}>
+            Welcome back, <span style={{ fontFamily: "var(--font-mono)", color: "var(--text-muted)", fontWeight: "500" }}>@{username}</span>
+          </h1>
+          <div style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}>
+            {homeSummary ? (
+              <>
+                <span style={{ fontWeight: "500", color: "var(--text-main)" }}>{homeSummary.active_automations_count} automations live</span>
+                {homeSummary.failures_last_24h > 0 && (
+                  <>
+                    {" · "}
+                    <span style={{ color: "var(--accent-danger)", fontWeight: "500" }}>{homeSummary.failures_last_24h} failed in the last 24h</span>
+                  </>
+                )}
+              </>
+            ) : (
+              "Loading status..."
+            )}
           </div>
-          <Link href="/dashboard/automations/builder" className="btn-ig-connect" style={{ background: "var(--accent-verdant)" }}>
-            <Plus size={18} /> New Automation
-          </Link>
         </div>
 
         {/* Top Stat Cards */}
@@ -174,10 +175,17 @@ export default function DashboardHomePage() {
               <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: "600" }}>DMs Sent</span>
               <TrendingUp size={18} color="var(--text-muted)" />
             </div>
-            <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", marginBottom: "8px" }}>
+            <div style={{ fontSize: "28px", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", marginBottom: "8px" }}>
               {homeSummary?.stats.dms_sent_total.toLocaleString() ?? "0"}
             </div>
-            {renderDelta(homeSummary?.stats.dms_sent_today ?? 0)}
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              {renderDelta(homeSummary?.stats.dms_sent_today ?? 0)}
+              {homeSummary && homeSummary.failures_last_24h > 0 && (
+                <a href="#recent-activity" style={{ fontSize: "0.85rem", color: "var(--accent-danger)", fontWeight: "600", textDecoration: "none" }}>
+                  {homeSummary.failures_last_24h} failed →
+                </a>
+              )}
+            </div>
           </div>
 
           <div className="glass-card" style={{ padding: "24px" }}>
@@ -185,7 +193,7 @@ export default function DashboardHomePage() {
               <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: "600" }}>Link Clicks</span>
               <MousePointerClick size={18} color="var(--text-muted)" />
             </div>
-            <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", marginBottom: "8px" }}>
+            <div style={{ fontSize: "28px", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", marginBottom: "8px" }}>
               {homeSummary?.stats.link_clicks_total.toLocaleString() ?? "0"}
             </div>
             {renderDelta(homeSummary?.stats.link_clicks_today ?? 0)}
@@ -196,19 +204,19 @@ export default function DashboardHomePage() {
               <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: "600" }}>Leads</span>
               <Mail size={18} color="var(--text-muted)" />
             </div>
-            <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", marginBottom: "8px" }}>
+            <div style={{ fontSize: "28px", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", marginBottom: "8px" }}>
               {homeSummary?.stats.leads_total.toLocaleString() ?? "0"}
             </div>
             {renderDelta(homeSummary?.stats.leads_today ?? 0)}
           </div>
 
-          <div className="glass-card" style={{ padding: "24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <div className="glass-card" style={{ padding: "24px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-              <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: "600" }}>Connected Account</span>
-              <Users size={18} color="var(--text-muted)" />
+              <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: "600" }}>Reply Rate</span>
+              <Zap size={18} color="var(--text-muted)" />
             </div>
-            <div style={{ fontSize: "1.4rem", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", wordBreak: "break-all" }}>
-              @{username}
+            <div style={{ fontSize: "28px", fontFamily: "var(--font-mono)", fontWeight: "500", color: "var(--text-main)", marginBottom: "8px" }}>
+              {homeSummary?.reply_rate !== null && homeSummary?.reply_rate !== undefined ? `${homeSummary.reply_rate}%` : "—"}
             </div>
           </div>
         </div>
@@ -259,8 +267,8 @@ export default function DashboardHomePage() {
                             {rule.trigger_value}
                           </div>
                         </td>
-                        <td style={{ padding: "16px 0" }}>
-                          <span style={{ fontWeight: "500" }}>{rule.dms_sent}</span> <span style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>sent</span>
+                        <td style={{ padding: "16px 0", fontSize: "0.85rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                          {rule.dms_sent} sent · {rule.clicks} clicks · {rule.ctr} CTR
                         </td>
                         <td style={{ padding: "16px 0", textAlign: "right" }}>
                           <span style={{ 
@@ -314,7 +322,7 @@ export default function DashboardHomePage() {
 
           {/* Sidebar Column */}
           <div>
-            <section className="glass-card" style={{ padding: "24px" }}>
+            <section id="recent-activity" className="glass-card" style={{ padding: "24px" }}>
               <h2 style={{ fontSize: "1.2rem", fontWeight: "600", marginBottom: "20px" }}>Recent Activity</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 {!homeSummary || homeSummary.recent_activity.length === 0 ? (
