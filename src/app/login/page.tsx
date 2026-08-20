@@ -78,15 +78,13 @@ export default function LoginPage() {
         <div style={{
           width: "48px",
           height: "48px",
-          borderRadius: "12px",
-          background: "var(--accent-verdant)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           marginBottom: "24px",
-          boxShadow: "0 4px 15px rgba(14, 159, 110, 0.3)",
+          overflow: "hidden",
         }}>
-          <Bot size={28} color="#ffffff" />
+          <img src="/logo.png" alt="Dakota Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
         </div>
 
         <h1 style={{

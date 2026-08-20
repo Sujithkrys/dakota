@@ -43,14 +43,13 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
             style={{
               width: "38px",
               height: "38px",
-              borderRadius: "var(--radius-button)",
-              background: "var(--text-main)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              overflow: "hidden",
             }}
           >
-            <Bot size={22} color="#ffffff" />
+            <img src="/logo.png" alt="Dakota Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
           </div>
           <span style={{ fontSize: "1.4rem", fontWeight: "800", letterSpacing: "-0.5px" }}>
             Dakota

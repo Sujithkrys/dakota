@@ -164,14 +164,13 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
                 style={{
                   width: "32px",
                   height: "32px",
-                  borderRadius: "50%",
-                  background: "var(--text-main)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  overflow: "hidden",
                 }}
               >
-                <Bot size={18} color="#ffffff" />
+                <img src="/logo.png" alt="Dakota Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
               </div>
               <span style={{ fontSize: "1.3rem", fontFamily: "var(--font-serif)", fontWeight: "400", letterSpacing: "-0.5px" }}>
                 Dakota
