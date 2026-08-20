@@ -1,70 +1,86 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import {
-  Zap,
   Plus,
-  Trash2,
-  CheckCircle2,
-  XCircle,
-  Tag,
-  Bot,
+  MoreVertical,
   Play,
   Pause,
   Edit2,
   Copy,
-  MoreVertical,
+  Trash2,
+  Search,
+  LayoutList,
+  LayoutGrid,
+  ChevronDown,
+  ChevronRight,
+  Bot,
+  Zap,
 } from "lucide-react";
-import { getStatusColor } from "@/lib/status-colors";
 
 interface AutomationRule {
   id: string;
   name: string;
+  is_active: boolean;
   trigger_source: string;
   trigger_type: string;
   trigger_value: string;
-  response_content: { text: string };
+  response_content?: { text: string };
   public_response_content?: { text: string };
   reply_mode?: string;
   specific_media_id?: string;
   is_ai_enabled?: boolean;
   ai_model?: string;
-  max_response_length?: number;
   fallback_response_text?: string;
-  is_active: boolean;
-  created_at: string;
-  dms_sent?: number;
-  clicks?: number;
-  ctr?: string;
+  dms_sent: number;
+  clicks: number;
+  ctr: string;
+  failed_24h: number;
 }
+
+const GROUP_NAMES: Record<string, string> = {
+  comment: "Post & Reel Comments",
+  post_comment: "Post & Reel Comments",
+  post: "Post & Reel Comments",
+  reel: "Post & Reel Comments",
+  story: "Story Mentions & Replies",
+  story_mention: "Story Mentions & Replies",
+  dm: "Direct Messages",
+};
+
+const getGroupName = (source: string) => GROUP_NAMES[source] || "Other Triggers";
 
 function AutomationsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const filterType = searchParams.get("filter");
+
   const [automations, setAutomations] = useState<AutomationRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
 
-  const filteredAutomations = automations.filter((rule) => {
-    if (!filterType) return true;
-    if (filterType === "posts") return ["post", "reel", "post_comment"].includes(rule.trigger_source || "");
-    if (filterType === "stories") return ["story", "story_mention"].includes(rule.trigger_source || "");
-    return true;
-  });
+  // New state
+  const [viewMode, setViewMode] = useState<"list" | "board">("list");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "live" | "paused">("all");
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
 
   const fetchAutomations = async () => {
     try {
       const res = await fetch("/api/automations");
+      if (res.status === 401) {
+        router.push("/login");
+        return;
+      }
       const data = await res.json();
-      if (data.automations) {
+      if (data && Array.isArray(data.automations)) {
         setAutomations(data.automations);
       }
     } catch (err) {
-      console.error("Failed to fetch automations:", err);
+      console.error("Error fetching automations:", err);
     } finally {
       setLoading(false);
     }
@@ -72,27 +88,39 @@ function AutomationsContent() {
 
   useEffect(() => {
     fetchAutomations();
+    const savedView = localStorage.getItem("automationsViewMode") as "list" | "board";
+    if (savedView === "list" || savedView === "board") {
+      setViewMode(savedView);
+    }
   }, []);
 
-  const handleToggleActive = async (id: string, currentStatus: boolean) => {
-    setAutomations((prev) =>
-      prev.map((rule) => (rule.id === id ? { ...rule, is_active: !currentStatus } : rule))
-    );
+  const handleToggleView = (mode: "list" | "board") => {
+    setViewMode(mode);
+    localStorage.setItem("automationsViewMode", mode);
+  };
 
-    const targetRule = automations.find((r) => r.id === id);
-    if (targetRule) {
-      try {
-        await fetch("/api/automations", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...targetRule,
-            is_active: !currentStatus,
-          }),
-        });
-      } catch (err) {
-        console.error("Error toggling automation status:", err);
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setActiveMenuId(null);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const handleToggleActive = async (id: string, currentActive: boolean) => {
+    setActiveMenuId(null);
+    try {
+      const res = await fetch("/api/automations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, is_active: !currentActive }),
+      });
+      if (res.ok) {
+        setAutomations((prev) =>
+          prev.map((item) => (item.id === id ? { ...item, is_active: !currentActive } : item))
+        );
       }
+    } catch (err) {
+      console.error("Error toggling state:", err);
     }
   };
 
@@ -139,252 +167,430 @@ function AutomationsContent() {
     }
   };
 
+  // Filter logic
+  const filteredAutomations = useMemo(() => {
+    let filtered = automations;
+
+    // URL parameter filter
+    if (filterType === "posts") {
+      filtered = filtered.filter((r) => ["post", "reel", "post_comment"].includes(r.trigger_source || ""));
+    } else if (filterType === "stories") {
+      filtered = filtered.filter((r) => ["story", "story_mention"].includes(r.trigger_source || ""));
+    }
+
+    // Status filter
+    if (statusFilter === "live") {
+      filtered = filtered.filter((r) => r.is_active);
+    } else if (statusFilter === "paused") {
+      filtered = filtered.filter((r) => !r.is_active);
+    }
+
+    // Search query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter((r) => 
+        r.name.toLowerCase().includes(q) || 
+        (r.trigger_value && r.trigger_value.toLowerCase().includes(q))
+      );
+    }
+
+    return filtered;
+  }, [automations, filterType, statusFilter, searchQuery]);
+
+  const maxClicks = useMemo(() => {
+    return Math.max(0, ...filteredAutomations.map(a => a.clicks || 0));
+  }, [filteredAutomations]);
+
+  // Group logic for list view
+  const groupedAutomations = useMemo(() => {
+    const groups: Record<string, AutomationRule[]> = {};
+    filteredAutomations.forEach((rule) => {
+      const groupName = getGroupName(rule.trigger_source || "dm");
+      if (!groups[groupName]) groups[groupName] = [];
+      groups[groupName].push(rule);
+    });
+    return groups;
+  }, [filteredAutomations]);
+
+  // Set default expanded states for groups
+  useEffect(() => {
+    const initialExpanded: Record<string, boolean> = {};
+    Object.entries(groupedAutomations).forEach(([groupName, rules]) => {
+      if (expandedGroups[groupName] === undefined) {
+        const hasLive = rules.some((r) => r.is_active);
+        initialExpanded[groupName] = hasLive;
+      }
+    });
+    if (Object.keys(initialExpanded).length > 0) {
+      setExpandedGroups(prev => ({ ...prev, ...initialExpanded }));
+    }
+  }, [groupedAutomations]);
+
+  const toggleGroup = (groupName: string) => {
+    setExpandedGroups(prev => ({ ...prev, [groupName]: !prev[groupName] }));
+  };
+
+  // Board view buckets
+  const boardBuckets = useMemo(() => {
+    const needsAttention: AutomationRule[] = [];
+    const live: AutomationRule[] = [];
+    const paused: AutomationRule[] = [];
+
+    filteredAutomations.forEach(a => {
+      if ((a.failed_24h || 0) > 0) {
+        needsAttention.push(a);
+      } else if (a.is_active) {
+        live.push(a);
+      } else {
+        paused.push(a);
+      }
+    });
+
+    return { needsAttention, live, paused };
+  }, [filteredAutomations]);
+
+  const navigateToBuilder = (id: string) => {
+    router.push(`/dashboard/automations/builder?id=${id}`);
+  };
+
+  const renderKebabMenu = (rule: AutomationRule) => (
+    <div style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
+      <button
+        onClick={() => setActiveMenuId(activeMenuId === rule.id ? null : rule.id)}
+        style={{ background: "transparent", border: "none", color: "var(--text-muted)", padding: "8px", cursor: "pointer" }}
+      >
+        <MoreVertical size={18} />
+      </button>
+      {activeMenuId === rule.id && (
+        <div
+          className="glass-card"
+          style={{
+            position: "absolute",
+            right: 0,
+            top: "100%",
+            width: "160px",
+            padding: "6px",
+            zIndex: 100,
+            background: "#ffffff",
+            display: "flex",
+            flexDirection: "column",
+            gap: "4px",
+          }}
+        >
+          <button
+            onClick={() => handleToggleActive(rule.id, rule.is_active)}
+            style={{ padding: "8px 12px", borderRadius: "6px", background: "transparent", border: "none", color: "var(--text-main)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+            className="hover-bg-soft"
+          >
+            {rule.is_active ? <Pause size={14} /> : <Play size={14} />}
+            {rule.is_active ? "Pause" : "Resume"}
+          </button>
+          <button
+            onClick={() => { setActiveMenuId(null); navigateToBuilder(rule.id); }}
+            style={{ padding: "8px 12px", borderRadius: "6px", background: "transparent", border: "none", color: "var(--text-main)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+            className="hover-bg-soft"
+          >
+            <Edit2 size={14} /> Edit Rule
+          </button>
+          <button
+            onClick={() => handleDuplicate(rule)}
+            style={{ padding: "8px 12px", borderRadius: "6px", background: "transparent", border: "none", color: "var(--text-main)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+            className="hover-bg-soft"
+          >
+            <Copy size={14} /> Duplicate
+          </button>
+          <div style={{ height: "1px", background: "var(--border-hairline)", margin: "4px 0" }}></div>
+          <button
+            onClick={() => handleDeleteAutomation(rule.id)}
+            style={{ padding: "8px 12px", borderRadius: "6px", background: "transparent", border: "none", color: "var(--accent-danger)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+            className="hover-bg-soft"
+          >
+            <Trash2 size={14} /> Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <DashboardLayout>
       <div style={{ padding: "48px 40px 96px", maxWidth: "1280px", margin: "0 auto", width: "100%" }}>
         
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "24px" }}>
           <div>
-            <h1 style={{ fontSize: "2.5rem", marginBottom: "6px" }}>Automation Rules Engine</h1>
+            <h1 style={{ fontSize: "2.2rem", marginBottom: "6px", display: "flex", alignItems: "center", gap: "12px" }}>
+              Automations <span style={{ fontSize: "1.2rem", color: "var(--text-muted)", fontWeight: "400" }}>· {filteredAutomations.length}</span>
+            </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
               Manage active comment-to-DM, story mention, and Groq AI auto-reply rules.
             </p>
           </div>
 
-          <Link href="/dashboard/automations/builder" className="btn-ig-connect">
-            <Plus size={18} /> New Automation
-          </Link>
-        </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            {/* View Toggles */}
+            <div style={{ display: "flex", background: "rgba(12, 10, 9, 0.04)", borderRadius: "var(--radius-button)", padding: "4px" }}>
+              <button
+                onClick={() => handleToggleView("list")}
+                title="List View"
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: "6px",
+                  border: "none",
+                  cursor: "pointer",
+                  background: viewMode === "list" ? "#ffffff" : "transparent",
+                  color: viewMode === "list" ? "var(--text-main)" : "var(--text-muted)",
+                  boxShadow: viewMode === "list" ? "0 1px 3px rgba(0,0,0,0.05)" : "none",
+                }}
+              >
+                <LayoutList size={18} />
+              </button>
+              <button
+                onClick={() => handleToggleView("board")}
+                title="Board View"
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: "6px",
+                  border: "none",
+                  cursor: "pointer",
+                  background: viewMode === "board" ? "#ffffff" : "transparent",
+                  color: viewMode === "board" ? "var(--text-main)" : "var(--text-muted)",
+                  boxShadow: viewMode === "board" ? "0 1px 3px rgba(0,0,0,0.05)" : "none",
+                }}
+              >
+                <LayoutGrid size={18} />
+              </button>
+            </div>
 
-        {/* Filters/Tabs (Optional UI to show active filter) */}
-        {filterType && (
-          <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
-            <Link
-              href="/dashboard/automations"
-              style={{
-                padding: "6px 12px",
-                borderRadius: "20px",
-                fontSize: "0.85rem",
-                background: "rgba(12, 10, 9, 0.05)",
-                color: "var(--text-main)",
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-            >
-              Clear Filter <XCircle size={14} />
+            <Link href="/dashboard/automations/builder" className="btn-ig-connect" style={{ height: "36px", padding: "0 16px" }}>
+              <Plus size={16} /> New Automation
             </Link>
           </div>
-        )}
+        </div>
 
-        {/* Rules List */}
-        <section>
-          {loading ? (
-            <div style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}>Loading automations...</div>
-          ) : filteredAutomations.length === 0 ? (
-            <div
-              className="glass-card gradient-orb-peach"
+        {/* Filters Row */}
+        <div style={{ display: "flex", gap: "16px", marginBottom: "32px", alignItems: "center" }}>
+          <div style={{ position: "relative", flex: 1, maxWidth: "300px" }}>
+            <Search size={16} color="var(--text-muted)" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }} />
+            <input 
+              type="text" 
+              placeholder="Search automations..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{
-                padding: "60px 24px",
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "16px",
+                width: "100%",
+                padding: "8px 12px 8px 36px",
+                borderRadius: "var(--radius-button)",
+                border: "var(--border-hairline)",
+                fontSize: "0.85rem",
+                background: "#ffffff",
+                outline: "none",
               }}
-            >
-              <Zap size={32} color="var(--text-main)" />
-              <h3 style={{ fontSize: "1.4rem" }}>
-                {filterType === "posts" ? "No Posts & Reels Automations" : filterType === "stories" ? "No Stories Automations" : "No Automation Rules Created Yet"}
-              </h3>
-              <p style={{ color: "var(--text-body)", maxWidth: "450px", fontSize: "0.9rem" }}>
-                {filterType ? "You don't have any rules for this content type." : "Create your first rule to start automatically responding to Instagram DMs, comments, and story mentions."}
-              </p>
-              <Link href="/dashboard/automations/builder" className="btn-ig-connect">
-                <Plus size={18} /> Create New Automation
-              </Link>
-            </div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {filteredAutomations.map((rule) => (
-                <div
-                  key={rule.id}
-                  className="glass-card"
-                  style={{
-                    padding: "24px",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "20px",
-                    position: "relative",
-                  }}
-                >
-                  <div style={{ flex: "1 1 400px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px", flexWrap: "wrap" }}>
-                      <h3 style={{ fontSize: "1.25rem" }}>{rule.name}</h3>
+            />
+          </div>
+          <div style={{ display: "flex", gap: "8px" }}>
+            {(["all", "live", "paused"] as const).map(status => (
+              <button
+                key={status}
+                onClick={() => setStatusFilter(status)}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "20px",
+                  fontSize: "0.8rem",
+                  fontWeight: "500",
+                  textTransform: "capitalize",
+                  border: "var(--border-hairline)",
+                  background: statusFilter === status ? (status === "live" ? "var(--accent-verdant)" : "var(--text-main)") : "#ffffff",
+                  color: statusFilter === status ? "#ffffff" : "var(--text-body)",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+        </div>
 
-                      {rule.is_ai_enabled && (
-                        <span
-                          style={{
-                            fontSize: "0.75rem",
-                            fontWeight: "600",
-                            padding: "3px 10px",
-                            borderRadius: "9999px",
-                            background: "rgba(12, 10, 9, 0.06)",
-                            color: "var(--text-main)",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "4px",
-                          }}
-                        >
-                          <Bot size={13} /> AI Powered ({rule.ai_model || "Groq Llama 3.1"})
-                        </span>
-                      )}
-
-                      <span
-                        style={{
-                          fontSize: "0.75rem",
-                          fontWeight: "600",
-                          padding: "2px 10px",
-                          borderRadius: "9999px",
-                          border: "var(--border-hairline)",
-                          background: "var(--bg-soft)",
-                          color: getStatusColor(rule.is_active ? 'active' : 'inactive'),
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
-                      >
-                        {rule.is_active ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
-                        {rule.is_active ? "Live" : "Paused"}
-                      </span>
-                    </div>
-
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-                      <Tag size={15} color="var(--text-muted)" />
-                      <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: "500" }}>Keywords:</span>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                        {(rule.trigger_value || "*").split(",").map((kw, idx) => (
-                          <span
-                            key={idx}
-                            style={{
-                              background: "rgba(12, 10, 9, 0.04)",
-                              color: "var(--text-main)",
-                              padding: "2px 8px",
-                              borderRadius: "6px",
-                              fontFamily: "var(--font-mono)",
-                              fontSize: "0.82rem",
-                              fontWeight: "600",
-                            }}
-                          >
-                            {kw.trim()}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        padding: "10px 14px",
-                        borderRadius: "var(--radius-button)",
-                        background: "var(--bg-soft)",
-                        border: "var(--border-hairline)",
-                        fontSize: "0.88rem",
-                        color: "var(--text-body)",
-                        marginBottom: "12px"
-                      }}
-                    >
-                      <strong>Response:</strong> {rule.response_content?.text}
-                    </div>
-
-                    <div style={{ display: "flex", gap: "16px", fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: "500" }}>
-                      <div><strong style={{ color: "var(--text-main)" }}>{rule.dms_sent || 0}</strong> DMs Sent</div>
-                      <div><strong style={{ color: "var(--text-main)" }}>{rule.clicks || 0}</strong> Clicks</div>
-                      <div>CTR: <strong style={{ color: "var(--accent-verdant)" }}>{rule.ctr || "—"}</strong></div>
-                    </div>
-                  </div>
-
-                  {/* Actions Bar */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <button
-                      onClick={() => handleToggleActive(rule.id, rule.is_active)}
-                      style={{
-                        padding: "8px 16px",
-                        borderRadius: "9999px",
-                        border: "var(--border-hairline)",
-                        background: "#ffffff",
-                        color: "var(--text-main)",
-                        fontSize: "0.82rem",
-                        fontWeight: "500",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                      }}
-                    >
-                      {rule.is_active ? <Pause size={14} /> : <Play size={14} />}
-                      {rule.is_active ? "Pause" : "Resume"}
-                    </button>
-
-                    <div style={{ position: "relative" }}>
-                      <button
-                        onClick={() => setActiveMenuId(activeMenuId === rule.id ? null : rule.id)}
-                        style={{ background: "transparent", border: "none", color: "var(--text-muted)", padding: "8px", cursor: "pointer" }}
-                      >
-                        <MoreVertical size={18} />
-                      </button>
-
-                      {activeMenuId === rule.id && (
+        {loading ? (
+          <div style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}>Loading automations...</div>
+        ) : filteredAutomations.length === 0 ? (
+          <div className="glass-card gradient-orb-peach" style={{ padding: "60px 24px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
+            <Zap size={32} color="var(--text-main)" />
+            <h3 style={{ fontSize: "1.4rem" }}>No Automations Found</h3>
+            <p style={{ color: "var(--text-body)", maxWidth: "450px", fontSize: "0.9rem" }}>Try adjusting your filters or create a new automation.</p>
+          </div>
+        ) : viewMode === "list" ? (
+          /* LIST VIEW */
+          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            {Object.entries(groupedAutomations).map(([groupName, rules]) => {
+              const isExpanded = expandedGroups[groupName];
+              return (
+                <div key={groupName}>
+                  <button
+                    onClick={() => toggleGroup(groupName)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      background: "transparent",
+                      border: "none",
+                      fontSize: "1.05rem",
+                      fontWeight: "600",
+                      color: "var(--text-main)",
+                      cursor: "pointer",
+                      padding: "8px 0",
+                      marginBottom: "8px"
+                    }}
+                  >
+                    {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                    {groupName} <span style={{ color: "var(--text-muted)", fontSize: "0.9rem", fontWeight: "400" }}>({rules.length})</span>
+                  </button>
+                  
+                  {isExpanded && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      {rules.map(rule => (
                         <div
-                          className="glass-card"
+                          key={rule.id}
+                          className="glass-card hover-lift"
+                          onClick={() => navigateToBuilder(rule.id)}
                           style={{
-                            position: "absolute",
-                            right: 0,
-                            top: "40px",
-                            width: "160px",
-                            padding: "6px",
-                            zIndex: 20,
-                            background: "#ffffff",
                             display: "flex",
-                            flexDirection: "column",
-                            gap: "4px",
+                            alignItems: "center",
+                            padding: "16px",
+                            cursor: "pointer",
+                            position: "relative",
+                            overflow: "hidden",
+                            gap: "16px"
                           }}
                         >
-                          <button
-                            onClick={() => {
-                              setActiveMenuId(null);
-                              router.push(`/dashboard/automations/builder?id=${rule.id}`);
-                            }}
-                            style={{ padding: "8px 12px", borderRadius: "6px", background: "transparent", border: "none", color: "var(--text-main)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
-                          >
-                            <Edit2 size={14} /> Edit Rule
-                          </button>
-                          <button
-                            onClick={() => handleDuplicate(rule)}
-                            style={{ padding: "8px 12px", borderRadius: "6px", background: "transparent", border: "none", color: "var(--text-main)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
-                          >
-                            <Copy size={14} /> Duplicate
-                          </button>
-                          <button
-                            onClick={() => handleDeleteAutomation(rule.id)}
-                            style={{ padding: "8px 12px", borderRadius: "6px", background: "rgba(220, 38, 38, 0.1)", border: "none", color: "var(--accent-danger)", fontSize: "0.85rem", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
-                          >
-                            <Trash2 size={14} /> Delete
-                          </button>
+                          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "4px", background: rule.is_active ? "var(--accent-verdant)" : "var(--text-muted)" }}></div>
+                          
+                          <div style={{ flex: "1 1 200px", minWidth: 0 }}>
+                            <div style={{ fontSize: "1rem", fontWeight: "600", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "var(--text-main)" }}>
+                              {rule.name}
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "6px" }}>
+                              {rule.trigger_value && (
+                                <span style={{ fontSize: "0.75rem", fontFamily: "var(--font-mono)", background: "rgba(12, 10, 9, 0.05)", padding: "2px 8px", borderRadius: "4px", color: "var(--text-body)" }}>
+                                  {rule.trigger_value}
+                                </span>
+                              )}
+                              {rule.is_ai_enabled && (
+                                <span style={{ fontSize: "0.7rem", fontWeight: "600", color: "var(--accent-verdant)", display: "flex", alignItems: "center", gap: "3px" }}>
+                                  <Bot size={12} /> AI
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div style={{ flex: "1 1 150px", display: "flex", flexDirection: "column", gap: "4px", minWidth: "150px" }}>
+                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "flex", justifyContent: "space-between" }}>
+                              <span>Performance</span>
+                              <span>{rule.ctr} CTR</span>
+                            </div>
+                            <div style={{ height: "4px", background: "rgba(12, 10, 9, 0.06)", borderRadius: "2px", width: "100%", overflow: "hidden" }}>
+                              <div style={{ height: "100%", background: "var(--accent-verdant)", width: maxClicks > 0 ? `${((rule.clicks || 0) / maxClicks) * 100}%` : "0%", transition: "width 0.3s" }}></div>
+                            </div>
+                          </div>
+
+                          <div style={{ flex: "0 0 100px", textAlign: "right", fontFamily: "var(--font-mono)", fontSize: "0.9rem", color: "var(--text-main)", fontWeight: "500" }}>
+                            {rule.dms_sent.toLocaleString()} <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontWeight: "400" }}>sent</span>
+                          </div>
+
+                          <div style={{ flex: "0 0 80px", display: "flex", justifyContent: "flex-end" }}>
+                            <span style={{ fontSize: "0.75rem", fontWeight: "600", padding: "4px 10px", borderRadius: "20px", background: rule.is_active ? "rgba(14, 159, 110, 0.1)" : "rgba(12, 10, 9, 0.06)", color: rule.is_active ? "var(--accent-verdant)" : "var(--text-muted)" }}>
+                              {rule.is_active ? "Live" : "Paused"}
+                            </span>
+                          </div>
+
+                          <div style={{ flex: "0 0 40px", display: "flex", justifyContent: "flex-end" }}>
+                            {renderKebabMenu(rule)}
+                          </div>
                         </div>
-                      )}
+                      ))}
                     </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* BOARD VIEW */
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px", alignItems: "flex-start" }}>
+            
+            {/* Needs Attention Column */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", background: "rgba(12,10,9,0.02)", padding: "16px", borderRadius: "12px" }}>
+              <h3 style={{ fontSize: "0.95rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px", color: "var(--text-main)", marginBottom: "8px" }}>
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent-danger)" }}></span>
+                Needs attention <span style={{ color: "var(--text-muted)", fontWeight: "400", fontSize: "0.85rem" }}>{boardBuckets.needsAttention.length}</span>
+              </h3>
+              {boardBuckets.needsAttention.map(rule => (
+                <div key={rule.id} onClick={() => navigateToBuilder(rule.id)} className="glass-card hover-lift" style={{ padding: "16px", cursor: "pointer", position: "relative" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+                    <div style={{ fontSize: "0.95rem", fontWeight: "600", color: "var(--text-main)", lineHeight: 1.3, paddingRight: "20px" }}>{rule.name}</div>
+                    <div style={{ position: "absolute", top: "12px", right: "8px" }}>{renderKebabMenu(rule)}</div>
+                  </div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--accent-danger)", fontWeight: "500", display: "flex", alignItems: "center", gap: "6px" }}>
+                    {rule.failed_24h} failed in the last 24h
                   </div>
                 </div>
               ))}
             </div>
-          )}
-        </section>
 
+            {/* Live Column */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", background: "rgba(12,10,9,0.02)", padding: "16px", borderRadius: "12px" }}>
+              <h3 style={{ fontSize: "0.95rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px", color: "var(--text-main)", marginBottom: "8px" }}>
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent-verdant)" }}></span>
+                Live <span style={{ color: "var(--text-muted)", fontWeight: "400", fontSize: "0.85rem" }}>{boardBuckets.live.length}</span>
+              </h3>
+              {boardBuckets.live.map(rule => (
+                <div key={rule.id} onClick={() => navigateToBuilder(rule.id)} className="glass-card hover-lift" style={{ padding: "16px", cursor: "pointer", position: "relative" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+                    <div style={{ fontSize: "0.95rem", fontWeight: "600", color: "var(--text-main)", lineHeight: 1.3, paddingRight: "20px" }}>{rule.name}</div>
+                    <div style={{ position: "absolute", top: "12px", right: "8px" }}>{renderKebabMenu(rule)}</div>
+                  </div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span><strong style={{ color: "var(--text-main)" }}>{rule.dms_sent.toLocaleString()}</strong> sent</span>
+                    <span style={{ color: "var(--accent-verdant)", fontWeight: "500" }}>{rule.ctr} CTR</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Paused Column */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", background: "rgba(12,10,9,0.02)", padding: "16px", borderRadius: "12px" }}>
+              <h3 style={{ fontSize: "0.95rem", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px", color: "var(--text-main)", marginBottom: "8px" }}>
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--text-muted)" }}></span>
+                Paused <span style={{ color: "var(--text-muted)", fontWeight: "400", fontSize: "0.85rem" }}>{boardBuckets.paused.length}</span>
+              </h3>
+              {boardBuckets.paused.map(rule => (
+                <div key={rule.id} onClick={() => navigateToBuilder(rule.id)} className="glass-card hover-lift" style={{ padding: "16px", cursor: "pointer", position: "relative", opacity: 0.8 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+                    <div style={{ fontSize: "0.95rem", fontWeight: "600", color: "var(--text-main)", lineHeight: 1.3, paddingRight: "20px" }}>{rule.name}</div>
+                    <div style={{ position: "absolute", top: "12px", right: "8px" }}>{renderKebabMenu(rule)}</div>
+                  </div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span><strong>{rule.dms_sent.toLocaleString()}</strong> sent</span>
+                    <span>{rule.ctr} CTR</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        )}
       </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        .hover-bg-soft:hover {
+          background-color: var(--bg-soft) !important;
+        }
+        .hover-lift:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+          border-color: rgba(12, 10, 9, 0.1);
+        }
+      `}} />
     </DashboardLayout>
   );
 }

@@ -37,10 +37,27 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { data: failedMessages } = await supabaseAdmin
+      .from("messages")
+      .select("automation_id")
+      .eq("send_status", "failed")
+      .gte("created_at", twentyFourHoursAgo);
+
+    const failedMap: Record<string, number> = {};
+    if (failedMessages) {
+      failedMessages.forEach((row: any) => {
+        if (row.automation_id) {
+          failedMap[row.automation_id] = (failedMap[row.automation_id] || 0) + 1;
+        }
+      });
+    }
+
     const enrichedAutomations = data.map((rule: any) => ({
       ...rule,
       clicks: clicksMap[rule.id] || 0,
       ctr: rule.dms_sent > 0 ? `${Math.round(((clicksMap[rule.id] || 0) / rule.dms_sent) * 100)}%` : "—",
+      failed_24h: failedMap[rule.id] || 0,
     }));
 
     return NextResponse.json({ automations: enrichedAutomations });

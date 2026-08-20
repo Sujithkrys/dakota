@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { getOwnerSession } from "@/lib/session";
+import { getOwnerSession, getActiveAccountId } from "@/lib/session";
 
 /**
  * GET /api/account/list
@@ -25,7 +25,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ accounts: [] });
     }
 
-    return NextResponse.json({ accounts: data || [] });
+    const activeAccountId = await getActiveAccountId(request);
+
+    return NextResponse.json({ accounts: data || [], activeAccountId });
   } catch {
     return NextResponse.json({ accounts: [] });
   }

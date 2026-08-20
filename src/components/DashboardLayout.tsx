@@ -100,6 +100,12 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
         const data = await res.json();
         if (data?.accounts && Array.isArray(data.accounts)) {
           setAccounts(data.accounts);
+          if (data.activeAccountId) {
+            const activeAcc = data.accounts.find((a: any) => a.id === data.activeAccountId);
+            if (activeAcc) {
+              setActiveAccountUsername(activeAcc.username);
+            }
+          }
         }
       }
     } catch {
