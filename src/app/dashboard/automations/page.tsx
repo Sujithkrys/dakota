@@ -41,17 +41,13 @@ interface AutomationRule {
   failed_24h: number;
 }
 
-const GROUP_NAMES: Record<string, string> = {
-  comment: "Post & Reel Comments",
-  post_comment: "Post & Reel Comments",
-  post: "Post & Reel Comments",
-  reel: "Post & Reel Comments",
-  story: "Story Mentions & Replies",
-  story_mention: "Story Mentions & Replies",
-  dm: "Direct Messages",
+const getGroupName = (rule: AutomationRule) => {
+  if (rule.is_ai_enabled) return "AI auto-reply automations";
+  if (["comment", "post", "reel", "post_comment"].includes(rule.trigger_source || "")) return "Comment automations";
+  if (["story", "story_mention"].includes(rule.trigger_source || "")) return "Story mention automations";
+  if (rule.trigger_source === "dm") return "DM keyword automations";
+  return "Other automations";
 };
-
-const getGroupName = (source: string) => GROUP_NAMES[source] || "Other Triggers";
 
 function AutomationsContent() {
   const router = useRouter();
@@ -205,7 +201,7 @@ function AutomationsContent() {
   const groupedAutomations = useMemo(() => {
     const groups: Record<string, AutomationRule[]> = {};
     filteredAutomations.forEach((rule) => {
-      const groupName = getGroupName(rule.trigger_source || "dm");
+      const groupName = getGroupName(rule);
       if (!groups[groupName]) groups[groupName] = [];
       groups[groupName].push(rule);
     });
@@ -444,7 +440,7 @@ function AutomationsContent() {
                     }}
                   >
                     {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-                    {groupName} <span style={{ color: "var(--text-muted)", fontSize: "0.9rem", fontWeight: "400" }}>({rules.length})</span>
+                    {groupName} <span style={{ color: "var(--text-muted)", fontWeight: "400" }}>· {rules.length}</span>
                   </button>
                   
                   {isExpanded && (
@@ -484,18 +480,13 @@ function AutomationsContent() {
                             </div>
                           </div>
 
-                          <div style={{ flex: "1 1 150px", display: "flex", flexDirection: "column", gap: "4px", minWidth: "150px" }}>
-                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "flex", justifyContent: "space-between" }}>
-                              <span>Performance</span>
-                              <span>{rule.ctr} CTR</span>
-                            </div>
-                            <div style={{ height: "4px", background: "rgba(12, 10, 9, 0.06)", borderRadius: "2px", width: "100%", overflow: "hidden" }}>
+                          <div style={{ flex: "1 1 120px", display: "flex", alignItems: "center", gap: "12px", minWidth: "120px" }}>
+                            <div style={{ width: "60px", height: "4px", background: "rgba(12, 10, 9, 0.06)", borderRadius: "2px", overflow: "hidden" }}>
                               <div style={{ height: "100%", background: "var(--accent-verdant)", width: maxClicks > 0 ? `${((rule.clicks || 0) / maxClicks) * 100}%` : "0%", transition: "width 0.3s" }}></div>
                             </div>
-                          </div>
-
-                          <div style={{ flex: "0 0 100px", textAlign: "right", fontFamily: "var(--font-mono)", fontSize: "0.9rem", color: "var(--text-main)", fontWeight: "500" }}>
-                            {rule.dms_sent.toLocaleString()} <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontWeight: "400" }}>sent</span>
+                            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.9rem", color: "var(--text-main)", fontWeight: "500" }}>
+                              {rule.dms_sent.toLocaleString()} <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontWeight: "400" }}>sent</span>
+                            </div>
                           </div>
 
                           <div style={{ flex: "0 0 80px", display: "flex", justifyContent: "flex-end" }}>
