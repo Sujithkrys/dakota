@@ -519,7 +519,7 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
                   alignItems: "center",
                   justifyContent: isCollapsed ? "center" : "space-between",
                   gap: "10px",
-                  padding: "8px 12px",
+                  padding: isCollapsed ? "8px 0" : "8px 12px",
                   borderRadius: "var(--radius-button)",
                   background: "transparent",
                   border: "none",
@@ -528,7 +528,7 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
                   textAlign: "left",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", overflow: "hidden" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", overflow: isCollapsed ? "visible" : "hidden" }}>
                   <div
                     style={{
                       width: "32px",
