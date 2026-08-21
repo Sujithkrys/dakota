@@ -19,6 +19,8 @@ import {
   ChevronRight,
   Bot,
   Zap,
+  Instagram,
+  MessageCircle,
 } from "lucide-react";
 
 interface AutomationRule {
@@ -41,14 +43,6 @@ interface AutomationRule {
   failed_24h: number;
 }
 
-const getGroupName = (rule: AutomationRule) => {
-  if (rule.is_ai_enabled) return "AI auto-reply automations";
-  if (["comment", "post", "reel", "post_comment"].includes(rule.trigger_source || "")) return "Comment automations";
-  if (["story", "story_mention"].includes(rule.trigger_source || "")) return "Story mention automations";
-  if (rule.trigger_source === "dm") return "DM keyword automations";
-  return "Other automations";
-};
-
 function AutomationsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -62,7 +56,6 @@ function AutomationsContent() {
   const [viewMode, setViewMode] = useState<"list" | "board">("list");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "live" | "paused">("all");
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
 
   const fetchAutomations = async () => {
     try {
@@ -196,35 +189,6 @@ function AutomationsContent() {
   const maxClicks = useMemo(() => {
     return Math.max(0, ...filteredAutomations.map(a => a.clicks || 0));
   }, [filteredAutomations]);
-
-  // Group logic for list view
-  const groupedAutomations = useMemo(() => {
-    const groups: Record<string, AutomationRule[]> = {};
-    filteredAutomations.forEach((rule) => {
-      const groupName = getGroupName(rule);
-      if (!groups[groupName]) groups[groupName] = [];
-      groups[groupName].push(rule);
-    });
-    return groups;
-  }, [filteredAutomations]);
-
-  // Set default expanded states for groups
-  useEffect(() => {
-    const initialExpanded: Record<string, boolean> = {};
-    Object.entries(groupedAutomations).forEach(([groupName, rules]) => {
-      if (expandedGroups[groupName] === undefined) {
-        const hasLive = rules.some((r) => r.is_active);
-        initialExpanded[groupName] = hasLive;
-      }
-    });
-    if (Object.keys(initialExpanded).length > 0) {
-      setExpandedGroups(prev => ({ ...prev, ...initialExpanded }));
-    }
-  }, [groupedAutomations]);
-
-  const toggleGroup = (groupName: string) => {
-    setExpandedGroups(prev => ({ ...prev, [groupName]: !prev[groupName] }));
-  };
 
   // Board view buckets
   const boardBuckets = useMemo(() => {
@@ -418,93 +382,135 @@ function AutomationsContent() {
           </div>
         ) : viewMode === "list" ? (
           /* LIST VIEW */
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            {Object.entries(groupedAutomations).map(([groupName, rules]) => {
-              const isExpanded = expandedGroups[groupName];
-              return (
-                <div key={groupName}>
-                  <button
-                    onClick={() => toggleGroup(groupName)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      background: "transparent",
-                      border: "none",
-                      fontSize: "1.05rem",
-                      fontWeight: "600",
-                      color: "var(--text-main)",
-                      cursor: "pointer",
-                      padding: "8px 0",
-                      marginBottom: "8px"
-                    }}
-                  >
-                    {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-                    {groupName} <span style={{ color: "var(--text-muted)", fontWeight: "400" }}>· {rules.length}</span>
-                  </button>
-                  
-                  {isExpanded && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                      {rules.map(rule => (
-                        <div
-                          key={rule.id}
-                          className="glass-card hover-lift"
-                          onClick={() => navigateToBuilder(rule.id)}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            padding: "16px",
-                            cursor: "pointer",
-                            position: "relative",
-                            overflow: "hidden",
-                            gap: "16px"
-                          }}
-                        >
-                          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "4px", background: rule.is_active ? "var(--accent-verdant)" : "var(--text-muted)" }}></div>
-                          
-                          <div style={{ flex: "1 1 200px", minWidth: 0 }}>
-                            <div style={{ fontSize: "1rem", fontWeight: "600", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "var(--text-main)" }}>
-                              {rule.name}
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "6px" }}>
-                              {rule.trigger_value && (
-                                <span style={{ fontSize: "0.75rem", fontFamily: "var(--font-mono)", background: "rgba(12, 10, 9, 0.05)", padding: "2px 8px", borderRadius: "4px", color: "var(--text-body)" }}>
-                                  {rule.trigger_value}
-                                </span>
-                              )}
-                              {rule.is_ai_enabled && (
-                                <span style={{ fontSize: "0.7rem", fontWeight: "600", color: "var(--accent-verdant)", display: "flex", alignItems: "center", gap: "3px" }}>
-                                  <Bot size={12} /> AI
-                                </span>
-                              )}
-                            </div>
-                          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {/* Header Row */}
+            <div style={{ 
+              display: "grid", 
+              gridTemplateColumns: "32px 2.2fr 64px 64px 76px 64px",
+              gap: "16px",
+              padding: "0 16px",
+              marginBottom: "4px",
+              fontSize: "0.75rem",
+              fontWeight: "600",
+              color: "var(--text-muted)",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px"
+            }}>
+              <div></div>
+              <div>Automation</div>
+              <div style={{ textAlign: "right" }}>Sent</div>
+              <div style={{ textAlign: "right" }}>CTR</div>
+              <div style={{ textAlign: "center" }}>Status</div>
+              <div></div>
+            </div>
 
-                          <div style={{ flex: "1 1 120px", display: "flex", alignItems: "center", gap: "12px", minWidth: "120px" }}>
-                            <div style={{ width: "60px", height: "4px", background: "rgba(12, 10, 9, 0.06)", borderRadius: "2px", overflow: "hidden" }}>
-                              <div style={{ height: "100%", background: "var(--accent-verdant)", width: maxClicks > 0 ? `${((rule.clicks || 0) / maxClicks) * 100}%` : "0%", transition: "width 0.3s" }}></div>
-                            </div>
-                            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.9rem", color: "var(--text-main)", fontWeight: "500" }}>
-                              {rule.dms_sent.toLocaleString()} <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontWeight: "400" }}>sent</span>
-                            </div>
-                          </div>
+            {/* Data Rows */}
+            {filteredAutomations.map(rule => (
+              <div
+                key={rule.id}
+                className="glass-card hover-lift"
+                onClick={() => navigateToBuilder(rule.id)}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "32px 2.2fr 64px 64px 76px 64px",
+                  gap: "16px",
+                  alignItems: "center",
+                  padding: "0 16px",
+                  height: "54px",
+                  cursor: "pointer",
+                }}
+              >
+                {/* 1. Icon column */}
+                <div style={{ 
+                  width: "32px", height: "32px", 
+                  borderRadius: "var(--radius-button)", 
+                  background: "var(--bg-dark)", 
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "var(--text-body)"
+                }}>
+                  {rule.is_ai_enabled ? <Bot size={16} /> : 
+                   ["story", "story_mention"].includes(rule.trigger_source) ? <Instagram size={16} /> : 
+                   <MessageCircle size={16} />}
+                </div>
 
-                          <div style={{ flex: "0 0 80px", display: "flex", justifyContent: "flex-end" }}>
-                            <span style={{ fontSize: "0.75rem", fontWeight: "600", padding: "4px 10px", borderRadius: "20px", background: rule.is_active ? "rgba(14, 159, 110, 0.1)" : "rgba(12, 10, 9, 0.06)", color: rule.is_active ? "var(--accent-verdant)" : "var(--text-muted)" }}>
-                              {rule.is_active ? "Live" : "Paused"}
-                            </span>
-                          </div>
-
-                          <div style={{ flex: "0 0 40px", display: "flex", justifyContent: "flex-end" }}>
-                            {renderKebabMenu(rule)}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                {/* 2. Name & Keywords */}
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
+                  <div style={{ 
+                    fontWeight: "600", 
+                    color: "var(--text-main)", 
+                    whiteSpace: "nowrap", 
+                    overflow: "hidden", 
+                    textOverflow: "ellipsis" 
+                  }}>
+                    {rule.name}
+                  </div>
+                  {rule.trigger_value && (
+                    <span style={{ 
+                      fontSize: "0.75rem", 
+                      fontFamily: "var(--font-mono)", 
+                      background: "rgba(12, 10, 9, 0.05)", 
+                      padding: "2px 8px", 
+                      borderRadius: "4px", 
+                      color: "var(--text-body)",
+                      flexShrink: 0
+                    }}>
+                      {rule.trigger_value}
+                    </span>
+                  )}
+                  {rule.is_ai_enabled && (
+                    <span style={{ 
+                      fontSize: "0.7rem", 
+                      fontWeight: "600", 
+                      color: "var(--accent-verdant)", 
+                      display: "flex", alignItems: "center", gap: "3px",
+                      flexShrink: 0
+                    }}>
+                      <Bot size={12} /> AI
+                    </span>
                   )}
                 </div>
-              );
-            })}
+
+                {/* 3. Sent */}
+                <div style={{ textAlign: "right", fontFamily: "var(--font-mono)", fontSize: "0.9rem", color: "var(--text-main)", fontWeight: "500" }}>
+                  {rule.dms_sent.toLocaleString()}
+                </div>
+
+                {/* 4. CTR */}
+                <div style={{ textAlign: "right", fontFamily: "var(--font-mono)", fontSize: "0.9rem", color: rule.ctr === "—" || rule.ctr === "0%" ? "var(--text-muted)" : "var(--text-main)", fontWeight: "500" }}>
+                  {rule.ctr}
+                </div>
+
+                {/* 5. Status */}
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <span style={{ 
+                    fontSize: "0.75rem", fontWeight: "600", padding: "4px 10px", borderRadius: "20px", 
+                    background: rule.is_active ? "rgba(14, 159, 110, 0.1)" : "rgba(12, 10, 9, 0.06)", 
+                    color: rule.is_active ? "var(--accent-verdant)" : "var(--text-muted)" 
+                  }}>
+                    {rule.is_active ? "Live" : "Paused"}
+                  </span>
+                </div>
+
+                {/* 6. Actions */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "4px" }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleActive(rule.id, rule.is_active);
+                    }}
+                    style={{
+                      background: "transparent", border: "none", color: "var(--text-muted)", 
+                      padding: "6px", borderRadius: "6px", cursor: "pointer"
+                    }}
+                    className="hover-bg-soft"
+                    title={rule.is_active ? "Pause" : "Resume"}
+                  >
+                    {rule.is_active ? <Pause size={16} /> : <Play size={16} />}
+                  </button>
+                  {renderKebabMenu(rule)}
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           /* BOARD VIEW */
