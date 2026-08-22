@@ -76,7 +76,7 @@ function BuilderContent() {
       const data = await res.json();
       if (data.media && data.media.length > 0) {
         setMediaList(data.media);
-        if (!selectedMediaId) setSelectedMediaId(data.media[0].id);
+        setSelectedMediaId(prev => prev || data.media[0].id);
       } else {
         setMediaList([]);
       }

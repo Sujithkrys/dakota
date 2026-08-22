@@ -243,7 +243,7 @@ export default function RewindPage() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {automations.length === 0 ? (
-              <div className="glass-card" style={{ padding: "30px 24px", textAlign: "center", color: "var(--text-muted)", fontSize: "0.9rem" }}>
+              <div style={{ padding: "30px 24px", textAlign: "center", color: "var(--text-muted)", fontSize: "0.9rem", background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)" }}>
                 No comment-to-DM automations configured yet. Create a comment automation rule first to use Rewind.
               </div>
             ) : (
@@ -253,14 +253,14 @@ export default function RewindPage() {
                 <div
                   key={item.id}
                   onClick={() => setSelectedId(item.id)}
-                  className="glass-card"
                   style={{
                     padding: "20px 24px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    border: isSelected ? "2px solid var(--accent-verdant)" : "var(--border-hairline)",
-                    background: isSelected ? "var(--bg-soft)" : "#ffffff",
+                    border: isSelected ? "1.5px solid var(--accent-verdant)" : "var(--border-hairline)",
+                    borderRadius: "var(--radius-card)",
+                    background: isSelected ? "#F0FBF7" : "#ffffff",
                     cursor: "pointer",
                   }}
                 >
@@ -299,7 +299,6 @@ export default function RewindPage() {
 
           {historyJobs.length === 0 ? (
             <div
-              className="glass-card gradient-orb-sky"
               style={{
                 padding: "60px 24px",
                 textAlign: "center",
@@ -307,6 +306,9 @@ export default function RewindPage() {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: "14px",
+                background: "#ffffff",
+                border: "var(--border-hairline)",
+                borderRadius: "var(--radius-card)",
               }}
             >
               <RotateCcw size={32} color="var(--text-muted)" />
@@ -318,7 +320,7 @@ export default function RewindPage() {
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {historyJobs.map((job) => (
-                <div key={job.id} className="glass-card" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div key={job.id} style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)" }}>
                   <div>
                     <div style={{ fontWeight: "600", fontSize: "0.95rem" }}>{job.automation_name}</div>
                     <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>

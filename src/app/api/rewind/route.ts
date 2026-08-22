@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { getInstagramMediaComments, sendInstagramMessage } from "@/lib/instagram";
+import { getInstagramMediaComments, sendCommentPrivateReply } from "@/lib/instagram";
 import { resolveAuthedAccount } from "@/lib/session";
 
 export async function GET(request: NextRequest) {
@@ -82,6 +82,7 @@ export async function POST(request: NextRequest) {
         status: "failed",
         comments_scanned: 0,
         dms_sent: 0,
+        error_log: [{ error: "No valid Instagram access token found for user" }],
         created_at: new Date().toISOString(),
       };
       try {
@@ -114,6 +115,7 @@ export async function POST(request: NextRequest) {
         status: "failed",
         comments_scanned: 0,
         dms_sent: 0,
+        error_log: [{ error: `Rewind job failed: ${errMsg}` }],
         created_at: new Date().toISOString(),
       };
       try {
@@ -128,6 +130,7 @@ export async function POST(request: NextRequest) {
       }, { status: 500 });
     }
 
+    const errorLog: any[] = [];
     if (commentsData?.data && Array.isArray(commentsData.data)) {
       commentsScanned = commentsData.data.length;
 
@@ -135,13 +138,18 @@ export async function POST(request: NextRequest) {
         const text = (commentObj.text || "").toLowerCase();
         const isMatch = keywords.some((kw: string) => kw && text.includes(kw));
         const commenterId = commentObj.from?.id;
+        const commentId = commentObj.id;
 
-        if (isMatch && commenterId) {
-          const sendRes = await sendInstagramMessage(commenterId, dmText, accessToken);
+        if (isMatch && commenterId && commentId) {
+          const sendRes = await sendCommentPrivateReply(commentId, dmText, accessToken);
           if (sendRes.success) {
             dmsSent++;
           } else {
             dmsFailed++;
+            errorLog.push({
+              comment_id: commentId,
+              error: sendRes.error || "Unknown error",
+            });
           }
         }
       }
@@ -160,6 +168,7 @@ export async function POST(request: NextRequest) {
       status: jobStatus,
       comments_scanned: commentsScanned,
       dms_sent: dmsSent,
+      error_log: errorLog,
       created_at: new Date().toISOString(),
     };
 
