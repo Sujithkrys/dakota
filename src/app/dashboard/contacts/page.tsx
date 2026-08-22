@@ -97,30 +97,30 @@ export default function ContactsPage() {
 
         {/* 3 Metric Cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px", marginBottom: "36px" }}>
-          <div className="glass-card gradient-orb-mint" style={{ padding: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <div style={{ fontSize: "0.75rem", fontWeight: "600", color: "var(--text-muted)", letterSpacing: "0.5px" }}>TOTAL CONTACTS</div>
-              <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginTop: "4px" }}>{contacts.length.toLocaleString()}</div>
+              <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "300", marginTop: "4px" }}>{contacts.length.toLocaleString()}</div>
             </div>
             <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Users size={20} color="var(--text-main)" />
             </div>
           </div>
 
-          <div className="glass-card gradient-orb-peach" style={{ padding: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <div style={{ fontSize: "0.75rem", fontWeight: "600", color: "var(--text-muted)", letterSpacing: "0.5px" }}>WITH EMAIL CAPTURED</div>
-              <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginTop: "4px" }}>{contacts.filter((c) => !!c.email).length}</div>
+              <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "300", marginTop: "4px" }}>{contacts.filter((c) => !!c.email).length}</div>
             </div>
             <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Mail size={20} color="var(--text-main)" />
             </div>
           </div>
 
-          <div className="glass-card gradient-orb-sky" style={{ padding: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <div style={{ fontSize: "0.75rem", fontWeight: "600", color: "var(--text-muted)", letterSpacing: "0.5px" }}>ACTIVE TODAY</div>
-              <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginTop: "4px" }}>{contacts.length}</div>
+              <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "300", marginTop: "4px" }}>{contacts.length}</div>
             </div>
             <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Zap size={20} color="var(--text-main)" />
@@ -178,12 +178,12 @@ export default function ContactsPage() {
                       </div>
                     </td>
                     <td style={{ padding: "16px 24px", color: c.email ? "var(--text-main)" : "var(--text-muted)" }}>{c.email || "—"}</td>
-                    <td style={{ padding: "16px 24px", fontWeight: "600" }}>
+                    <td style={{ padding: "16px 24px", fontWeight: "600", fontFamily: "var(--font-mono)" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                         <MessageSquare size={14} color="var(--text-muted)" /> {c.dmsCount}
                       </div>
                     </td>
-                    <td style={{ padding: "16px 24px", color: "var(--text-muted)" }}>{c.firstContact}</td>
+                    <td style={{ padding: "16px 24px", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>{c.firstContact}</td>
                     <td style={{ padding: "16px 24px", color: "var(--accent-verdant)", fontWeight: "600" }}>{c.lastActive}</td>
                   </tr>
                 ))
