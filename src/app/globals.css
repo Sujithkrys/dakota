@@ -335,7 +335,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 }
 
 .builder-option-card.active {
-  border-color: var(--text-main);
+  border-color: var(--accent-verdant);
 }
 
 /* Overlay Modal */
@@ -384,7 +384,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 }
 
 .builder-tab.active {
-  background: var(--text-main);
+  background: var(--accent-verdant);
   color: #ffffff;
 }
 

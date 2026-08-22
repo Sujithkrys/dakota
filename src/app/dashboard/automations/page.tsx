@@ -360,7 +360,7 @@ function AutomationsContent() {
                   fontWeight: "500",
                   textTransform: "capitalize",
                   border: "var(--border-hairline)",
-                  background: statusFilter === status ? (status === "live" ? "var(--accent-verdant)" : "var(--text-main)") : "#ffffff",
+                  background: statusFilter === status ? "var(--accent-verdant)" : "#ffffff",
                   color: statusFilter === status ? "#ffffff" : "var(--text-body)",
                   cursor: "pointer",
                   transition: "all 0.2s ease"

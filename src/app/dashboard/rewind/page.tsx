@@ -122,7 +122,7 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 1 ? "var(--text-main)" : "#ffffff",
+                background: activeStep >= 1 ? "var(--accent-verdant)" : "#ffffff",
                 border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
@@ -136,7 +136,7 @@ export default function RewindPage() {
             </span>
           </div>
 
-          <div style={{ width: "60px", height: "1px", background: activeStep >= 2 ? "var(--text-main)" : "var(--border-card)" }} />
+          <div style={{ width: "60px", height: "1px", background: activeStep >= 2 ? "var(--accent-verdant)" : "var(--border-card)" }} />
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
             <div
@@ -144,7 +144,7 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 2 ? "var(--text-main)" : "#ffffff",
+                background: activeStep >= 2 ? "var(--accent-verdant)" : "#ffffff",
                 border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
@@ -158,7 +158,7 @@ export default function RewindPage() {
             </span>
           </div>
 
-          <div style={{ width: "60px", height: "1px", background: activeStep >= 3 ? "var(--text-main)" : "var(--border-card)" }} />
+          <div style={{ width: "60px", height: "1px", background: activeStep >= 3 ? "var(--accent-verdant)" : "var(--border-card)" }} />
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
             <div
@@ -166,7 +166,7 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 3 ? "var(--text-main)" : "#ffffff",
+                background: activeStep >= 3 ? "var(--accent-verdant)" : "#ffffff",
                 border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
@@ -180,7 +180,7 @@ export default function RewindPage() {
             </span>
           </div>
 
-          <div style={{ width: "60px", height: "1px", background: activeStep >= 4 ? "var(--text-main)" : "var(--border-card)" }} />
+          <div style={{ width: "60px", height: "1px", background: activeStep >= 4 ? "var(--accent-verdant)" : "var(--border-card)" }} />
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
             <div
@@ -188,7 +188,7 @@ export default function RewindPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: activeStep >= 4 ? "var(--text-main)" : "#ffffff",
+                background: activeStep >= 4 ? "var(--accent-verdant)" : "#ffffff",
                 border: "var(--border-hairline)",
                 display: "flex",
                 alignItems: "center",
@@ -259,7 +259,7 @@ export default function RewindPage() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    border: isSelected ? "2px solid var(--text-main)" : "var(--border-hairline)",
+                    border: isSelected ? "2px solid var(--accent-verdant)" : "var(--border-hairline)",
                     background: isSelected ? "var(--bg-soft)" : "#ffffff",
                     cursor: "pointer",
                   }}

@@ -56,10 +56,7 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
   const [isCollapsed, setIsCollapsed] = useState(false);
   const accountDropdownRef = useRef<HTMLDivElement>(null);
 
-  const [stats, setStats] = useState({
-    dms_sent: 0,
-    active_automations: 0,
-  });
+  const [stats, setStats] = useState<{ dms_sent: number; active_automations: number } | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("sidebarCollapsed");
@@ -505,12 +502,20 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
 
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--text-muted)", alignItems: "center" }}>
                   <span>DMs sent</span>
-                  <span style={{ fontWeight: "600", color: "var(--text-main)", fontFamily: "var(--font-mono)" }}>{stats.dms_sent.toLocaleString()}</span>
+                  {stats ? (
+                    <span style={{ fontWeight: "600", color: "var(--text-main)", fontFamily: "var(--font-mono)" }}>{stats.dms_sent.toLocaleString()}</span>
+                  ) : (
+                    <div style={{ width: "40px", height: "16px", background: "var(--border-hairline)", borderRadius: "4px", opacity: 0.5 }} />
+                  )}
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--text-muted)", alignItems: "center" }}>
                   <span>Active rules</span>
-                  <span style={{ fontWeight: "600", color: "var(--text-main)", fontFamily: "var(--font-mono)" }}>{stats.active_automations}</span>
+                  {stats ? (
+                    <span style={{ fontWeight: "600", color: "var(--text-main)", fontFamily: "var(--font-mono)" }}>{stats.active_automations}</span>
+                  ) : (
+                    <div style={{ width: "20px", height: "16px", background: "var(--border-hairline)", borderRadius: "4px", opacity: 0.5 }} />
+                  )}
                 </div>
               </div>
             )}

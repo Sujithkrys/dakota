@@ -356,7 +356,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${postOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: postOption === "specific" ? "10px" : "0" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>A specific post or reel</span>
-                <input type="checkbox" checked={postOption === "specific"} onChange={() => setPostOption(postOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={postOption === "specific"} onChange={() => setPostOption(postOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
               {postOption === "specific" && (
                 <div>
@@ -400,7 +400,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${postOption === "next" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Next post or reel</span>
-                <input type="checkbox" checked={postOption === "next"} onChange={() => setPostOption(postOption === "next" ? "specific" : "next")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={postOption === "next"} onChange={() => setPostOption(postOption === "next" ? "specific" : "next")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
             </div>
 
@@ -409,7 +409,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${postOption === "any" ? "active" : ""}`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Any post or reel</span>
-                <input type="checkbox" checked={postOption === "any"} onChange={() => setPostOption(postOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={postOption === "any"} onChange={() => setPostOption(postOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
             </div>
           </div>
@@ -428,7 +428,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${keywordOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: keywordOption === "specific" ? "8px" : "0" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>A specific keyword</span>
-                <input type="checkbox" checked={keywordOption === "specific"} onChange={() => setKeywordOption(keywordOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={keywordOption === "specific"} onChange={() => setKeywordOption(keywordOption === "specific" ? "any" : "specific")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
               {keywordOption === "specific" && (
                 <div>
@@ -451,11 +451,11 @@ function BuilderContent() {
             <div className={`builder-option-card ${keywordOption === "any" ? "active" : ""}`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Any word</span>
-                <input type="checkbox" checked={keywordOption === "any"} onChange={() => setKeywordOption(keywordOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={keywordOption === "any"} onChange={() => setKeywordOption(keywordOption === "any" ? "specific" : "any")} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "6px" }}>
                 <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Auto-reply publicly:</span>
-                <input type="checkbox" checked={enablePublicReply} onChange={(e) => setEnablePublicReply(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={enablePublicReply} onChange={(e) => setEnablePublicReply(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
             </div>
           </div>
@@ -474,7 +474,7 @@ function BuilderContent() {
               <div className={`builder-option-card ${enableFollowGate ? "active" : ""}`} style={{ marginBottom: "16px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                   <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Follow-gate</span>
-                  <input type="checkbox" checked={enableFollowGate} onChange={(e) => setEnableFollowGate(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                  <input type="checkbox" checked={enableFollowGate} onChange={(e) => setEnableFollowGate(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
                 </div>
                 <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Require follow before receiving the DM</p>
               </div>
@@ -486,7 +486,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${enableOpeningDM ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: enableOpeningDM ? "10px" : "2px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>an opening DM</span>
-                <input type="checkbox" checked={enableOpeningDM} onChange={(e) => setEnableOpeningDM(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={enableOpeningDM} onChange={(e) => setEnableOpeningDM(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
               <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Send an initial message before the main content</p>
               {enableOpeningDM && (
@@ -508,7 +508,7 @@ function BuilderContent() {
             <div className={`builder-option-card ${enableEmailCapture ? "active" : ""}`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Email Capture</span>
-                <input type="checkbox" checked={enableEmailCapture} onChange={(e) => setEnableEmailCapture(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                <input type="checkbox" checked={enableEmailCapture} onChange={(e) => setEnableEmailCapture(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--accent-verdant)" }} />
               </div>
               <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Collect email before sending the DM</p>
             </div>
