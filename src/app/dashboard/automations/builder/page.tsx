@@ -339,17 +339,19 @@ function BuilderContent() {
         )}
 
         {/* ── Right: Step Panel ── */}
-        <div className="builder-panel">
+        <div className="builder-panel" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
           {/* STEP 1: When a user comments on */}
-          <div className="builder-step-card" style={{ position: "relative" }}>
-            <div style={{ position: "absolute", left: "26px", top: "38px", height: "calc(100% - 6px)", width: "2px", background: "var(--border-strong)", zIndex: 0 }} />
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", position: "relative", zIndex: 1 }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>
+          <div style={{ display: "flex", gap: "16px" }}>
+            <div style={{ position: "relative", width: "24px", flexShrink: 0, marginTop: "14px", display: "flex", justifyContent: "center" }}>
+              <div style={{ position: "absolute", top: "32px", bottom: "-38px", width: "1.5px", background: "var(--accent-verdant)", zIndex: 0 }} />
+              <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.75rem", zIndex: 1, position: "relative" }}>
                 {selectedMediaId ? <Check size={12} /> : "1"}
               </div>
-              <h3 style={{ fontSize: "0.95rem", margin: 0 }}>When a user comments on</h3>
             </div>
+            
+            <div className="builder-step-card" style={{ flex: 1 }}>
+              <h3 style={{ fontSize: "0.95rem", margin: "0 0 16px 0" }}>When a user comments on</h3>
 
             <div className={`builder-option-card ${postOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: postOption === "specific" ? "10px" : "0" }}>
@@ -411,14 +413,17 @@ function BuilderContent() {
               </div>
             </div>
           </div>
+        </div>
 
           {/* STEP 2: And his/her comment has */}
-          <div className="builder-step-card" style={{ position: "relative" }}>
-            <div style={{ position: "absolute", left: "26px", top: "38px", height: "calc(100% - 6px)", width: "2px", background: "var(--border-strong)", zIndex: 0 }} />
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", position: "relative", zIndex: 1 }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>2</div>
-              <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And his/her comment has</h3>
+          <div style={{ display: "flex", gap: "16px" }}>
+            <div style={{ position: "relative", width: "24px", flexShrink: 0, marginTop: "14px", display: "flex", justifyContent: "center" }}>
+              <div style={{ position: "absolute", top: "32px", bottom: "-38px", width: "1.5px", background: "var(--accent-verdant)", zIndex: 0 }} />
+              <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.75rem", zIndex: 1, position: "relative" }}>2</div>
             </div>
+            
+            <div className="builder-step-card" style={{ flex: 1 }}>
+              <h3 style={{ fontSize: "0.95rem", margin: "0 0 16px 0" }}>And his/her comment has</h3>
 
             <div className={`builder-option-card ${keywordOption === "specific" ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: keywordOption === "specific" ? "8px" : "0" }}>
@@ -454,14 +459,29 @@ function BuilderContent() {
               </div>
             </div>
           </div>
+        </div>
 
           {/* STEP 3: They will optionally get */}
-          <div className="builder-step-card" style={{ position: "relative" }}>
-            <div style={{ position: "absolute", left: "26px", top: "38px", height: "calc(100% - 6px)", width: "2px", background: "var(--border-strong)", zIndex: 0 }} />
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", position: "relative", zIndex: 1 }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>3</div>
-              <h3 style={{ fontSize: "0.95rem", margin: 0 }}>They will optionally get</h3>
+          <div style={{ display: "flex", gap: "16px" }}>
+            <div style={{ position: "relative", width: "24px", flexShrink: 0, marginTop: "14px", display: "flex", justifyContent: "center" }}>
+              <div style={{ position: "absolute", top: "32px", bottom: "-38px", width: "1.5px", background: "var(--accent-verdant)", zIndex: 0 }} />
+              <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.75rem", zIndex: 1, position: "relative" }}>3</div>
             </div>
+            
+            <div className="builder-step-card" style={{ flex: 1 }}>
+              <h3 style={{ fontSize: "0.95rem", margin: "0 0 16px 0" }}>They will optionally get</h3>
+
+              <div className={`builder-option-card ${enableFollowGate ? "active" : ""}`} style={{ marginBottom: "16px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
+                  <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Follow-gate</span>
+                  <input type="checkbox" checked={enableFollowGate} onChange={(e) => setEnableFollowGate(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
+                </div>
+                <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Require follow before receiving the DM</p>
+              </div>
+
+              <div style={{ height: "1px", background: "var(--border-hairline)", margin: "0 0 16px 0" }} />
+              
+              <div style={{ fontSize: "0.75rem", fontWeight: "600", marginBottom: "12px", color: "var(--text-main)" }}>Then, send:</div>
 
             <div className={`builder-option-card ${enableOpeningDM ? "active" : ""}`} style={{ marginBottom: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: enableOpeningDM ? "10px" : "2px" }}>
@@ -485,16 +505,6 @@ function BuilderContent() {
 
             <div style={{ textAlign: "center", fontSize: "0.68rem", color: "var(--text-muted)", margin: "4px 0" }}>OR</div>
 
-            <div className={`builder-option-card ${enableFollowGate ? "active" : ""}`} style={{ marginBottom: "8px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
-                <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Follow-gate</span>
-                <input type="checkbox" checked={enableFollowGate} onChange={(e) => setEnableFollowGate(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "var(--text-main)" }} />
-              </div>
-              <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Require follow before receiving the DM</p>
-            </div>
-
-            <div style={{ textAlign: "center", fontSize: "0.68rem", color: "var(--text-muted)", margin: "4px 0" }}>OR</div>
-
             <div className={`builder-option-card ${enableEmailCapture ? "active" : ""}`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <span style={{ fontSize: "0.82rem", fontWeight: "500" }}>Email Capture</span>
@@ -503,14 +513,17 @@ function BuilderContent() {
               <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: 0 }}>Collect email before sending the DM</p>
             </div>
           </div>
+        </div>
 
           {/* STEP 4: And they will get a DM with */}
-          <div className="builder-step-card" style={{ position: "relative" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", position: "relative", zIndex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>4</div>
+          <div style={{ display: "flex", gap: "16px" }}>
+            <div style={{ position: "relative", width: "24px", flexShrink: 0, marginTop: "14px", display: "flex", justifyContent: "center" }}>
+              <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.75rem", zIndex: 1, position: "relative" }}>4</div>
+            </div>
+            
+            <div className="builder-step-card" style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
                 <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And they will get a DM with</h3>
-              </div>
               <button type="button" onClick={() => setTemplateModalOpen(true)} style={{ padding: "3px 10px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", display: "flex", alignItems: "center", gap: "3px" }}>
                 <LayoutTemplate size={12} /> Template
               </button>
@@ -558,6 +571,7 @@ function BuilderContent() {
           </div>
         </div>
       </div>
+    </div>
 
       {/* ═══ MODALS ═══ */}
 
