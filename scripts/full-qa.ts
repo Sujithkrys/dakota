@@ -144,7 +144,7 @@ async function testAuthEnforcement() {
     { name: "/api/automations POST", handler: automationsPOST, body: { name: "test" } },
     { name: "/api/icebreakers POST", handler: icebreakersPOST, body: { question: "q", response_text: "r" } },
     { name: "/api/rewind POST", handler: rewindPOST, body: { automation_id: "x" } },
-    { name: "/api/user/settings POST", handler: settingsPOST, body: { groq_api_key: "k" } },
+    { name: "/api/user/settings POST", handler: settingsPOST, body: { ai_api_key: "k" } },
     { name: "/api/inbox/send POST", handler: sendPOST, body: { conversation_id: "c", recipient_id: "r", message_text: "m" } },
   ];
 
@@ -564,13 +564,13 @@ async function testSettingsRoute() {
   const r1 = await settingsGET(makeReq("http://localhost:3000/api/user/settings", { withSession: true }));
   assert(r1.status === 200, "Settings GET → 200");
   const body = await r1.json();
-  assert(typeof body.groq_api_key === "string", "Settings has groq_api_key string");
+  assert(typeof body.ai_api_key === "string", "Settings has ai_api_key string");
   assert(typeof body.ai_context === "string", "Settings has ai_context string");
 
   // POST updates settings
   const r2 = await settingsPOST(makeReq("http://localhost:3000/api/user/settings", {
     method: "POST",
-    body: { groq_api_key: "test_key", ai_context: "test context" },
+    body: { ai_api_key: "test_key", ai_context: "test context" },
     withSession: true,
   }));
   assert(r2.status === 200, "Settings POST → 200");

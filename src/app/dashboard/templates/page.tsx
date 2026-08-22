@@ -77,8 +77,8 @@ export default function TemplatesPage() {
     {
       id: "tpl_5",
       category: "Featured",
-      title: "Groq AI Assistant Auto-DM",
-      description: "Uses Groq Llama 3.1 AI to answer product questions and handle FAQs contextually.",
+      title: "Gemini AI Assistant Auto-DM",
+      description: "Uses Gemini 1.5 Flash AI to answer product questions and handle FAQs contextually.",
       triggerKeyword: "AI Catch-All (*)",
       incomingText: "Do you ship internationally to Canada?",
       replyText: "Yes! We ship worldwide with standard 3-5 day delivery. Here are full shipping rates:",

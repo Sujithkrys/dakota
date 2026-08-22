@@ -283,7 +283,7 @@ function AutomationsContent() {
               Automations <span style={{ fontSize: "1.2rem", color: "var(--text-muted)", fontWeight: "400" }}>· {filteredAutomations.length}</span>
             </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
-              Manage active comment-to-DM, story mention, and Groq AI auto-reply rules.
+              Manage active comment-to-DM, story mention, and Gemini AI auto-reply rules.
             </p>
           </div>
 

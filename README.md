@@ -1,7 +1,7 @@
 # Dakota 🚀
 > Next-Generation Instagram Professional Automation & AI Auto-Reply Platform (100% Free & Unlimited)
 
-Dakota is a full-featured Instagram Direct Message, comment-to-DM, story mention, and AI-powered auto-reply SaaS built with **Next.js 15**, **TypeScript**, **Supabase**, and **Groq Llama 3.1 AI**.
+Dakota is a full-featured Instagram Direct Message, comment-to-DM, story mention, and AI-powered auto-reply SaaS built with **Next.js 15**, **TypeScript**, **Supabase**, and **Gemini 1.5 Flash AI**.
 
 Inspired by ElevenLabs' quietly editorial print magazine design system (off-white canvas, warm near-black ink, soft atmospheric pastel gradient orbs), Dakota combines visual elegance with high-performance automation.
 
@@ -56,8 +56,8 @@ Centralized lead management storing handles, captured emails, and DM interaction
   - **Step 4**: Custom DM response with character limits, CTA buttons, and interactive modal link editor.
   - **Live iPhone Frame Mockup**: Real-time rendering of post comments and direct message thread bubbles.
 
-- **🤖 Groq Llama 3.1 AI Auto-Reply Engine**:
-  - Contextual AI auto-replies for unmatched comments or DMs using custom brand voice context and Groq's fast AI model.
+- **🤖 Gemini 1.5 Flash AI Auto-Reply Engine**:
+  - Contextual AI auto-replies for unmatched comments or DMs using custom brand voice context and Gemini's fast AI model.
   - Automatic fallback guardrails for response length and API timeouts.
 
 - **📊 Comprehensive Analytics & Insights**:
@@ -79,7 +79,7 @@ Centralized lead management storing handles, captured emails, and DM interaction
 - **Language**: TypeScript
 - **Styling**: Modern CSS variables & ElevenLabs Quietly Editorial Design System
 - **Database**: Supabase (PostgreSQL, Row Level Security)
-- **AI**: Groq SDK (`llama-3.1-8b-instant`)
+- **AI**: Gemini SDK (`gemini-1.5-flash`)
 - **Icons**: Lucide React
 
 ---
@@ -90,7 +90,7 @@ A short list of free accounts and tools required before getting started:
 
 - **A Supabase account (free)** — for database storage ([supabase.com](https://supabase.com))
 - **A Meta Developer account (free)** — for Instagram Graph API & Business Login ([developers.facebook.com](https://developers.facebook.com))
-- **A Groq account (free)** — for AI auto-replies (optional but recommended) ([console.groq.com](https://console.groq.com))
+- **A Google AI Studio account (free)** — for AI auto-replies (optional but recommended) ([aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey))
 - **[Node.js](https://nodejs.org/) installed on your computer** (v18 or higher)
 - **Basic comfort using a terminal** to run a few simple commands
 
@@ -146,11 +146,11 @@ Follow these step-by-step instructions in order to run DMflow locally on your co
    - In Meta App Settings → Instagram Business Login Settings, add your local redirect URI:
      `http://localhost:3000/api/auth/callback`
 
-8. **Add Groq AI Key (Optional)**:
-   - Create a free key at [console.groq.com](https://console.groq.com).
+8. **Add Gemini API Key (Optional)**:
+   - Create a free key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
    - Paste it into `.env.local`:
      ```env
-     GROQ_API_KEY=gsk_your_groq_key
+     GEMINI_API_KEY=AIza_your_gemini_key
      ```
 
 9. **Run the Development Server**:
@@ -181,7 +181,7 @@ Follow these steps to deploy DMflow to a permanent cloud host:
    - Click **Add New Project** and import your GitHub repository.
 
 3. **Configure Environment Variables in Vercel**:
-   - In Vercel's Project Settings → Environment Variables, add all the variables from your `.env.local` file (Supabase keys, Instagram App ID/Secret, Groq key, Webhook verify token).
+   - In Vercel's Project Settings → Environment Variables, add all the variables from your `.env.local` file (Supabase keys, Instagram App ID/Secret, Gemini key, Webhook verify token).
 
 4. **Deploy**:
    - Click **Deploy**. Vercel will build the project and provide a permanent live URL like `your-app.vercel.app`.
