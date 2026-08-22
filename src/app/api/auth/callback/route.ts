@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // 1. Exchange OAuth code for short-lived token
-    const shortLivedRes = await exchangeCodeForShortLivedToken(code);
+    const shortLivedRes = await exchangeCodeForShortLivedToken(code, baseUrl);
     const shortLivedToken = shortLivedRes.access_token;
 
     // 2. Exchange short-lived token for long-lived 60-day token

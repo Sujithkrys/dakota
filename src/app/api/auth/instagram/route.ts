@@ -85,6 +85,6 @@ export async function GET(request: NextRequest) {
     return response;
   }
 
-  const authUrl = getInstagramAuthUrl();
+  const authUrl = getInstagramAuthUrl(request.nextUrl.origin);
   return NextResponse.redirect(authUrl);
 }

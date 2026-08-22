@@ -50,9 +50,15 @@ export interface InstagramApiResult {
 /**
  * Builds the Instagram Business OAuth Authorization URL
  */
-export function getInstagramAuthUrl(state?: string): string {
+export function getInstagramAuthUrl(baseUrl?: string, state?: string): string {
   const appId = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || process.env.INSTAGRAM_APP_ID || "";
-  const redirectUri = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || "http://localhost:3000/api/auth/callback";
+  let redirectUri = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI;
+  
+  if (!redirectUri && baseUrl) {
+    redirectUri = `${baseUrl}/api/auth/callback`;
+  } else if (!redirectUri) {
+    redirectUri = "http://localhost:3000/api/auth/callback";
+  }
 
   const params = new URLSearchParams({
     client_id: appId,
@@ -71,10 +77,16 @@ export function getInstagramAuthUrl(state?: string): string {
 /**
  * Step 1: Exchange authorization code for short-lived access token
  */
-export async function exchangeCodeForShortLivedToken(code: string): Promise<InstagramTokenResponse> {
+export async function exchangeCodeForShortLivedToken(code: string, baseUrl?: string): Promise<InstagramTokenResponse> {
   const appId = process.env.INSTAGRAM_APP_ID || process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || "";
   const appSecret = process.env.INSTAGRAM_APP_SECRET || "";
-  const redirectUri = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || "http://localhost:3000/api/auth/callback";
+  let redirectUri = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI;
+  
+  if (!redirectUri && baseUrl) {
+    redirectUri = `${baseUrl}/api/auth/callback`;
+  } else if (!redirectUri) {
+    redirectUri = "http://localhost:3000/api/auth/callback";
+  }
 
   const formData = new URLSearchParams();
   formData.append("client_id", appId);

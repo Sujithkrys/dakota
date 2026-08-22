@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   AlertCircle
 } from "lucide-react";
-import { getInstagramAuthUrl } from "@/lib/instagram";
 
 interface LandingPageProps {
   searchParams: Promise<{ auth_error?: string }>;
@@ -20,7 +19,6 @@ interface LandingPageProps {
 
 export default async function LandingPage({ searchParams }: LandingPageProps) {
   const { auth_error } = await searchParams;
-  const instagramAuthUrl = getInstagramAuthUrl();
 
   return (
     <div style={{ position: "relative", minHeight: "100vh", overflowX: "hidden", overflowY: "auto" }}>
