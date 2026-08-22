@@ -21,7 +21,6 @@ export default function StoriesPage() {
 
         {/* Content */}
         <div
-          className="glass-card gradient-orb-peach"
           style={{
             padding: "80px 24px",
             textAlign: "center",
@@ -29,6 +28,9 @@ export default function StoriesPage() {
             flexDirection: "column",
             alignItems: "center",
             gap: "16px",
+            background: "#ffffff",
+            border: "var(--border-hairline)",
+            borderRadius: "var(--radius-card)",
           }}
         >
           <div style={{ position: "relative", marginBottom: "8px" }}>
@@ -39,15 +41,12 @@ export default function StoriesPage() {
               width: "64px", 
               height: "64px", 
               borderRadius: "50%", 
-              background: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
+              background: "var(--text-main)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              padding: "3px"
             }}>
-              <div style={{ width: "100%", height: "100%", background: "var(--bg-main)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Instagram size={28} color="var(--text-main)" />
-              </div>
+              <Instagram size={28} color="#ffffff" />
             </div>
           </div>
           

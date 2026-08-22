@@ -129,10 +129,10 @@ export default function PostsPage() {
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: "var(--border-hairline)" }}>
                     <div style={{ display: "flex", gap: "16px", color: "var(--text-muted)" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", fontWeight: "500" }}>
-                        <Heart size={14} /> {item.like_count}
+                        <Heart size={14} /> {item.like_count !== undefined ? item.like_count : "-"}
                       </span>
                       <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", fontWeight: "500" }}>
-                        <MessageCircle size={14} /> {item.comments_count}
+                        <MessageCircle size={14} /> {item.comments_count !== undefined ? item.comments_count : "-"}
                       </span>
                     </div>
                     

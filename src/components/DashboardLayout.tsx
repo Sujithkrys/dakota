@@ -389,9 +389,10 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
                       gap: "8px",
                       padding: "7px 10px",
                       fontSize: "0.82rem",
-                      color: pathname.startsWith("/dashboard/posts") ? "var(--text-main)" : "var(--text-body)",
+                      color: pathname.startsWith("/dashboard/posts") ? "var(--accent-verdant)" : "var(--text-body)",
                       fontWeight: pathname.startsWith("/dashboard/posts") ? "600" : "400",
-                      background: pathname.startsWith("/dashboard/posts") ? "rgba(12, 10, 9, 0.04)" : "transparent",
+                      background: pathname.startsWith("/dashboard/posts") ? "#ffffff" : "transparent",
+                      border: pathname.startsWith("/dashboard/posts") ? "var(--border-hairline)" : "1px solid transparent",
                       borderRadius: "6px"
                     }}
                   >
@@ -405,9 +406,10 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
                       gap: "8px",
                       padding: "7px 10px",
                       fontSize: "0.82rem",
-                      color: pathname.startsWith("/dashboard/stories") ? "var(--text-main)" : "var(--text-body)",
+                      color: pathname.startsWith("/dashboard/stories") ? "var(--accent-verdant)" : "var(--text-body)",
                       fontWeight: pathname.startsWith("/dashboard/stories") ? "600" : "400",
-                      background: pathname.startsWith("/dashboard/stories") ? "rgba(12, 10, 9, 0.04)" : "transparent",
+                      background: pathname.startsWith("/dashboard/stories") ? "#ffffff" : "transparent",
+                      border: pathname.startsWith("/dashboard/stories") ? "var(--border-hairline)" : "1px solid transparent",
                       borderRadius: "6px"
                     }}
                   >

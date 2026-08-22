@@ -39,6 +39,8 @@ export interface InstagramMediaItem {
   thumbnail_url?: string;
   permalink?: string;
   timestamp?: string;
+  like_count?: number;
+  comments_count?: number;
 }
 
 export interface InstagramApiResult {
@@ -164,7 +166,7 @@ export async function getInstagramUserProfile(accessToken: string): Promise<Inst
  * Fetch recent Instagram posts & Reels for media selector
  */
 export async function fetchUserInstagramMedia(accessToken: string): Promise<InstagramMediaItem[]> {
-  const url = `https://graph.instagram.com/v24.0/me/media?fields=id,caption,media_type,thumbnail_url,permalink,timestamp&limit=20&access_token=${encodeURIComponent(accessToken)}`;
+  const url = `https://graph.instagram.com/v24.0/me/media?fields=id,caption,media_type,thumbnail_url,permalink,timestamp,like_count,comments_count&limit=20&access_token=${encodeURIComponent(accessToken)}`;
 
   const response = await fetch(url);
   const data = await response.json();
