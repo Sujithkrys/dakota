@@ -87,6 +87,24 @@ function BuilderContent() {
 
   useEffect(() => {
     fetchMedia();
+    const fetchAccountInfo = async () => {
+      try {
+        const res = await fetch("/api/account/list");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.accounts && data.activeAccountId) {
+            const activeAcc = data.accounts.find((a: any) => a.id === data.activeAccountId);
+            if (activeAcc && activeAcc.username) {
+              setUsername(activeAcc.username);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching account info:", err);
+      }
+    };
+    fetchAccountInfo();
+
     if (templateId) {
       if (templateId === "tpl_1") {
         setRuleName("Reel Comment Checkout Link");
@@ -292,7 +310,7 @@ function BuilderContent() {
           {/* STEP 1: When a user comments on */}
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: selectedMediaId ? "var(--accent-verdant)" : "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
                 {selectedMediaId ? <Check size={12} /> : "1"}
               </div>
               <h3 style={{ fontSize: "0.95rem", margin: 0 }}>When a user comments on</h3>
@@ -362,7 +380,7 @@ function BuilderContent() {
           {/* STEP 2: And his/her comment has */}
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>2</div>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>2</div>
               <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And his/her comment has</h3>
             </div>
 
@@ -377,7 +395,7 @@ function BuilderContent() {
                   <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginBottom: "5px" }}>Suggested:</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: "4px" }}>
                     {suggestedChips.map((chip) => (
-                      <button key={chip} type="button" onClick={() => handleAddChip(chip)} style={{ padding: "2px 8px", borderRadius: "9999px", background: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "var(--text-main)" : "#fff", color: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "#fff" : "var(--text-main)", border: "var(--border-hairline)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", transition: "all 0.15s ease" }}>
+                      <button key={chip} type="button" onClick={() => handleAddChip(chip)} style={{ padding: "2px 8px", borderRadius: "9999px", background: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "var(--accent-verdant)" : "#fff", color: keywordInput.split(",").map(k => k.trim()).includes(chip) ? "#fff" : "var(--text-main)", border: "var(--border-hairline)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", transition: "all 0.15s ease" }}>
                         {chip}
                       </button>
                     ))}
@@ -404,7 +422,7 @@ function BuilderContent() {
           {/* STEP 3: They will optionally get */}
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>3</div>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>3</div>
               <h3 style={{ fontSize: "0.95rem", margin: 0 }}>They will optionally get</h3>
             </div>
 
@@ -453,7 +471,7 @@ function BuilderContent() {
           <div className="builder-step-card">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>4</div>
+                <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>4</div>
                 <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And they will get a DM with</h3>
               </div>
               <button type="button" onClick={() => setTemplateModalOpen(true)} style={{ padding: "3px 10px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", display: "flex", alignItems: "center", gap: "3px" }}>

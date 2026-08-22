@@ -308,7 +308,7 @@ h1, h2, h3, h4, h5, h6, .editorial-heading {
 .builder-btn-primary {
   padding: 8px 18px;
   border-radius: 9999px;
-  background: var(--text-main);
+  background: var(--accent-verdant);
   border: none;
   color: #ffffff;
   font-weight: 500;
