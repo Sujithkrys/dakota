@@ -233,6 +233,7 @@ function BuilderContent() {
 
               {previewTab === "post" ? (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", color: "var(--text-main)", overflowY: "auto" }}>
+                  {/* Header */}
                   <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "var(--border-hairline)", flexShrink: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <div style={{ width: "26px", height: "26px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
@@ -242,61 +243,94 @@ function BuilderContent() {
                     </div>
                     <span style={{ color: "var(--text-muted)" }}>•••</span>
                   </div>
+                  {/* Image Area */}
                   <div style={{ width: "100%", height: "200px", background: "var(--bg-soft)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, overflow: "hidden" }}>
-                    {(selectedMediaObj?.thumbnail_url || selectedMediaObj?.media_url) ? (
-                      <img src={selectedMediaObj.thumbnail_url || selectedMediaObj.media_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : (
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-                        <ImageIcon size={30} color="var(--text-muted)" />
-                        <span style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>{selectedMediaObj?.media_type === "VIDEO" ? "Reel" : "Post"}</span>
-                      </div>
-                    )}
+                    <ImageIcon size={30} color="var(--text-muted)" />
                   </div>
+                  {/* Action Row */}
                   <div style={{ padding: "8px 14px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-                    <div style={{ display: "flex", gap: "12px" }}><Heart size={18} color="var(--accent-danger)" fill="var(--accent-danger)" /><MessageCircle size={18} /><Send size={18} /></div>
+                    <div style={{ display: "flex", gap: "12px" }}>
+                      <Heart size={18} />
+                      <MessageCircle size={18} />
+                      <Send size={18} />
+                    </div>
                     <Bookmark size={18} />
                   </div>
+                  {/* Likes and Caption */}
                   <div style={{ padding: "0 14px", fontSize: "0.78rem", lineHeight: 1.4, flexShrink: 0 }}>
-                    {selectedMediaObj && <p style={{ fontWeight: "600", fontSize: "0.72rem", marginBottom: "3px" }}>{(selectedMediaObj.like_count || 0).toLocaleString()} likes</p>}
-                    <p style={{ marginBottom: "6px" }}><strong>{username}</strong> {selectedMediaObj?.caption || "Comment below for instant access!"}</p>
+                    {selectedMediaObj && <p style={{ fontWeight: "600", fontSize: "0.72rem", margin: "0 0 3px 0" }}>{(selectedMediaObj.like_count || 42).toLocaleString()} likes</p>}
+                    <p style={{ margin: "0 0 6px 0" }}><strong>{username}</strong> {selectedMediaObj?.caption || "Comment below for instant access!"}</p>
                   </div>
-                  <div style={{ padding: "0 14px 14px", flexShrink: 0 }}>
-                    <div style={{ padding: "8px 10px", borderRadius: "var(--radius-button)", background: "var(--bg-soft)", border: "var(--border-hairline)", display: "flex", gap: "8px" }}>
-                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "var(--text-muted)", flexShrink: 0 }} />
-                      <div>
-                        <div style={{ fontWeight: "600", fontSize: "0.72rem" }}>user_follower</div>
-                        <div style={{ fontWeight: "600", fontSize: "0.78rem" }}>&quot;{keywordInput.split(",")[0]?.trim() || "link"}&quot;</div>
+                  <div style={{ height: "1px", background: "var(--border-hairline)", margin: "4px 0 8px 0" }} />
+                  {/* Comment Thread */}
+                  <div style={{ padding: "0 14px 14px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--text-muted)", flexShrink: 0 }} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: "600", fontSize: "0.72rem" }}>user_follower <span style={{ fontWeight: "400", color: "var(--text-muted)", fontSize: "0.65rem", marginLeft: "4px" }}>2m</span></div>
+                        <div style={{ fontSize: "0.78rem", marginTop: "2px" }}>{keywordInput.split(",")[0]?.trim() || "link"}</div>
+                        <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "4px", display: "flex", gap: "10px" }}><span>Reply</span><span>Send</span></div>
                       </div>
+                      <Heart size={10} color="var(--text-muted)" style={{ marginTop: "4px" }} />
                     </div>
+                    
+                    {enablePublicReply && (
+                      <div style={{ display: "flex", gap: "8px", marginLeft: "32px" }}>
+                        <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.6rem", flexShrink: 0 }}>
+                          {username.charAt(0).toUpperCase()}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontWeight: "600", fontSize: "0.72rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                            {username}
+                            <span style={{ fontSize: "0.55rem", padding: "1px 4px", borderRadius: "4px", background: "var(--bg-soft)", border: "var(--border-hairline)", color: "var(--text-muted)", fontWeight: "500" }}>Automated reply</span>
+                          </div>
+                          <div style={{ fontSize: "0.78rem", marginTop: "2px" }}>Check your DMs! 📩</div>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "4px", display: "flex", gap: "10px" }}><span>Reply</span><span>Send</span></div>
+                        </div>
+                        <Heart size={10} color="var(--text-muted)" style={{ marginTop: "4px" }} />
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", color: "var(--text-main)", padding: "14px", overflowY: "auto" }}>
-                  <div style={{ textAlign: "center", marginBottom: "16px", borderBottom: "var(--border-hairline)", paddingBottom: "10px", flexShrink: 0 }}>
-                    <div style={{ width: "30px", height: "30px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 4px", fontWeight: "700", fontSize: "0.72rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px", borderBottom: "var(--border-hairline)", paddingBottom: "10px", flexShrink: 0 }}>
+                    <ArrowLeft size={16} color="var(--text-main)" />
+                    <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", flexShrink: 0 }}>
                       {username.charAt(0).toUpperCase()}
                     </div>
-                    <div style={{ fontWeight: "600", fontSize: "0.82rem" }}>{username}</div>
-                    <div style={{ fontSize: "0.65rem", color: "var(--text-muted)" }}>Active now</div>
-                  </div>
-                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "8px", justifyContent: "flex-end" }}>
-                    <div style={{ alignSelf: "flex-start", background: "var(--bg-soft)", padding: "8px 12px", borderRadius: "var(--radius-card)", maxWidth: "80%", fontSize: "0.8rem" }}>
-                      {keywordInput.split(",")[0]?.trim() || "link"}
+                    <div style={{ flex: 1, overflow: "hidden" }}>
+                      <div style={{ fontWeight: "600", fontSize: "0.82rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{username}</div>
+                      <div style={{ fontSize: "0.65rem", color: "var(--accent-verdant)", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent-verdant)" }} />
+                        Active now
+                      </div>
                     </div>
+                  </div>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <div style={{ alignSelf: "center", background: "var(--bg-soft)", padding: "4px 10px", borderRadius: "9999px", fontSize: "0.65rem", color: "var(--text-muted)", marginBottom: "4px" }}>
+                      Replied to your comment "{keywordInput.split(",")[0]?.trim() || "link"}"
+                    </div>
+                    
                     {enableOpeningDM && (
-                      <div style={{ alignSelf: "flex-end", display: "flex", flexDirection: "column", gap: "4px", maxWidth: "85%" }}>
-                        <div style={{ background: "var(--text-main)", color: "#fff", padding: "10px 14px", borderRadius: "16px 16px 4px 16px", fontSize: "0.8rem", lineHeight: 1.3 }}>{openingDMText}</div>
-                        {openingDMButtonText && <div style={{ alignSelf: "flex-end", padding: "6px 14px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", fontSize: "0.72rem", fontWeight: "500", textAlign: "center" }}>{openingDMButtonText}</div>}
+                      <div style={{ alignSelf: "flex-start", display: "flex", flexDirection: "column", gap: "4px", maxWidth: "85%" }}>
+                        <div style={{ background: "#EEEDE7", color: "var(--text-main)", padding: "10px 14px", borderRadius: "16px 16px 16px 4px", fontSize: "0.8rem", lineHeight: 1.3 }}>{openingDMText}</div>
+                        {openingDMButtonText && <div style={{ alignSelf: "flex-start", padding: "6px 14px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", fontSize: "0.72rem", fontWeight: "500", textAlign: "center", color: "var(--text-main)" }}>{openingDMButtonText}</div>}
                       </div>
                     )}
-                    <div style={{ alignSelf: "flex-end", background: "var(--text-main)", color: "#fff", padding: "10px 14px", borderRadius: "16px 16px 4px 16px", maxWidth: "85%", fontSize: "0.8rem" }}>
-                      <p style={{ marginBottom: links.length > 0 ? "6px" : "0", lineHeight: 1.3 }}>{messageText}</p>
-                      {links.map((lnk, i) => (
-                        <div key={i} style={{ padding: "6px 10px", borderRadius: "9999px", background: "#292524", textAlign: "center", fontWeight: "500", fontSize: "0.72rem", marginTop: "4px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
-                          {lnk.title} <ExternalLink size={10} />
+                    <div style={{ alignSelf: "flex-start", background: "#EEEDE7", color: "var(--text-main)", padding: "10px 14px", borderRadius: "16px 16px 16px 4px", maxWidth: "85%", fontSize: "0.8rem" }}>
+                      <p style={{ margin: 0, lineHeight: 1.3 }}>{messageText}</p>
+                      {links.length > 0 && (
+                        <div style={{ marginTop: "6px", display: "flex", flexDirection: "column", gap: "4px" }}>
+                          {links.map((lnk, i) => (
+                            <div key={i} style={{ padding: "6px 10px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", textAlign: "center", fontWeight: "500", fontSize: "0.72rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "var(--text-main)" }}>
+                              {lnk.title} <ExternalLink size={10} />
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      )}
                     </div>
+                    <div style={{ alignSelf: "flex-start", fontSize: "0.6rem", color: "var(--text-muted)", marginLeft: "4px" }}>Just now</div>
                   </div>
                 </div>
               )}
@@ -308,9 +342,10 @@ function BuilderContent() {
         <div className="builder-panel">
 
           {/* STEP 1: When a user comments on */}
-          <div className="builder-step-card">
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>
+          <div className="builder-step-card" style={{ position: "relative" }}>
+            <div style={{ position: "absolute", left: "26px", top: "38px", height: "calc(100% - 6px)", width: "2px", background: "var(--border-strong)", zIndex: 0 }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", position: "relative", zIndex: 1 }}>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>
                 {selectedMediaId ? <Check size={12} /> : "1"}
               </div>
               <h3 style={{ fontSize: "0.95rem", margin: 0 }}>When a user comments on</h3>
@@ -378,9 +413,10 @@ function BuilderContent() {
           </div>
 
           {/* STEP 2: And his/her comment has */}
-          <div className="builder-step-card">
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>2</div>
+          <div className="builder-step-card" style={{ position: "relative" }}>
+            <div style={{ position: "absolute", left: "26px", top: "38px", height: "calc(100% - 6px)", width: "2px", background: "var(--border-strong)", zIndex: 0 }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", position: "relative", zIndex: 1 }}>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>2</div>
               <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And his/her comment has</h3>
             </div>
 
@@ -420,9 +456,10 @@ function BuilderContent() {
           </div>
 
           {/* STEP 3: They will optionally get */}
-          <div className="builder-step-card">
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>3</div>
+          <div className="builder-step-card" style={{ position: "relative" }}>
+            <div style={{ position: "absolute", left: "26px", top: "38px", height: "calc(100% - 6px)", width: "2px", background: "var(--border-strong)", zIndex: 0 }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", position: "relative", zIndex: 1 }}>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>3</div>
               <h3 style={{ fontSize: "0.95rem", margin: 0 }}>They will optionally get</h3>
             </div>
 
@@ -468,10 +505,10 @@ function BuilderContent() {
           </div>
 
           {/* STEP 4: And they will get a DM with */}
-          <div className="builder-step-card">
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+          <div className="builder-step-card" style={{ position: "relative" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", position: "relative", zIndex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem" }}>4</div>
+                <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "var(--accent-verdant)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "0.7rem", zIndex: 2 }}>4</div>
                 <h3 style={{ fontSize: "0.95rem", margin: 0 }}>And they will get a DM with</h3>
               </div>
               <button type="button" onClick={() => setTemplateModalOpen(true)} style={{ padding: "3px 10px", borderRadius: "9999px", background: "#fff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.7rem", fontWeight: "500", cursor: "pointer", display: "flex", alignItems: "center", gap: "3px" }}>
