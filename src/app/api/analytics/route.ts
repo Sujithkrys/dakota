@@ -30,47 +30,146 @@ export async function GET(request: NextRequest) {
   try {
     const supabaseAdmin = createAdminClient();
 
-    const { count: dmsCount } = await supabaseAdmin
+    const now = new Date();
+    let startDate = new Date(0);
+    if (range === "7d") {
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    } else if (range === "30d") {
+      startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    }
+    const startDateStr = startDate.toISOString();
+
+    let messagesQuery = supabaseAdmin
       .from("messages")
-      .select("*", { count: "exact", head: true })
+      .select("id, automation_id, created_at")
       .eq("user_id", userId)
-      .eq("direction", "outgoing");
+      .eq("direction", "outgoing")
+      .eq("send_status", "sent");
+      
+    if (range !== "all") {
+      messagesQuery = messagesQuery.gte("created_at", startDateStr);
+    }
+    const { data: messages } = await messagesQuery;
 
     const { data: automationsList } = await supabaseAdmin
       .from("automations")
       .select("id, name, specific_media_id, created_at")
       .eq("user_id", userId);
 
-    const mappedPerformance = (automationsList || []).map((rule, idx) => ({
-      id: rule.id,
-      name: rule.name,
-      links: "1 link",
-      dmsSent: `${(idx + 1) * 10} DMs sent`,
-      ctr: `${Math.max(10, 100 - idx * 5)}%`,
-    }));
+    let clicksQuery = supabaseAdmin
+      .from("link_click_events")
+      .select(`id, created_at, link_clicks!inner(automation_id)`)
+      .eq("user_id", userId);
+      
+    if (range !== "all") {
+      clicksQuery = clicksQuery.gte("created_at", startDateStr);
+    }
+    const { data: clickEvents } = await clicksQuery;
 
-    const totalDMs = dmsCount || 0;
-    const totalClicks = Math.round(totalDMs * 0.5);
-    const ctrString = totalDMs > 0 ? `${Math.round((totalClicks / totalDMs) * 100)}%` : "0%";
+    let leadsQuery = supabaseAdmin
+      .from("conversations")
+      .select("id, email_captured_at")
+      .eq("user_id", userId)
+      .not("email_captured_at", "is", null);
+
+    if (range !== "all") {
+      leadsQuery = leadsQuery.gte("email_captured_at", startDateStr);
+    }
+    const { data: leads } = await leadsQuery;
+
+    const totalDMs = messages ? messages.length : 0;
+    const totalClicks = clickEvents ? clickEvents.length : 0;
+    const leadsCaptured = leads ? leads.length : 0;
+    const overallCtr = totalDMs > 0 ? `${Math.round((totalClicks / totalDMs) * 100)}%` : "0%";
+
+    let bestAutomationObj = { name: "None", ctr: "0%", dms: 0, clicks: 0 };
+    let highestCtrVal = -1;
+
+    const mappedPerformance = (automationsList || []).map((rule) => {
+      const dms = (messages || []).filter((m) => m.automation_id === rule.id).length;
+      const clicks = (clickEvents || []).filter((c: any) => c.link_clicks?.automation_id === rule.id).length;
+      
+      const ctrVal = dms > 0 ? (clicks / dms) * 100 : 0;
+      const ctrString = `${Math.round(ctrVal)}%`;
+      
+      if (ctrVal > highestCtrVal && dms > 0) {
+        highestCtrVal = ctrVal;
+        bestAutomationObj = { name: rule.name, ctr: ctrString, dms, clicks };
+      }
+      
+      return {
+        id: rule.id,
+        name: rule.name,
+        links: "1 link",
+        dmsSent: dms,
+        ctr: ctrString,
+      };
+    });
+
+    const dmsByDay: Record<string, number> = {};
+    const clicksByDay: Record<string, number> = {};
+    
+    const formatDate = (dateStr: string) => {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    };
+    
+    (messages || []).forEach((m) => {
+      if (m.created_at) {
+        const d = formatDate(m.created_at);
+        dmsByDay[d] = (dmsByDay[d] || 0) + 1;
+      }
+    });
+    
+    (clickEvents || []).forEach((c) => {
+      if (c.created_at) {
+        const d = formatDate(c.created_at);
+        clicksByDay[d] = (clicksByDay[d] || 0) + 1;
+      }
+    });
+    
+    const getTopDay = (records: Record<string, number>) => {
+      let topDay = "N/A";
+      let maxVal = 0;
+      for (const [day, count] of Object.entries(records)) {
+        if (count > maxVal) {
+          maxVal = count;
+          topDay = day;
+        }
+      }
+      return { day: topDay, count: maxVal };
+    };
+
+    const topDayDmsResult = getTopDay(dmsByDay);
+    const topDayClicksResult = getTopDay(clicksByDay);
+
+    if (highestCtrVal === -1) {
+      if (mappedPerformance[0]) {
+        bestAutomationObj = {
+          name: mappedPerformance[0].name,
+          ctr: mappedPerformance[0].ctr,
+          dms: mappedPerformance[0].dmsSent,
+          clicks: 0
+        };
+      }
+    }
 
     return NextResponse.json({
       range,
       metrics: {
         dmsSent: totalDMs,
         linkClicks: totalClicks,
-        ctr: ctrString,
-        leadsCaptured: 0,
+        ctr: overallCtr,
+        leadsCaptured: leadsCaptured,
       },
       highlights: {
-        bestAutomation: mappedPerformance[0]
-          ? { name: mappedPerformance[0].name, ctr: mappedPerformance[0].ctr, dms: totalDMs, clicks: totalClicks }
-          : { name: "None", ctr: "0%", dms: 0, clicks: 0 },
-        topDayForDms: { day: "Today", dms: totalDMs },
-        topDayForClicks: { day: "Today", clicks: totalClicks },
+        bestAutomation: bestAutomationObj,
+        topDayForDms: { day: topDayDmsResult.day, dms: topDayDmsResult.count },
+        topDayForClicks: { day: topDayClicksResult.day, clicks: topDayClicksResult.count },
       },
       performanceList: mappedPerformance,
     });
-  } catch {
+  } catch (error) {
     return NextResponse.json(emptyAnalytics);
   }
 }
