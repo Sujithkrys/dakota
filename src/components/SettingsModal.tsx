@@ -44,7 +44,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
         borderRadius: "var(--radius-card)",
         width: "85vw",
         maxWidth: "1100px",
-        height: "80vh",
+        minHeight: "480px",
         maxHeight: "750px",
         display: "flex",
         boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
@@ -134,8 +134,8 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                     gap: "12px",
                     padding: "12px 14px",
                     borderRadius: "var(--radius-button)",
-                    background: isActive ? "var(--accent-verdant)" : "transparent",
-                    color: isActive ? "#ffffff" : "var(--text-main)",
+                    background: isActive ? "#E1F5EE" : "transparent",
+                    color: isActive ? "var(--accent-verdant)" : "var(--text-main)",
                     fontWeight: isActive ? "600" : "400",
                     border: "none",
                     cursor: "pointer",
@@ -143,7 +143,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                     textAlign: "left"
                   }}
                 >
-                  <Icon size={18} />
+                  <Icon size={18} color={isActive ? "var(--accent-verdant)" : "currentColor"} />
                   {tab.label}
                 </button>
               );
