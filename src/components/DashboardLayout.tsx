@@ -450,10 +450,10 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
 
               {!isCollapsed && analyticsOpen && (
                 <div style={{ paddingLeft: "28px", display: "flex", flexDirection: "column", gap: "2px", marginTop: "2px" }}>
-                  <Link href="/dashboard/analytics" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: pathname === "/dashboard/analytics" ? "var(--text-main)" : "var(--text-body)", fontWeight: pathname === "/dashboard/analytics" ? "600" : "400" }}>
+                  <Link href="/dashboard/analytics" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: pathname === "/dashboard/analytics" ? "var(--accent-verdant)" : "var(--text-body)", fontWeight: pathname === "/dashboard/analytics" ? "600" : "400" }}>
                     <BarChart3 size={14} /> Overview
                   </Link>
-                  <Link href="/dashboard/insights" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: pathname === "/dashboard/insights" ? "var(--text-main)" : "var(--text-body)", fontWeight: pathname === "/dashboard/insights" ? "600" : "400" }}>
+                  <Link href="/dashboard/insights" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", fontSize: "0.82rem", color: pathname === "/dashboard/insights" ? "var(--accent-verdant)" : "var(--text-body)", fontWeight: pathname === "/dashboard/insights" ? "600" : "400" }}>
                     <PieChart size={14} /> Audience Insights
                   </Link>
                 </div>

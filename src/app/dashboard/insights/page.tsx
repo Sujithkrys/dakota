@@ -55,7 +55,7 @@ export default function AudienceInsightsPage() {
         <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "28px" }}>
           
           {/* Left Panel */}
-          <div className="glass-card" style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "16px", height: "fit-content" }}>
+          <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px", display: "flex", flexDirection: "column", gap: "16px", height: "fit-content" }}>
             <h2 style={{ fontSize: "1.1rem" }}>View Stats For</h2>
 
             <button
@@ -125,19 +125,19 @@ export default function AudienceInsightsPage() {
             
             {/* Stat Boxes */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-              <div className="glass-card gradient-orb-mint" style={{ padding: "24px" }}>
+              <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px" }}>
                 <div style={{ fontSize: "0.75rem", fontWeight: "600", color: "var(--text-muted)", letterSpacing: "0.5px" }}>TOTAL COMMENTS PROCESSED</div>
-                <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginTop: "4px" }}>{totalComments.toLocaleString()}</div>
+                <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "300", marginTop: "4px" }}>{totalComments.toLocaleString()}</div>
               </div>
 
-              <div className="glass-card gradient-orb-peach" style={{ padding: "24px" }}>
+              <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px" }}>
                 <div style={{ fontSize: "0.75rem", fontWeight: "600", color: "var(--text-muted)", letterSpacing: "0.5px" }}>UNIQUE COMMENTERS</div>
-                <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-serif)", fontWeight: "300", marginTop: "4px" }}>{uniqueCommenters.toLocaleString()}</div>
+                <div style={{ fontSize: "2.4rem", fontFamily: "var(--font-mono)", fontWeight: "300", marginTop: "4px" }}>{uniqueCommenters.toLocaleString()}</div>
               </div>
             </div>
 
             {/* Leaderboard Table */}
-            <div className="glass-card" style={{ padding: "24px" }}>
+            <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
                 <Trophy size={18} color="var(--text-main)" />
                 <h2 style={{ fontSize: "1.3rem" }}>Top Commenters Ranked Leaderboard</h2>
