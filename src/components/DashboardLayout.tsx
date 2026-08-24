@@ -23,6 +23,7 @@ import {
   CheckCircle2,
   PanelLeftClose,
 } from "lucide-react";
+import { SettingsModal } from "./SettingsModal";
 
 interface LinkedAccount {
   id: string;
@@ -54,6 +55,7 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
   const [accounts, setAccounts] = useState<LinkedAccount[]>([]);
   const [activeAccountUsername, setActiveAccountUsername] = useState(username);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const accountDropdownRef = useRef<HTMLDivElement>(null);
 
   const [stats, setStats] = useState<{ dms_sent: number; active_automations: number } | null>(null);
@@ -460,8 +462,8 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
               )}
             </div>
 
-            <Link
-              href="/dashboard/settings"
+            <button
+              onClick={() => setIsSettingsModalOpen(true)}
               title="Settings"
               style={{
                 display: "flex",
@@ -470,16 +472,18 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
                 padding: "9px 12px",
                 borderRadius: "var(--radius-button)",
                 fontSize: "0.85rem",
-                fontWeight: pathname.startsWith("/dashboard/settings") ? "600" : "400",
-                color: pathname.startsWith("/dashboard/settings") ? "var(--accent-verdant)" : "var(--text-body)",
-                background: pathname.startsWith("/dashboard/settings") ? "#ffffff" : "transparent",
-                border: pathname.startsWith("/dashboard/settings") ? "var(--border-hairline)" : "1px solid transparent",
+                fontWeight: isSettingsModalOpen ? "600" : "400",
+                color: isSettingsModalOpen ? "var(--accent-verdant)" : "var(--text-body)",
+                background: isSettingsModalOpen ? "#ffffff" : "transparent",
+                border: isSettingsModalOpen ? "var(--border-hairline)" : "1px solid transparent",
                 justifyContent: isCollapsed ? "center" : "flex-start",
+                cursor: "pointer",
+                fontFamily: "inherit",
               }}
             >
               <Settings size={17} color="currentColor" />
               {!isCollapsed && "Settings"}
-            </Link>
+            </button>
           </nav>
 
           {/* Footer Block */}
@@ -715,6 +719,14 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
           {children}
         </main>
       </div>
+      
+      <SettingsModal 
+        isOpen={isSettingsModalOpen} 
+        onClose={() => setIsSettingsModalOpen(false)} 
+        accounts={accounts} 
+        activeAccountUsername={activeAccountUsername} 
+      />
+      
       <style dangerouslySetInnerHTML={{__html: `
         .dropdown-item-hover:hover {
           background-color: var(--bg-soft) !important;
