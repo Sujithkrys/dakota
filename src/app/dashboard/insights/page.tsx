@@ -85,9 +85,9 @@ export default function AudienceInsightsPage() {
                 style={{
                   padding: "10px 14px",
                   borderRadius: "var(--radius-button)",
-                  background: selectedGroup === "all" ? "var(--bg-soft)" : "transparent",
-                  border: selectedGroup === "all" ? "var(--border-hairline)" : "1px solid transparent",
-                  color: "var(--text-main)",
+                  background: selectedGroup === "all" ? "rgba(14, 159, 110, 0.1)" : "transparent",
+                  border: selectedGroup === "all" ? "1px solid rgba(14, 159, 110, 0.2)" : "1px solid transparent",
+                  color: selectedGroup === "all" ? "var(--accent-verdant)" : "var(--text-main)",
                   fontWeight: selectedGroup === "all" ? "600" : "400",
                   fontSize: "0.88rem",
                   cursor: "pointer",
@@ -104,9 +104,9 @@ export default function AudienceInsightsPage() {
                 style={{
                   padding: "10px 14px",
                   borderRadius: "var(--radius-button)",
-                  background: selectedGroup === "reels" ? "var(--bg-soft)" : "transparent",
-                  border: selectedGroup === "reels" ? "var(--border-hairline)" : "1px solid transparent",
-                  color: "var(--text-main)",
+                  background: selectedGroup === "reels" ? "rgba(14, 159, 110, 0.1)" : "transparent",
+                  border: selectedGroup === "reels" ? "1px solid rgba(14, 159, 110, 0.2)" : "1px solid transparent",
+                  color: selectedGroup === "reels" ? "var(--accent-verdant)" : "var(--text-main)",
                   fontWeight: selectedGroup === "reels" ? "600" : "400",
                   fontSize: "0.88rem",
                   cursor: "pointer",
@@ -139,49 +139,71 @@ export default function AudienceInsightsPage() {
             {/* Leaderboard Table */}
             <div style={{ background: "#ffffff", border: "var(--border-hairline)", borderRadius: "var(--radius-card)", padding: "24px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
-                <Trophy size={18} color="var(--text-main)" />
+                <Trophy size={18} color="var(--accent-gold)" />
                 <h2 style={{ fontSize: "1.3rem" }}>Top Commenters Ranked Leaderboard</h2>
               </div>
 
-              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.88rem" }}>
-                <thead>
-                  <tr style={{ borderBottom: "var(--border-hairline)", color: "var(--text-muted)", fontSize: "0.75rem", fontWeight: "600" }}>
-                    <th style={{ padding: "12px 16px" }}>RANK</th>
-                    <th style={{ padding: "12px 16px" }}>FOLLOWER</th>
-                    <th style={{ padding: "12px 16px" }}>COMMENTS</th>
-                    <th style={{ padding: "12px 16px" }}>RULES TRIGGERED</th>
-                    <th style={{ padding: "12px 16px" }}>LAST ACTIVE</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {loading ? (
-                    <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "var(--text-muted)" }}>Loading insights...</td></tr>
-                  ) : leaderboard.length === 0 ? (
-                    <tr><td colSpan={5} style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>No audience comment data yet — top commenters will appear here as automations trigger.</td></tr>
-                  ) : (
-                    leaderboard.map((item) => (
-                      <tr key={item.rank} style={{ borderBottom: "var(--border-hairline)" }}>
-                        <td style={{ padding: "14px 16px", fontWeight: "600", color: "var(--text-main)" }}>#{item.rank}</td>
-                        <td style={{ padding: "14px 16px" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "0.75rem" }}>
-                              {item.username.charAt(0).toUpperCase()}
-                            </div>
-                            <span style={{ fontWeight: "600" }}>@{item.username}</span>
-                          </div>
-                        </td>
-                        <td style={{ padding: "14px 16px", fontWeight: "600" }}>{item.commentsCount}</td>
-                        <td style={{ padding: "14px 16px" }}>
-                          <span style={{ padding: "3px 10px", borderRadius: "9999px", background: "rgba(12, 10, 9, 0.06)", color: "var(--text-main)", fontWeight: "600", fontSize: "0.75rem" }}>
-                            {item.automationsTriggered} rules
-                          </span>
-                        </td>
-                        <td style={{ padding: "14px 16px", color: "var(--accent-verdant)", fontWeight: "600" }}>{item.lastActive}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {/* Header Row */}
+                <div style={{ 
+                  display: "grid", 
+                  gridTemplateColumns: "60px 2fr 90px 130px 100px",
+                  gap: "16px",
+                  padding: "0 16px",
+                  marginBottom: "4px",
+                  fontSize: "0.75rem",
+                  fontWeight: "600",
+                  color: "var(--text-muted)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px"
+                }}>
+                  <div>Rank</div>
+                  <div>Follower</div>
+                  <div style={{ textAlign: "right" }}>Comments</div>
+                  <div style={{ textAlign: "right" }}>Rules Triggered</div>
+                  <div style={{ textAlign: "right" }}>Last Active</div>
+                </div>
+
+                {loading ? (
+                  <div style={{ padding: "20px", textAlign: "center", color: "var(--text-muted)" }}>Loading insights...</div>
+                ) : leaderboard.length === 0 ? (
+                  <div style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>No audience comment data yet — top commenters will appear here as automations trigger.</div>
+                ) : (
+                  leaderboard.map((item) => (
+                    <div key={item.rank} style={{
+                      display: "grid",
+                      gridTemplateColumns: "60px 2fr 90px 130px 100px",
+                      gap: "16px",
+                      alignItems: "center",
+                      padding: "0 16px",
+                      height: "54px",
+                      borderBottom: "var(--border-hairline)",
+                      fontSize: "0.88rem"
+                    }}>
+                      <div style={{ fontWeight: "600", color: item.rank === 1 ? "var(--accent-gold)" : "var(--text-main)" }}>
+                        #{item.rank}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
+                        <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "0.75rem", flexShrink: 0 }}>
+                          {item.username.charAt(0).toUpperCase()}
+                        </div>
+                        <span style={{ fontWeight: "600", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>@{item.username}</span>
+                      </div>
+                      <div style={{ fontWeight: "600", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                        {item.commentsCount}
+                      </div>
+                      <div style={{ textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                        <span style={{ padding: "3px 10px", borderRadius: "9999px", background: "rgba(12, 10, 9, 0.06)", color: "var(--text-main)", fontWeight: "600", fontSize: "0.75rem", fontFamily: "var(--font-sans)" }}>
+                          <span style={{ fontFamily: "var(--font-mono)" }}>{item.automationsTriggered}</span> rules
+                        </span>
+                      </div>
+                      <div style={{ color: "var(--accent-verdant)", fontWeight: "600", textAlign: "right" }}>
+                        {item.lastActive}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
 
           </div>
