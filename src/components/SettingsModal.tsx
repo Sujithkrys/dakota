@@ -42,10 +42,10 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
         position: "relative",
         background: "#ffffff",
         borderRadius: "var(--radius-card)",
-        width: "92vw",
-        maxWidth: "1440px",
+        width: "65vw",
+        maxWidth: "1280px",
         height: "88vh",
-        maxHeight: "920px",
+        maxHeight: "900px",
         display: "flex",
         boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
         overflow: "hidden"
