@@ -44,7 +44,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
         borderRadius: "var(--radius-card)",
         width: "85vw",
         maxWidth: "1100px",
-        minHeight: "480px",
+        height: "80vh",
         maxHeight: "750px",
         display: "flex",
         boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
