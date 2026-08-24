@@ -37,6 +37,12 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
       justifyContent: "center",
       zIndex: 1000,
     }}>
+      <style dangerouslySetInnerHTML={{__html: `
+        .settings-modal-input::placeholder {
+          color: var(--text-muted);
+        }
+      `}} />
+
       {/* Modal Shell */}
       <div style={{
         position: "relative",
@@ -87,7 +93,8 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
           <div style={{ position: "relative", marginBottom: "32px" }}>
             <Search size={16} color="var(--text-muted)" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }} />
             <input 
-              type="text" 
+              type="text"
+              className="settings-modal-input" 
               placeholder="Search settings"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
@@ -96,7 +103,9 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                 padding: "10px 12px 10px 36px",
                 borderRadius: "var(--radius-button)",
                 border: "var(--border-hairline)",
-                fontSize: "0.85rem",
+                fontSize: "0.95rem",
+                fontFamily: "var(--font-body)",
+                color: "var(--text-main)",
                 outline: "none",
                 background: "var(--bg-soft)",
               }}
@@ -106,6 +115,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
           <div style={{
             fontSize: "0.75rem",
             fontWeight: "600",
+            fontFamily: "var(--font-body)",
             color: "var(--text-muted)",
             letterSpacing: "0.5px",
             marginBottom: "12px",
@@ -136,10 +146,11 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                     borderRadius: "var(--radius-button)",
                     background: isActive ? "#E1F5EE" : "transparent",
                     color: isActive ? "var(--accent-verdant)" : "var(--text-main)",
-                    fontWeight: isActive ? "600" : "400",
+                    fontWeight: isActive ? "600" : "500",
+                    fontFamily: "var(--font-body)",
                     border: "none",
                     cursor: "pointer",
-                    fontSize: "0.9rem",
+                    fontSize: "0.95rem",
                     textAlign: "left"
                   }}
                 >
@@ -166,8 +177,9 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
               
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <div style={{ paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px" }}>
-                  <label style={{ display: "block", fontSize: "0.95rem", color: "var(--text-main)", marginBottom: "16px" }}>Brand context and tone</label>
+                  <label style={{ display: "block", fontSize: "0.95rem", fontWeight: "500", fontFamily: "var(--font-body)", color: "var(--text-main)", marginBottom: "16px" }}>Brand context and tone</label>
                   <textarea 
+                    className="settings-modal-input"
                     rows={4} 
                     placeholder="e.g. We are Dakota..."
                     defaultValue="Dakota is a premium Instagram automation platform. Be friendly, energetic, and helpful. Mention our free 14-day trial."
@@ -176,8 +188,9 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                       padding: "12px 16px",
                       borderRadius: "var(--radius-button)",
                       border: "var(--border-hairline)",
-                      fontSize: "0.9rem",
-                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.95rem",
+                      fontFamily: "var(--font-body)",
+                      color: "var(--text-main)",
                       outline: "none",
                       resize: "vertical"
                     }}
@@ -185,16 +198,19 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)" }}>
-                  <label style={{ fontSize: "0.95rem", color: "var(--text-main)" }}>Default fallback response</label>
+                  <label style={{ fontSize: "0.95rem", fontWeight: "500", fontFamily: "var(--font-body)", color: "var(--text-main)" }}>Default fallback response</label>
                   <input 
                     type="text" 
+                    className="settings-modal-input"
                     defaultValue="Thanks for your message! Our team will get back to you shortly."
                     style={{
-                      width: "300px",
+                      width: "350px",
                       padding: "10px 14px",
                       borderRadius: "var(--radius-button)",
                       border: "var(--border-hairline)",
-                      fontSize: "0.9rem",
+                      fontSize: "0.95rem",
+                      fontFamily: "var(--font-body)",
+                      color: "var(--text-main)",
                       outline: "none"
                     }}
                   />
@@ -216,27 +232,27 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                       {acct.profile_pic ? (
                         <img src={acct.profile_pic} alt={acct.username} style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }} />
                       ) : (
-                        <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "1rem" }}>
+                        <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "var(--text-main)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "600", fontSize: "1rem", fontFamily: "var(--font-body)" }}>
                           {acct.username.charAt(0).toUpperCase()}
                         </div>
                       )}
                       <div>
-                        <div style={{ fontWeight: "600", fontSize: "0.95rem", color: "var(--text-main)" }}>@{acct.username}</div>
-                        <div style={{ fontSize: "0.85rem", color: "var(--accent-verdant)" }}>Connected</div>
+                        <div style={{ fontWeight: "600", fontSize: "0.95rem", fontFamily: "var(--font-body)", color: "var(--text-main)" }}>@{acct.username}</div>
+                        <div style={{ fontSize: "0.85rem", fontFamily: "var(--font-body)", color: "var(--accent-verdant)" }}>Connected</div>
                       </div>
                     </div>
-                    <button style={{ color: "var(--accent-danger)", background: "transparent", border: "none", cursor: "pointer", fontSize: "0.9rem", fontWeight: "500", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <button style={{ color: "var(--accent-danger)", background: "transparent", border: "none", cursor: "pointer", fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500", display: "flex", alignItems: "center", gap: "6px" }}>
                       <LogOut size={16} /> Disconnect
                     </button>
                   </div>
                 )) : (
-                  <div style={{ paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", color: "var(--text-muted)", fontSize: "0.95rem" }}>
+                  <div style={{ paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", color: "var(--text-muted)", fontSize: "0.95rem", fontFamily: "var(--font-body)" }}>
                     No accounts connected yet.
                   </div>
                 )}
                 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <a href="/api/auth/instagram?force_oauth=true" style={{ fontSize: "0.95rem", color: "var(--text-main)", fontWeight: "500", textDecoration: "none" }}>
+                  <a href="/api/auth/instagram?force_oauth=true" style={{ fontSize: "0.95rem", fontFamily: "var(--font-body)", color: "var(--text-main)", fontWeight: "500", textDecoration: "none" }}>
                     + Connect another account
                   </a>
                 </div>
@@ -252,7 +268,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
               
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px" }}>
-                  <label style={{ fontSize: "0.95rem", color: "var(--text-main)" }}>Max DMs per hour</label>
+                  <label style={{ fontSize: "0.95rem", fontWeight: "500", fontFamily: "var(--font-body)", color: "var(--text-main)" }}>Max DMs per hour</label>
                   <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                     <input type="range" min="10" max="1000" defaultValue="150" style={{ width: "160px" }} />
                     <span style={{ fontSize: "0.9rem", fontFamily: "var(--font-mono)", fontWeight: "600", color: "var(--text-main)", width: "40px", textAlign: "right" }}>150</span>
@@ -260,18 +276,18 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px" }}>
-                  <label style={{ fontSize: "0.95rem", color: "var(--text-main)" }}>Pause all automations</label>
+                  <label style={{ fontSize: "0.95rem", fontWeight: "500", fontFamily: "var(--font-body)", color: "var(--text-main)" }}>Pause all automations</label>
                   <div style={{ width: "44px", height: "24px", borderRadius: "12px", background: "var(--border-hairline)", position: "relative", cursor: "pointer" }}>
                     <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#fff", position: "absolute", top: "2px", left: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }} />
                   </div>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)" }}>
-                  <label style={{ fontSize: "0.95rem", color: "var(--text-main)" }}>Alert on delivery failures</label>
+                  <label style={{ fontSize: "0.95rem", fontWeight: "500", fontFamily: "var(--font-body)", color: "var(--text-main)" }}>Alert on delivery failures</label>
                   <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>Threshold:</span>
-                      <input type="number" defaultValue="5" style={{ width: "60px", padding: "6px", borderRadius: "6px", border: "var(--border-hairline)", outline: "none", fontFamily: "var(--font-mono)", fontSize: "0.85rem" }} />
+                      <span style={{ fontSize: "0.85rem", fontFamily: "var(--font-body)", color: "var(--text-muted)" }}>Threshold:</span>
+                      <input type="number" className="settings-modal-input" defaultValue="5" style={{ width: "60px", padding: "6px", borderRadius: "6px", border: "var(--border-hairline)", outline: "none", fontFamily: "var(--font-mono)", fontSize: "0.95rem", color: "var(--text-main)" }} />
                     </div>
                     <div style={{ width: "44px", height: "24px", borderRadius: "12px", background: "var(--accent-verdant)", position: "relative", cursor: "pointer" }}>
                       <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#fff", position: "absolute", top: "2px", right: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }} />
@@ -290,31 +306,34 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
               
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px" }}>
-                  <label style={{ fontSize: "0.95rem", color: "var(--text-main)" }}>Export all contact data</label>
-                  <button style={{ padding: "8px 16px", borderRadius: "var(--radius-button)", background: "#ffffff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.9rem", fontWeight: "500", cursor: "pointer" }}>
+                  <label style={{ fontSize: "0.95rem", fontWeight: "500", fontFamily: "var(--font-body)", color: "var(--text-main)" }}>Export all contact data</label>
+                  <button style={{ padding: "8px 16px", borderRadius: "var(--radius-button)", background: "#ffffff", border: "var(--border-hairline)", color: "var(--text-main)", fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500", cursor: "pointer" }}>
                     Export CSV
                   </button>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "48px" }}>
-                  <label style={{ fontSize: "0.95rem", color: "var(--text-main)" }}>Delete a contact&apos;s data</label>
+                  <label style={{ fontSize: "0.95rem", fontWeight: "500", fontFamily: "var(--font-body)", color: "var(--text-main)" }}>Delete a contact&apos;s data</label>
                   <input 
                     type="text" 
+                    className="settings-modal-input"
                     placeholder="Search username..."
                     style={{
                       width: "240px",
                       padding: "10px 14px",
                       borderRadius: "var(--radius-button)",
                       border: "var(--border-hairline)",
-                      fontSize: "0.9rem",
+                      fontSize: "0.95rem",
+                      fontFamily: "var(--font-body)",
+                      color: "var(--text-main)",
                       outline: "none"
                     }}
                   />
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <label style={{ fontSize: "0.95rem", color: "var(--accent-danger)", fontWeight: "500" }}>Delete all captured data</label>
-                  <button style={{ padding: "8px 16px", borderRadius: "var(--radius-button)", background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.2)", color: "var(--accent-danger)", fontSize: "0.9rem", fontWeight: "600", cursor: "pointer" }}>
+                  <label style={{ fontSize: "0.95rem", fontWeight: "600", fontFamily: "var(--font-body)", color: "var(--accent-danger)" }}>Delete all captured data</label>
+                  <button style={{ padding: "8px 16px", borderRadius: "var(--radius-button)", background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.2)", color: "var(--accent-danger)", fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "600", cursor: "pointer" }}>
                     Delete All Data
                   </button>
                 </div>
@@ -332,7 +351,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                 <a href="#" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", textDecoration: "none" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "var(--text-main)" }}>
                     <BookOpen size={18} color="var(--text-muted)" />
-                    <span style={{ fontSize: "0.95rem" }}>Documentation</span>
+                    <span style={{ fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500" }}>Documentation</span>
                   </div>
                   <ExternalLink size={16} color="var(--text-muted)" />
                 </a>
@@ -340,7 +359,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                 <a href="#" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", textDecoration: "none" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "var(--text-main)" }}>
                     <Bot size={18} color="var(--text-muted)" />
-                    <span style={{ fontSize: "0.95rem" }}>Contact support</span>
+                    <span style={{ fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500" }}>Contact support</span>
                   </div>
                   <ExternalLink size={16} color="var(--text-muted)" />
                 </a>
@@ -348,7 +367,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                 <a href="#" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", textDecoration: "none" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "var(--text-main)" }}>
                     <Database size={18} color="var(--text-muted)" />
-                    <span style={{ fontSize: "0.95rem" }}>Instagram API setup guide</span>
+                    <span style={{ fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500" }}>Instagram API setup guide</span>
                   </div>
                   <ExternalLink size={16} color="var(--text-muted)" />
                 </a>
