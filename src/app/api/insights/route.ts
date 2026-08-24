@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     // 2. Fetch outgoing messages joined with automations for exact counts
     const { data: messages } = await supabaseAdmin
       .from("messages")
-      .select("recipient_id, created_at, automation_id, automations(trigger_source)")
+      .select("id, recipient_id, created_at, automation_id, automations(trigger_source)")
       .eq("user_id", userId)
       .eq("direction", "outgoing");
 
@@ -57,7 +57,9 @@ export async function GET(request: NextRequest) {
       const autoData = (msg as any).automations;
       const triggerSource = Array.isArray(autoData) ? autoData[0]?.trigger_source : autoData?.trigger_source;
       
-      if (triggerSource === 'comment') {
+      const isComment = triggerSource === 'comment' || msg.id.startsWith('comment_dm_');
+      
+      if (isComment) {
         stat.commentsCount += 1;
       }
       
@@ -90,8 +92,8 @@ export async function GET(request: NextRequest) {
         automationsTriggered: stat.automations.size,
         lastActive: formatRelativeTime(stat.lastActiveDt)
       }))
-      // Only keep followers who actually triggered an automation to keep it relevant
-      .filter(item => item.automationsTriggered > 0)
+      // Only keep followers who actually have comment interactions to keep it relevant
+      .filter(item => item.commentsCount > 0)
       .sort((a, b) => b.commentsCount - a.commentsCount || b.automationsTriggered - a.automationsTriggered);
 
     // Assign rank
