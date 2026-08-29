@@ -21,6 +21,7 @@ interface SettingsModalProps {
 export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername }: SettingsModalProps) {
   const [activeTab, setActiveTab] = useState("automation_defaults");
   const [searchQuery, setSearchQuery] = useState("");
+  const [docPopup, setDocPopup] = useState<{ isOpen: boolean; title: string; content: React.ReactNode }>({ isOpen: false, title: "", content: null });
 
   if (!isOpen) return null;
 
@@ -348,7 +349,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
               </h2>
               
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <a href="#" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", textDecoration: "none" }}>
+                <a href="#" onClick={(e) => { e.preventDefault(); setDocPopup({ isOpen: true, title: "Documentation", content: <div><p style={{ marginBottom: "12px" }}>Welcome to the official Dakota documentation.</p><p>Here you can learn how to set up automations, manage your linked Instagram accounts, and view detailed analytics on your message performance.</p><p style={{ marginTop: "12px" }}><strong>Status:</strong> All systems operational.</p></div> }) }} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", textDecoration: "none", cursor: "pointer" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "var(--text-main)" }}>
                     <BookOpen size={18} color="var(--text-muted)" />
                     <span style={{ fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500" }}>Documentation</span>
@@ -356,7 +357,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                   <ExternalLink size={16} color="var(--text-muted)" />
                 </a>
 
-                <a href="#" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", textDecoration: "none" }}>
+                <a href="#" onClick={(e) => { e.preventDefault(); setDocPopup({ isOpen: true, title: "Contact support", content: <div><p style={{ marginBottom: "12px" }}>Need help with Dakota?</p><p>You can reach our dedicated support team at <strong>support@dakota.com</strong>. We typically respond within 24 hours.</p><p style={{ marginTop: "12px" }}>For urgent inquiries, please include "URGENT" in the subject line of your email.</p></div> }) }} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", marginBottom: "24px", textDecoration: "none", cursor: "pointer" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "var(--text-main)" }}>
                     <Bot size={18} color="var(--text-muted)" />
                     <span style={{ fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500" }}>Contact support</span>
@@ -364,7 +365,7 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
                   <ExternalLink size={16} color="var(--text-muted)" />
                 </a>
 
-                <a href="#" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", textDecoration: "none" }}>
+                <a href="#" onClick={(e) => { e.preventDefault(); setDocPopup({ isOpen: true, title: "Instagram API setup guide", content: <div><p style={{ marginBottom: "12px" }}>To fully utilize Dakota, you need to connect your Instagram account properly via the API.</p><ol style={{ paddingLeft: "20px", margin: "0", display: "flex", flexDirection: "column", gap: "8px" }}><li>Ensure your Instagram account is a Professional or Creator account.</li><li>Link your Instagram account to a Facebook Page you manage.</li><li>Go to Settings -{">"} Connected accounts to authenticate.</li></ol></div> }) }} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "24px", borderBottom: "var(--border-hairline)", textDecoration: "none", cursor: "pointer" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "var(--text-main)" }}>
                     <Database size={18} color="var(--text-muted)" />
                     <span style={{ fontSize: "0.95rem", fontFamily: "var(--font-body)", fontWeight: "500" }}>Instagram API setup guide</span>
@@ -375,6 +376,70 @@ export function SettingsModal({ isOpen, onClose, accounts, activeAccountUsername
             </div>
           )}
         </div>
+        
+        {/* Support & Docs Popup */}
+        {docPopup.isOpen && (
+          <div style={{
+            position: "absolute",
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: "rgba(255, 255, 255, 0.85)",
+            backdropFilter: "blur(4px)",
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}>
+            <div style={{
+              background: "#ffffff",
+              borderRadius: "var(--radius-card)",
+              padding: "32px",
+              width: "500px",
+              maxWidth: "90%",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+              border: "var(--border-hairline)",
+              position: "relative"
+            }}>
+              <button 
+                onClick={() => setDocPopup({ ...docPopup, isOpen: false })}
+                style={{
+                  position: "absolute",
+                  top: "16px", right: "16px",
+                  background: "var(--bg-soft)", border: "none", cursor: "pointer",
+                  color: "var(--text-muted)",
+                  width: "32px", height: "32px", borderRadius: "8px",
+                  display: "flex", alignItems: "center", justifyContent: "center"
+                }}
+                title="Close"
+              >
+                <X size={18} />
+              </button>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "600", fontFamily: "var(--font-display)", marginBottom: "16px", color: "var(--text-main)" }}>
+                {docPopup.title}
+              </h3>
+              <div style={{ fontSize: "0.95rem", lineHeight: "1.6", color: "var(--text-main)", fontFamily: "var(--font-body)" }}>
+                {docPopup.content}
+              </div>
+              <div style={{ marginTop: "32px", display: "flex", justifyContent: "flex-end" }}>
+                <button 
+                  onClick={() => setDocPopup({ ...docPopup, isOpen: false })}
+                  style={{
+                    padding: "10px 20px",
+                    background: "var(--accent-verdant)",
+                    border: "none",
+                    borderRadius: "var(--radius-button)",
+                    color: "#ffffff",
+                    fontWeight: "500",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-body)",
+                    boxShadow: "0 2px 10px rgba(14, 159, 110, 0.2)"
+                  }}
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
