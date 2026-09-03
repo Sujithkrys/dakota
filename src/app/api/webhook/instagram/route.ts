@@ -620,39 +620,8 @@ async function appendTrackingLink(
   if (!rule || !rule.button_url) return text;
   
   const buttonTitle = rule.button_text || "Click here";
-  let baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-  if (!baseUrl && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  } else if (!baseUrl && process.env.VERCEL_URL) {
-    baseUrl = `https://${process.env.VERCEL_URL}`;
-  }
-  baseUrl = baseUrl || "http://localhost:3000";
   
-  try {
-    // Try to find existing link click row
-    const { data: existing } = await supabaseAdmin
-      .from("link_clicks")
-      .select("tracking_code")
-      .eq("automation_id", rule.id)
-      .eq("destination_url", rule.button_url)
-      .single();
-      
-    let trackingCode = existing?.tracking_code;
-    
-    if (!trackingCode) {
-      trackingCode = Math.random().toString(36).substring(2, 10);
-      await supabaseAdmin.from("link_clicks").insert({
-        automation_id: rule.id,
-        user_id: userId,
-        tracking_code: trackingCode,
-        destination_url: rule.button_url,
-        click_count: 0
-      });
-    }
-    
-    return `${text}\n\n${buttonTitle}: ${baseUrl}/l/${trackingCode}`;
-  } catch (err) {
-    console.warn("Failed to generate tracking link:", err);
-    return text; // Fallback to original text
-  }
+  // Return the direct link as requested by the user, rather than routing through a tracking URL.
+  // Note: This disables CTR tracking in the dashboard for this link.
+  return `${text}\n\n${buttonTitle}: ${rule.button_url}`;
 }
