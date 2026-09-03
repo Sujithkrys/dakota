@@ -364,7 +364,7 @@ async function testInstagramApiFunctions() {
 
   // getInstagramAuthUrl returns a valid URL
   const authUrl = getInstagramAuthUrl();
-  assert(authUrl.startsWith("https://api.instagram.com/oauth/authorize"), "getInstagramAuthUrl returns valid OAuth URL");
+  assert(authUrl.startsWith("https://www.instagram.com/oauth/authorize"), "getInstagramAuthUrl returns valid OAuth URL");
 }
 
 async function testIdentityResolver() {

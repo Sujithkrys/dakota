@@ -620,7 +620,13 @@ async function appendTrackingLink(
   if (!rule || !rule.button_url) return text;
   
   const buttonTitle = rule.button_text || "Click here";
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  let baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (!baseUrl && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  } else if (!baseUrl && process.env.VERCEL_URL) {
+    baseUrl = `https://${process.env.VERCEL_URL}`;
+  }
+  baseUrl = baseUrl || "http://localhost:3000";
   
   try {
     // Try to find existing link click row
