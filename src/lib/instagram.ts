@@ -73,7 +73,7 @@ export function getInstagramAuthUrl(baseUrl?: string, state?: string): string {
     params.append("state", state);
   }
 
-  return `https://www.instagram.com/oauth/authorize?${params.toString()}`;
+  return `https://api.instagram.com/oauth/authorize?${params.toString()}`;
 }
 
 /**
