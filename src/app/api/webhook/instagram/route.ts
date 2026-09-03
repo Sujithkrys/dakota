@@ -621,7 +621,41 @@ async function appendTrackingLink(
   
   const buttonTitle = rule.button_text || "Click here";
   
-  // Return the direct link as requested by the user, rather than routing through a tracking URL.
-  // Note: This disables CTR tracking in the dashboard for this link.
-  return `${text}\n\n${buttonTitle}: ${rule.button_url}`;
+  let baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (!baseUrl && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  } else if (!baseUrl && process.env.VERCEL_URL) {
+    baseUrl = `https://${process.env.VERCEL_URL}`;
+  }
+  // If we are in production and somehow env vars are missing, don't use localhost.
+  // We can try to infer from the host header, but we don't have access to the request object here.
+  baseUrl = baseUrl || "https://dakota-jet.vercel.app"; 
+
+  try {
+    // Try to find existing link click row
+    const { data: existing } = await supabaseAdmin
+      .from("link_clicks")
+      .select("tracking_code")
+      .eq("automation_id", rule.id)
+      .eq("destination_url", rule.button_url)
+      .single();
+      
+    let trackingCode = existing?.tracking_code;
+    
+    if (!trackingCode) {
+      trackingCode = Math.random().toString(36).substring(2, 10);
+      await supabaseAdmin.from("link_clicks").insert({
+        automation_id: rule.id,
+        user_id: userId,
+        tracking_code: trackingCode,
+        destination_url: rule.button_url,
+        click_count: 0
+      });
+    }
+    
+    return `${text}\n\n${buttonTitle}: ${baseUrl}/l/${trackingCode}`;
+  } catch (err) {
+    console.warn("Failed to generate tracking link:", err);
+    return `${text}\n\n${buttonTitle}: ${rule.button_url}`; // Fallback to raw link if DB fails
+  }
 }
