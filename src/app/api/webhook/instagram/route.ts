@@ -254,7 +254,8 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
 
   // Append tracking link if configured
   const activeRule = matchedRule || aiRule;
-  finalResponseText = await appendTrackingLink(finalResponseText, activeRule, userId, supabaseAdmin);
+  const linkData = await appendTrackingLink(finalResponseText, activeRule, userId, supabaseAdmin);
+  finalResponseText = linkData.text;
 
   // Email capture (side-effect)
   if (activeRule?.enable_email_capture) {
@@ -288,7 +289,7 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
   await sendInstagramSenderAction(senderId, "mark_seen", accessToken);
 
   // 6. Send DM via Instagram Graph API
-  const sendRes = await sendInstagramMessage(senderId, finalResponseText, accessToken);
+  const sendRes = await sendInstagramMessage(senderId, finalResponseText, accessToken, linkData.buttons);
   const sendStatus = sendRes.success ? "sent" : "failed";
 
   if (!sendRes.success) {
@@ -413,10 +414,11 @@ async function processCommentAutomation(userId: string, changeValue: any) {
     let dmText = matchedRule.response_content?.text || "Thanks for commenting!";
     
     // Append tracking link if configured
-    dmText = await appendTrackingLink(dmText, matchedRule, userId, supabaseAdmin);
+    const linkData = await appendTrackingLink(dmText, matchedRule, userId, supabaseAdmin);
+    dmText = linkData.text;
 
     // We don't send a sender action ("mark_seen") here because there's no ongoing DM conversation thread yet.
-    const sendRes = await sendCommentPrivateReply(commentId, dmText, accessToken);
+    const sendRes = await sendCommentPrivateReply(commentId, dmText, accessToken, linkData.buttons);
     const sendStatus = sendRes.success ? "sent" : "failed";
 
     if (!sendRes.success) {
@@ -616,8 +618,8 @@ async function appendTrackingLink(
   rule: any,
   userId: string,
   supabaseAdmin: any
-): Promise<string> {
-  if (!rule || !rule.button_url) return text;
+): Promise<{ text: string, buttons?: { title: string, url: string }[] }> {
+  if (!rule || !rule.button_url) return { text };
   
   const buttonTitle = rule.button_text || "Click here";
   
@@ -653,9 +655,15 @@ async function appendTrackingLink(
       });
     }
     
-    return `${text}\n\n${buttonTitle}: ${baseUrl}/l/${trackingCode}`;
+    return {
+      text,
+      buttons: [{ title: buttonTitle, url: `${baseUrl}/l/${trackingCode}` }]
+    };
   } catch (err) {
     console.warn("Failed to generate tracking link:", err);
-    return `${text}\n\n${buttonTitle}: ${rule.button_url}`; // Fallback to raw link if DB fails
+    return {
+      text,
+      buttons: [{ title: buttonTitle, url: rule.button_url }]
+    }; // Fallback to raw link if DB fails
   }
 }

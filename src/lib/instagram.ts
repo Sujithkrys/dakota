@@ -271,15 +271,36 @@ export async function sendInstagramSenderAction(
 export async function sendInstagramMessage(
   recipientId: string,
   text: string,
-  accessToken: string
+  accessToken: string,
+  buttons?: { title: string; url: string }[]
 ): Promise<InstagramApiResult> {
   const url = `https://graph.instagram.com/v24.0/me/messages?access_token=${encodeURIComponent(accessToken)}`;
+  
+  let messagePayload: any = { text: text };
+  
+  if (buttons && buttons.length > 0) {
+    messagePayload = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "button",
+          text: text.substring(0, 640), // Meta limit for button templates
+          buttons: buttons.slice(0, 3).map(b => ({
+            type: "web_url",
+            url: b.url,
+            title: b.title.substring(0, 20)
+          }))
+        }
+      }
+    };
+  }
+
   const payload = {
     recipient: { id: recipientId },
-    message: { text: text },
+    message: messagePayload,
   };
 
-  console.log(`[OUTBOUND DM] Sending message to ${recipientId}: "${text}"`);
+  console.log(`[OUTBOUND DM] Sending message to ${recipientId}`);
 
   try {
     const response = await fetch(url, {
@@ -309,24 +330,65 @@ export async function sendInstagramMessage(
 export async function sendCommentPrivateReply(
   commentId: string,
   text: string,
-  accessToken: string
+  accessToken: string,
+  buttons?: { title: string; url: string }[]
 ): Promise<InstagramApiResult> {
   const url = `https://graph.instagram.com/v24.0/me/messages?access_token=${encodeURIComponent(accessToken)}`;
+  
+  let messagePayload: any = { text: text };
+  
+  // Try using button template if provided
+  if (buttons && buttons.length > 0) {
+    messagePayload = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "button",
+          text: text.substring(0, 640),
+          buttons: buttons.slice(0, 3).map(b => ({
+            type: "web_url",
+            url: b.url,
+            title: b.title.substring(0, 20)
+          }))
+        }
+      }
+    };
+  }
+
   const payload = {
     recipient: { comment_id: commentId },
-    message: { text: text },
+    message: messagePayload,
   };
 
-  console.log(`[OUTBOUND PRIVATE REPLY] Sending private reply for comment ${commentId}: "${text}"`);
+  console.log(`[OUTBOUND PRIVATE REPLY] Sending private reply for comment ${commentId}`);
 
   try {
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
+    let data = await response.json();
+    
+    // Fallback: If template is rejected for comment replies, resend as plain text with raw URL
+    if ((!response.ok || data.error) && buttons && buttons.length > 0) {
+      console.warn("[Instagram API] Template rejected for comment reply, falling back to plain text");
+      
+      const fallbackText = `${text}\n\n${buttons[0].title}: ${buttons[0].url}`;
+      const fallbackPayload = {
+        recipient: { comment_id: commentId },
+        message: { text: fallbackText },
+      };
+      
+      response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fallbackPayload),
+      });
+      data = await response.json();
+    }
+
     if (!response.ok || data.error) {
       const errMsg = data.error?.message || `Instagram API error (${response.status})`;
       console.warn("[Instagram API Private Reply Error]:", errMsg, data);
