@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, ArrowRight, AlertCircle, Bot } from "lucide-react";
+import Link from "next/link";
+import { Lock, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -177,6 +178,33 @@ export default function LoginPage() {
             {!loading && <ArrowRight size={18} />}
           </button>
         </form>
+
+        <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px", alignItems: "center" }}>
+          <a
+            href="/api/auth/instagram?demo=true"
+            style={{
+              color: "var(--accent-verdant)",
+              fontSize: "0.9rem",
+              fontWeight: "600",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <Sparkles size={15} /> Launch Demo Dashboard (No login needed)
+          </a>
+          <Link
+            href="/"
+            style={{
+              color: "var(--text-muted)",
+              fontSize: "0.85rem",
+              textDecoration: "none",
+            }}
+          >
+            ← Back to Home
+          </Link>
+        </div>
       </div>
     </div>
   );

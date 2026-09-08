@@ -64,27 +64,37 @@ export async function getActiveAccountId(request: NextRequest): Promise<string |
   }
 }
 
+export const DEMO_ACCOUNT_ID = "17841400000000000";
+
 /**
- * Resolves the fully-authenticated context for an API request.
+ * Resolves the authenticated context for an API request.
  *
+ * For Demo Dashboard:
+ * - Demo account (DEMO_ACCOUNT_ID) does not require owner login.
+ *
+ * For Main Login / Production:
  * 1. Reads and verifies the owner session from `dmflow_owner`.
  * 2. Reads and verifies the active account from `dmflow_active_account`.
- * 3. **Verifies server-side** that the active account belongs to the owner
+ * 3. Verifies server-side that the active account belongs to the owner
  *    (checks `users.owner_id = ownerId` in Supabase).
  *
- * Hard-cut: No legacy fallback. Strict owner authentication is required.
- * Returns `{ ownerId, accountId }` on success, or `null` on any failure.
+ * Returns `{ ownerId, accountId }` on success, or `null` on failure.
  */
 export async function resolveAuthedAccount(
   request: NextRequest
 ): Promise<{ ownerId: string; accountId: string } | null> {
-  const ownerId = await getOwnerSession(request);
-  if (!ownerId) {
-    return null;
+  const activeAccountId = await getActiveAccountId(request);
+  const sessionUserId = await getSessionUser(request);
+  const accountId = activeAccountId || sessionUserId;
+
+  // Demo dashboard does not require owner login
+  if (accountId === DEMO_ACCOUNT_ID) {
+    return { ownerId: "demo", accountId: DEMO_ACCOUNT_ID };
   }
 
-  const accountId = await getActiveAccountId(request);
-  if (!accountId) {
+  // Strict owner authentication required for main/production accounts
+  const ownerId = await getOwnerSession(request);
+  if (!ownerId || !accountId) {
     return null;
   }
 
@@ -111,3 +121,4 @@ export async function resolveAuthedAccount(
 
   return { ownerId, accountId };
 }
+

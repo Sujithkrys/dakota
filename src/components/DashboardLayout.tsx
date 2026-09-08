@@ -131,9 +131,9 @@ function DashboardLayoutContent({ children, username = "your_account", userId }:
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
-      router.push("/login");
+      router.push("/");
     } catch {
-      router.push("/login");
+      router.push("/");
     }
   };
 

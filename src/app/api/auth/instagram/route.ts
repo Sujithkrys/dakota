@@ -20,34 +20,7 @@ export async function GET(request: NextRequest) {
     const baseUrl = request.nextUrl.origin;
     const response = NextResponse.redirect(`${baseUrl}/dashboard?demo_notice=true`);
 
-    // Create or find a demo owner for demo mode
-    let demoOwnerId = "demo-owner";
-    try {
-      const supabaseAdmin = createAdminClient();
-      const { data: existingOwner } = await supabaseAdmin
-        .from("owners")
-        .select("id")
-        .eq("display_name", "Demo Owner")
-        .limit(1)
-        .single();
-
-      if (existingOwner) {
-        demoOwnerId = existingOwner.id;
-      } else {
-        const { data: newOwner } = await supabaseAdmin
-          .from("owners")
-          .insert({ display_name: "Demo Owner" })
-          .select("id")
-          .single();
-        if (newOwner) {
-          demoOwnerId = newOwner.id;
-        }
-      }
-    } catch {
-      // Fallback — use a static ID for demo mode if DB isn't configured
-    }
-
-    // Sign session cookie
+    // Sign session cookie for demo account
     const sessionToken = await signSessionJWT({
       id: "17841400000000000",
       username: "dmflow_official",
@@ -62,9 +35,9 @@ export async function GET(request: NextRequest) {
       path: "/",
     });
 
-    // Sign owner cookie
-    const ownerToken = await signOwnerSessionJWT({ ownerId: demoOwnerId });
-    response.cookies.set("dmflow_owner", ownerToken, {
+    // Sign active account cookie for demo account
+    const accountToken = await signActiveAccountJWT({ accountId: "17841400000000000" });
+    response.cookies.set("dmflow_active_account", accountToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -72,13 +45,12 @@ export async function GET(request: NextRequest) {
       path: "/",
     });
 
-    // Sign active account cookie
-    const accountToken = await signActiveAccountJWT({ accountId: "17841400000000000" });
-    response.cookies.set("dmflow_active_account", accountToken, {
+    // Demo dashboard does not require owner login - clear any lingering owner cookie
+    response.cookies.set("dmflow_owner", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 24 * 60 * 60,
+      maxAge: 0,
       path: "/",
     });
 

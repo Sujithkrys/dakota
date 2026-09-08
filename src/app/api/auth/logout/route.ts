@@ -14,5 +14,11 @@ export async function POST() {
     maxAge: 0,
     path: "/",
   });
+  response.cookies.set({
+    name: "dmflow_session",
+    value: "",
+    maxAge: 0,
+    path: "/",
+  });
   return response;
 }

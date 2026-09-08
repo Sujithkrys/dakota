@@ -2,12 +2,50 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseConfigured } from "@/lib/supabase/admin";
 import { resolveAuthedAccount } from "@/lib/session";
 
+const DEMO_AUTOMATIONS = [
+  {
+    id: "demo_auto_1",
+    name: "Comment → Instant Link DM",
+    is_active: true,
+    trigger_source: "comment",
+    trigger_type: "keyword",
+    trigger_value: "LINK",
+    response_content: { text: "Hey! Thanks for your comment. Here is your link: https://dakota.app/preview" },
+    public_response_content: { text: "Check your DMs! Just sent you the link 🚀" },
+    reply_mode: "both",
+    dms_sent: 142,
+    clicks: 89,
+    ctr: "63%",
+    failed_24h: 0,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo_auto_2",
+    name: "Story Reply → Auto Coupon",
+    is_active: true,
+    trigger_source: "story_reply",
+    trigger_type: "any",
+    trigger_value: "*",
+    response_content: { text: "Thanks for watching our story! Use code DAKOTA20 for 20% off today." },
+    reply_mode: "dm_only",
+    dms_sent: 86,
+    clicks: 52,
+    ctr: "60%",
+    failed_24h: 0,
+    created_at: new Date().toISOString(),
+  },
+];
+
 export async function GET(request: NextRequest) {
   const authed = await resolveAuthedAccount(request);
   if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { accountId: userId } = authed;
+
+  if (userId === "17841400000000000") {
+    return NextResponse.json({ automations: DEMO_AUTOMATIONS });
+  }
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ automations: [] });

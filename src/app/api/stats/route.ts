@@ -19,6 +19,19 @@ export async function GET(request: NextRequest) {
     active_threads: 0,
   };
 
+  if (userId === "17841400000000000") {
+    return NextResponse.json({
+      dms_sent: 228,
+      dms_limit: 500,
+      link_clicks: 141,
+      leads: 38,
+      ig_accounts: 1,
+      ig_accounts_limit: 1,
+      active_automations: 2,
+      active_threads: 45,
+    });
+  }
+
   if (!isSupabaseConfigured()) {
     return NextResponse.json(emptyStats);
   }

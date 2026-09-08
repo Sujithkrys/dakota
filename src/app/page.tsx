@@ -55,6 +55,25 @@ export default async function LandingPage({ searchParams }: LandingPageProps) {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <Link
+            href="/login"
+            style={{
+              fontSize: "0.9rem",
+              fontWeight: "600",
+              padding: "8px 18px",
+              borderRadius: "9999px",
+              border: "1px solid var(--border-hairline)",
+              background: "transparent",
+              color: "var(--text-muted)",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              textDecoration: "none",
+              transition: "all 0.2s ease",
+            }}
+          >
+            Owner Login
+          </Link>
           <a
             href="/api/auth/instagram"
             style={{
