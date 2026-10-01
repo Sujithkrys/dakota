@@ -336,7 +336,7 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
 /**
  * Process Comment Automation (Public Reply + Private DM + Post ID Filtering)
  */
-async function processCommentAutomation(userId: string, changeValue: any) {
+async function processCommentAutomation(userId: string, changeValue: any, targetAccountId: string) {
   const commentId = changeValue?.id;
   const commentText = changeValue?.text || "";
   const mediaId = changeValue?.media?.id || "";
@@ -344,6 +344,11 @@ async function processCommentAutomation(userId: string, changeValue: any) {
   const commenterUsername = changeValue?.from?.username || commenterId;
 
   if (!commentId || !commentText) return;
+
+  if (commenterId && targetAccountId && commenterId === targetAccountId) {
+    console.log("Ignoring self-comment to prevent infinite loops");
+    return;
+  }
 
   const supabaseAdmin = createAdminClient();
 
@@ -465,11 +470,16 @@ async function processCommentAutomation(userId: string, changeValue: any) {
 /**
  * Process Story Mention Automation
  */
-async function processStoryMentionAutomation(userId: string, changeValue: any) {
+async function processStoryMentionAutomation(userId: string, changeValue: any, targetAccountId: string) {
   const commenterId = changeValue?.from?.id || changeValue?.sender_id;
   const username = changeValue?.from?.username || changeValue?.sender_name || commenterId;
 
   if (!commenterId) return;
+
+  if (commenterId && targetAccountId && commenterId === targetAccountId) {
+    console.log("Ignoring self-mention to prevent infinite loops");
+    return;
+  }
 
   const supabaseAdmin = createAdminClient();
   let automations: any[] = [];
@@ -603,9 +613,9 @@ export async function POST(request: NextRequest) {
   } else if (entry?.changes?.[0]) {
     const change = entry.changes[0];
     if (change.field === "comments") {
-      await processCommentAutomation(resolvedUserId, change.value);
+      await processCommentAutomation(resolvedUserId, change.value, targetAccountId);
     } else if (change.field === "mentions") {
-      await processStoryMentionAutomation(resolvedUserId, change.value);
+      await processStoryMentionAutomation(resolvedUserId, change.value, targetAccountId);
     }
   }
 
