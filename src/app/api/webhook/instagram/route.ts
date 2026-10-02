@@ -334,6 +334,38 @@ async function processDirectMessageAutomation(userId: string, messaging: any) {
   }
 }
 
+
+async function startFollowPolling(
+  commentId: string,
+  commenterId: string,
+  accessToken: string,
+  matchedRule: any,
+  userId: string
+) {
+  const maxAttempts = 24; // 2 minutes (5s each)
+  const delayMs = 5000;
+  
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    try {
+      const isFollowing = await checkIfUserFollowsBusiness(commenterId, accessToken);
+      if (isFollowing) {
+        console.log(`[Follow Gate] User ${commenterId} is now following! Sending resource...`);
+        const supabaseAdmin = createAdminClient();
+        let resourceText = matchedRule.response_content?.text || "Thanks for following! Here is your link 🎁";
+        const linkData = await appendTrackingLink(resourceText, matchedRule, userId, supabaseAdmin);
+        resourceText = linkData.text;
+        
+        await sendInstagramMessage(commenterId, resourceText, accessToken, linkData.buttons);
+        return;
+      }
+    } catch (err) {
+      console.warn("Error during follow polling:", err);
+    }
+  }
+  console.log(`[Follow Gate] User ${commenterId} did not follow within the timeframe.`);
+}
+
 /**
  * Process Comment Automation (Public Reply + Private DM + Post ID Filtering)
  */
@@ -423,7 +455,10 @@ async function processCommentAutomation(userId: string, changeValue: any, target
     if (matchedRule.enable_follow_gate) {
       const isFollowing = await checkIfUserFollowsBusiness(commenterId, accessToken);
       if (!isFollowing) {
-        dmText = "Hi! Please follow our account first to get the link! 🎁 Once followed, simply reply to this message with the exact same keyword.";
+        dmText = "Hi! Please follow our account first to get the link! 🎁 (We'll send it automatically in a moment once you follow)";
+        
+        // Start background polling to send the link once they follow
+        startFollowPolling(commentId, commenterId, accessToken, matchedRule, userId);
       } else {
         const linkData = await appendTrackingLink(dmText, matchedRule, userId, supabaseAdmin);
         dmText = linkData.text;
