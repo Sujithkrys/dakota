@@ -7,6 +7,7 @@ import {
   sendInstagramSenderAction,
   replyToInstagramComment,
   sendCommentPrivateReply,
+  checkIfUserFollowsBusiness,
 } from "@/lib/instagram";
 import { generateAIReply } from "@/lib/ai-reply";
 
@@ -417,13 +418,25 @@ async function processCommentAutomation(userId: string, changeValue: any, target
 
   if ((replyMode === "dm_only" || replyMode === "both") && commenterId) {
     let dmText = matchedRule.response_content?.text || "Thanks for commenting!";
+    let buttons = undefined;
     
-    // Append tracking link if configured
-    const linkData = await appendTrackingLink(dmText, matchedRule, userId, supabaseAdmin);
-    dmText = linkData.text;
+    if (matchedRule.enable_follow_gate) {
+      const isFollowing = await checkIfUserFollowsBusiness(commenterId, accessToken);
+      if (!isFollowing) {
+        dmText = "Hi! Please follow our account first to get the link! 🎁 Once followed, simply reply to this message with the exact same keyword.";
+      } else {
+        const linkData = await appendTrackingLink(dmText, matchedRule, userId, supabaseAdmin);
+        dmText = linkData.text;
+        buttons = linkData.buttons;
+      }
+    } else {
+      const linkData = await appendTrackingLink(dmText, matchedRule, userId, supabaseAdmin);
+      dmText = linkData.text;
+      buttons = linkData.buttons;
+    }
 
     // We don't send a sender action ("mark_seen") here because there's no ongoing DM conversation thread yet.
-    const sendRes = await sendCommentPrivateReply(commentId, dmText, accessToken, linkData.buttons);
+    const sendRes = await sendCommentPrivateReply(commentId, dmText, accessToken, buttons);
     const sendStatus = sendRes.success ? "sent" : "failed";
 
     if (!sendRes.success) {

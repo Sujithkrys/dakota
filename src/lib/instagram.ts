@@ -401,3 +401,23 @@ export async function sendCommentPrivateReply(
     return { success: false, error: errMsg };
   }
 }
+
+/**
+ * Check if a specific user follows the Instagram Business account
+ */
+export async function checkIfUserFollowsBusiness(
+  instagramScopedUserId: string,
+  accessToken: string
+): Promise<boolean> {
+  const url = `https://graph.instagram.com/v24.0/${instagramScopedUserId}?fields=is_user_follow_business&access_token=${encodeURIComponent(accessToken)}`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (response.ok && data.is_user_follow_business !== undefined) {
+      return data.is_user_follow_business === true;
+    }
+  } catch (err) {
+    console.warn("[Instagram API Follow Check Exception]:", err);
+  }
+  return false;
+}
